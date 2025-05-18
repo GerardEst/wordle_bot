@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "puregram": "^2.26.8"
+  },
+  "scripts": {
+    "start": "node --env-file=.env index.js"
+  }
+}
