@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "dev": "deno run --watch --env-file=.env --allow-env --allow-read --allow-net main.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "puregram": "npm:puregram@^2.26.8"
+  }
+}
