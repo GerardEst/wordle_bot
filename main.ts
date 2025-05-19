@@ -75,16 +75,38 @@ bot.on('message', async (context) => {
   }
 })
 
+// Add a global error handler to catch unhandled promise rejections
+addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled rejection:', event.reason)
+})
+
+// Add logging to bot events
+bot.on('message', (ctx) => {
+  console.log('Bot received message:', ctx.message)
+})
+
+bot.errorHandler = (err) => {
+  console.error('Bot error:', err)
+  return true // Return true to prevent the error from being propagated
+}
+
 if (dev) {
+  console.log('Starting bot in development mode (polling)')
   bot.start()
 } else {
+  console.log('Starting bot in production mode (webhook)')
   // Set up webhook handling with Deno.serve
   const handleUpdate = webhookCallback(bot, 'std/http')
 
-  Deno.serve(async (req) => {
-    console.log(req)
+  Deno.serve({ port: 8000 }, async (req) => {
+    console.log('Received request:', {
+      method: req.method,
+      url: req.url,
+      headers: Object.fromEntries(req.headers.entries()),
+    })
+
     try {
-      console.log('try to handle update')
+      console.log('Attempting to handle update')
       // Check if the request is a valid webhook update from Telegram
       const contentType = req.headers.get('content-type') || ''
       if (contentType.includes('application/json')) {
@@ -93,27 +115,48 @@ if (dev) {
 
         try {
           // Try to parse body as JSON to validate it's a proper update
-          const body = await clonedReq.json()
-          if (
-            body &&
-            (body.update_id !== undefined || body.message !== undefined)
-          ) {
-            return await handleUpdate(req)
+          const body = await clonedReq.text()
+          console.log('Request body:', body)
+
+          // Try to parse as JSON
+          try {
+            const jsonBody = JSON.parse(body)
+            console.log('Parsed JSON body:', jsonBody)
+
+            if (
+              jsonBody &&
+              (jsonBody.update_id !== undefined ||
+                jsonBody.message !== undefined)
+            ) {
+              console.log(
+                'Valid Telegram update detected, forwarding to handler'
+              )
+              return await handleUpdate(req)
+            } else {
+              console.log('JSON request but not a valid Telegram update')
+            }
+          } catch (jsonError) {
+            console.error('Invalid JSON in request:', jsonError)
+            return new Response('Invalid JSON', { status: 400 })
           }
-        } catch (jsonError) {
-          console.error('Invalid JSON in request:', jsonError)
-          return new Response('Invalid JSON', { status: 400 })
+        } catch (textError) {
+          console.error('Error reading request body:', textError)
+          return new Response('Error reading request body', { status: 400 })
         }
+      } else {
+        console.log('Not a JSON request, content-type:', contentType)
       }
 
       // If we reach here, it's not a valid Telegram update
-      // Return a simple response for health checks or invalid requests
+      console.log('Returning default response for non-Telegram request')
       return new Response('Bot server running!', { status: 200 })
     } catch (err) {
       console.error('Error handling request:', err)
       return new Response('Error handling request', { status: 500 })
     }
   })
+
+  console.log('Webhook server started, waiting for Telegram updates')
 }
 
 export function getPoints(message: string) {
