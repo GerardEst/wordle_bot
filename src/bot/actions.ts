@@ -71,22 +71,24 @@ export function setupActions(bot: Bot) {
     context.reply(resposta, { parse_mode: 'Markdown' })
   })
 
-  bot.on('message', async (context: Context) => {
-    console.log(context)
-    if (!context.message || !context.message.text) {
+  bot.on('message', async (ctx: Context) => {
+    console.log(ctx)
+    if (!ctx.message || !ctx.message.text) {
       return
     }
 
-    const isFromElmot = context.message.text.includes('#ElMot')
+    const isFromElmot = ctx.message.text.includes('#ElMot')
 
     if (isFromElmot) {
-      const points = getPoints(context.message.text)
+      const points = getPoints(ctx.message.text)
+
+      ctx.react(getEmojiReactionFor(points))
 
       // Guardar els punts del jugador
       await createRecord({
-        'ID Xat': context.message.chat.id,
-        'ID Usuari': context.message.from.id,
-        'Nom Usuari': context.message.from.first_name,
+        'ID Xat': ctx.message.chat.id,
+        'ID Usuari': ctx.message.from.id,
+        'Nom Usuari': ctx.message.from.first_name,
         Puntuació: points,
         Joc: 'elmot',
         Data: new Date().toISOString(),
@@ -104,4 +106,15 @@ function getPoints(message: string) {
   const points = 6 - parseInt(tries)
 
   return points + 1
+}
+
+function getEmojiReactionFor(points: number) {
+  if (points === 0) return '🤡'
+  if (points === 1) return '😭'
+  if (points === 2) return '😐'
+  if (points === 3) return '😎'
+  if (points === 4) return '🤯'
+  if (points === 5) return '🏆'
+  if (points === 6) return '🤨'
+  return '🤷'
 }
