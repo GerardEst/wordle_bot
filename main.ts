@@ -1,5 +1,4 @@
-// import 'jsr:@std/dotenv/load'
-// export const config = { runtime: 'edge' }
+import 'jsr:@std/dotenv/load'
 
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
 
@@ -59,39 +58,38 @@ bot.command('punts', async (context) => {
 })
 
 bot.on('message', async (context) => {
-  const isFromElmot = context.text.includes('#ElMot')
+  console.log(context)
+  const isFromElmot = context.message.text.includes('#ElMot')
 
   if (isFromElmot) {
-    const points = getPoints(context.text)
+    const points = getPoints(context.message.text)
 
     // Guardar els punts del jugador
     await createRecord({
-      'ID Xat': context.chat.id,
-      'ID Usuari': context.from.id,
-      'Nom Usuari': context.from.firstName,
+      'ID Xat': context.message.chat.id,
+      'ID Usuari': context.message.from.id,
+      'Nom Usuari': context.message.from.first_name,
       Puntuació: points,
       Data: new Date().toISOString(),
     })
   }
 })
 
-// Set up webhook handling with Deno.serve
-const handleUpdate = webhookCallback(bot, 'std/http')
+if (dev) {
+  bot.start()
+} else {
+  // Set up webhook handling with Deno.serve
+  const handleUpdate = webhookCallback(bot, 'std/http')
 
-Deno.serve(async (req) => {
-  // Handle Telegram webhook updates
-  //   if (req.url.includes('/bot')) {
-  try {
-    return await handleUpdate(req)
-  } catch (err) {
-    console.error(err)
-    return new Response('Error handling bot update', { status: 500 })
-  }
-  //   }
-
-  //   // Default response for other routes
-  //   return new Response('Bot server running!')
-})
+  Deno.serve(async (req) => {
+    try {
+      return await handleUpdate(req)
+    } catch (err) {
+      console.error(err)
+      return new Response('Error handling bot update', { status: 500 })
+    }
+  })
+}
 
 export function getPoints(message: string) {
   const tries = message.split(' ')[2].split('/')[0]
