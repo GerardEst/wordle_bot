@@ -2,15 +2,13 @@ import 'jsr:@std/dotenv/load'
 
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
 
-const WEBHOOK_URL = 'https://motbot.vercel.app'
-const dev = Deno.env.get('ENV') === 'dev'
+const dev = process.env.ENV === 'dev'
 
 // Airtable
 const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_DB_ID}/Puntuacions`
 
 // Telegram
-const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN'))
-bot.setWebhook(Deno.env.get('WEBHOOK_URL'))
+const bot = new Bot(process.env.TELEGRAM_TOKEN!)
 
 bot.command('punts', async (context) => {
   const records = await getChatPunctuations(context.chat.id, 'all')
@@ -73,7 +71,7 @@ bot.on('message', async (context) => {
   }
 })
 
-bot.start()
+// bot.start()
 
 export function getPoints(message: string) {
   const tries = message.split(' ')[2].split('/')[0]
