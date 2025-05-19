@@ -98,7 +98,7 @@ if (dev) {
   // Set up webhook handling with Deno.serve
   const handleUpdate = webhookCallback(bot, 'std/http')
 
-  Deno.serve({ port: 8000 }, async (req) => {
+  Deno.serve(async (req) => {
     console.log('Received request:', {
       method: req.method,
       url: req.url,
