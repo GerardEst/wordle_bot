@@ -1,15 +1,15 @@
-import 'jsr:@std/dotenv/load'
+//import 'jsr:@std/dotenv/load'
 
 // import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
 // import { Application } from 'https://deno.land/x/oak/mod.ts'
 
-const dev = Deno.env.get('ENV') === 'dev'
+//const dev = Deno.env.get('ENV') === 'dev'
 //const app = new Application()
 
 // Airtable
-const url = `https://api.airtable.com/v0/${Deno.env.get(
-  'AIRTABLE_DB_ID'
-)}/Puntuacions`
+// const url = `https://api.airtable.com/v0/${Deno.env.get(
+//   'AIRTABLE_DB_ID'
+// )}/Puntuacions`
 
 // Telegram
 // const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN'))
