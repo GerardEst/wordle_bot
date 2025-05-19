@@ -2,11 +2,7 @@
 // export const config = { runtime: 'edge' }
 
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
-import { Application } from 'https://deno.land/x/oak/mod.ts'
 
-const app = new Application() // or whatever you're using
-
-// Make sure to specify the framework you use.
 const dev = Deno.env.get('ENV') === 'dev'
 
 // Airtable
@@ -16,12 +12,8 @@ const url = `https://api.airtable.com/v0/${Deno.env.get(
 
 // Telegram
 const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN')!)
-app.use(webhookCallback(bot, 'oak'))
 
-// Deno.serve(async (req) => {
-//   return new Response('Hello, world!')
-// })
-
+// Set up bot commands and handlers
 bot.command('punts', async (context) => {
   const records = await getChatPunctuations(context.chat.id, 'all')
 
@@ -83,7 +75,23 @@ bot.on('message', async (context) => {
   }
 })
 
-// bot.start()
+// Set up webhook handling with Deno.serve
+const handleUpdate = webhookCallback(bot, 'std/http')
+
+Deno.serve(async (req) => {
+  // Handle Telegram webhook updates
+  //   if (req.url.includes('/bot')) {
+  try {
+    return await handleUpdate(req)
+  } catch (err) {
+    console.error(err)
+    return new Response('Error handling bot update', { status: 500 })
+  }
+  //   }
+
+  //   // Default response for other routes
+  //   return new Response('Bot server running!')
+})
 
 export function getPoints(message: string) {
   const tries = message.split(' ')[2].split('/')[0]
