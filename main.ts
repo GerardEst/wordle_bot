@@ -18,13 +18,23 @@ if (dev) {
   bot.api.setWebhook({
     url: 'https://motbot.deno.dev',
   })
-  Deno.serve(async (req) => {
-    if (req.method !== 'POST')
-      return new Response('Method not allowed', { status: 405 })
 
-    const update = await req.json()
-    await bot.handleUpdate(update)
-    return new Response('ok')
+  addEventListener('fetch', async (event) => {
+    try {
+      const update = await event.request.json()
+
+      const ctx = await bot.handleWebhookUpdate(update)
+
+      if (ctx.isMessage) {
+        console.log('Missatge rebut:', ctx.text)
+        await ctx.send('Hola des de webhook!')
+      }
+
+      event.respondWith(new Response('OK'))
+    } catch (err) {
+      console.error('Error processant el webhook:', err)
+      event.respondWith(new Response('Error', { status: 500 }))
+    }
   })
 }
 
