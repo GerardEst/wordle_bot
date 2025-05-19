@@ -15,18 +15,17 @@ const bot = new Telegram({
 if (dev) {
   bot.updates.startPolling()
 } else {
-  bot.updates.startPolling()
-  // bot.api.setWebhook({
-  //   url: 'deno',
-  // })
-  // Deno.serve(async (req) => {
-  //   if (req.method !== 'POST')
-  //     return new Response('Method not allowed', { status: 405 })
+  bot.api.setWebhook({
+    url: 'https://motbot.deno.dev',
+  })
+  Deno.serve(async (req) => {
+    if (req.method !== 'POST')
+      return new Response('Method not allowed', { status: 405 })
 
-  //   const update = await req.json()
-  //   await bot.handleUpdate(update)
-  //   return new Response('ok')
-  // })
+    const update = await req.json()
+    await bot.handleUpdate(update)
+    return new Response('ok')
+  })
 }
 
 bot.updates.on('message', async (context) => {
