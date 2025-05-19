@@ -1,91 +1,43 @@
 import { Bot, Context } from 'https://deno.land/x/grammy/mod.ts'
-import { getChatPunctuations, createRecord } from '../api/db.ts'
+import * as api from '../api/db.ts'
+import { getDaysRemainingInMonth } from './utils.ts'
 
 export function setupActions(bot: Bot) {
-  bot.command('punts', async (context: Context) => {
-    if (!context.chat) return
-
-    const records = await getChatPunctuations(context.chat.id, 'month')
+  bot.command('punts', async (ctx: Context) => {
+    const records = await api.getChatPunctuations(ctx.chat.id, 'month')
 
     if (!records || records.length === 0) {
-      return context.reply('Encara no hi ha puntuacions en aquest xat.')
+      return ctx.reply('Encara no hi ha puntuacions en aquest xat.')
     }
 
-    // Agrupar i sumar punts per usuari
-    const puntuacionsPerUsuari: Record<string, { nom: string; total: number }> =
-      {}
+    const ranking = buildRanking(records)
+    const message = buildClassificationMessage(ranking)
 
-    for (const record of records) {
-      const usuariId = record.fields['ID Usuari']
-      const nomUsuari = record.fields['Nom Usuari']
-      const punts = record.fields['Puntuació']
-
-      if (!puntuacionsPerUsuari[usuariId]) {
-        puntuacionsPerUsuari[usuariId] = {
-          nom: nomUsuari,
-          total: 0,
-        }
-      }
-
-      puntuacionsPerUsuari[usuariId].total += punts
-    }
-
-    // Ordenar de més a menys
-    const rànquing = Object.values(puntuacionsPerUsuari).sort(
-      (a, b) => b.total - a.total
-    )
-
-    // Generar text amb emojis
-    let resposta = '🏆 *Classificació del mes* 🏆\n\n'
-
-    // Calcular els dies que falten per acabar el mes actual
-    const avui = new Date()
-    const ultimDiaMes = new Date(
-      avui.getFullYear(),
-      avui.getMonth() + 1,
-      0
-    ).getDate()
-    const diesRestants = ultimDiaMes - avui.getDate()
-
-    resposta += `Falten *${diesRestants} dies* pel final de la lliga!\n\n`
-    resposta += '```\n'
-    resposta += 'Pos  Nom            Punts\n'
-    resposta += '—————————————————————————\n'
-
-    rànquing.forEach((usuari, index) => {
-      // Determinar posició
-      let posicio = `${index + 1}`.padEnd(4)
-      if (index === 0) posicio = '1 🥇'
-      else if (index === 1) posicio = '2 🥈'
-      else if (index === 2) posicio = '3 🥉'
-      else posicio = `${index + 1}. `
-
-      // Formatar el nom amb padding
-      const nomPadded = `${usuari.nom}`.padEnd(15)
-
-      resposta += `${posicio} ${nomPadded} ${usuari.total}\n`
-    })
-
-    resposta += '```' // End monospace block
-
-    context.reply(resposta, { parse_mode: 'Markdown' })
+    ctx.reply(message, { parse_mode: 'Markdown' })
   })
 
   bot.on('message', async (ctx: Context) => {
-    console.log(ctx)
-    if (!ctx.message || !ctx.message.text) {
-      return
-    }
-
     const isFromElmot = ctx.message.text.includes('#ElMot')
 
     if (isFromElmot) {
       const points = getPoints(ctx.message.text)
 
-      ctx.react(getEmojiReactionFor(points))
+      const isGameToday = await !!api.getChatPunctuationsByUser(
+        ctx.message.chat.id,
+        'day',
+        ctx.message.from.id
+      )
+      if (isGameToday) {
+        ctx.react('🌚')
+      } else {
+        ctx.react(getEmojiReactionFor(points))
+      }
 
-      // Guardar els punts del jugador
-      await createRecord({
+      // We don't save the game if user already have a game today
+      if (isGameToday) return
+
+      // Save player game
+      await api.createRecord({
         'ID Xat': ctx.message.chat.id,
         'ID Usuari': ctx.message.from.id,
         'Nom Usuari': ctx.message.from.first_name,
@@ -99,9 +51,8 @@ export function setupActions(bot: Bot) {
 
 function getPoints(message: string) {
   const tries = message.split(' ')[2].split('/')[0]
-  if (tries === 'X') {
-    return 0
-  }
+
+  if (tries === 'X') return 0
 
   const points = 6 - parseInt(tries)
 
@@ -117,4 +68,60 @@ function getEmojiReactionFor(points: number) {
   if (points === 5) return '🏆'
   if (points === 6) return '🤨'
   return '🤷'
+}
+
+function buildRanking(records: any[]) {
+  const userPoints: Record<string, { name: string; total: number }> = {}
+  // Keep track of dates already processed for each user
+  const processedUserDates: Record<string, Set<string>> = {}
+
+  for (const record of records) {
+    const userId = record.fields['ID Usuari']
+    const userName = record.fields['Nom Usuari']
+    const points = record.fields['Puntuació']
+    const date = record.fields['Data'].split('T')[0]
+
+    // Initialize user entry if it doesn't exist
+    if (!userPoints[userId]) {
+      userPoints[userId] = {
+        name: userName,
+        total: 0,
+      }
+      processedUserDates[userId] = new Set()
+    }
+
+    // Only count this record if we haven't seen this date for this user yet
+    if (!processedUserDates[userId].has(date)) {
+      userPoints[userId].total += points
+      processedUserDates[userId].add(date)
+    }
+  }
+
+  // Sort points descending
+  const ranking = Object.values(userPoints).sort((a, b) => b.total - a.total)
+
+  return ranking
+}
+
+function buildClassificationMessage(ranking: any[]) {
+  let answer = '🏆 *Classificació del mes* 🏆\n\n'
+  answer += `Falten *${getDaysRemainingInMonth()} dies* pel final de la lliga!\n\n`
+  answer += '```\n'
+  answer += 'Pos  Nom            Punts\n'
+  answer += '—————————————————————————\n'
+
+  ranking.forEach((user, index) => {
+    let rank = `${index + 1}`.padEnd(4)
+    if (index === 0) rank = '1 🥇'
+    else if (index === 1) rank = '2 🥈'
+    else if (index === 2) rank = '3 🥉'
+    else rank = `${index + 1}  `
+    const namePadded = `${user.name}`.padEnd(15)
+
+    answer += `${rank} ${namePadded} ${user.total}\n`
+  })
+
+  answer += '```' // End monospace block
+
+  return answer
 }

@@ -8,7 +8,29 @@ export async function getChatPunctuations(
 ) {
   const params = new URLSearchParams({
     filterByFormula: buildFormula(chatId, period),
-    view: 'Llista',
+    view: Deno.env.get('AIRTABLE_VIEW'),
+  })
+
+  const res = await fetch(`${airtableUrl}?${params.toString()}`, {
+    headers: {
+      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  const data = await res.json()
+
+  return data.records
+}
+
+export async function getChatPunctuationsByUser(
+  chatId: number,
+  period: 'all' | 'week' | 'month' | 'day',
+  userId: number
+) {
+  const params = new URLSearchParams({
+    filterByFormula: buildFormula(chatId, period, userId),
+    view: Deno.env.get('AIRTABLE_VIEW'),
   })
 
   const res = await fetch(`${airtableUrl}?${params.toString()}`, {
@@ -47,17 +69,30 @@ export async function createRecord(fields: Record<string, any>) {
 
 function buildFormula(
   chatId: number,
-  period: 'all' | 'week' | 'month' | 'day'
+  period: 'all' | 'week' | 'month' | 'day',
+  userId: number | null
 ) {
-  let formula = `{ID Xat} = ${chatId}`
+  // Start with conditions array
+  const conditions = [`{ID Xat} = ${chatId}`]
 
-  if (period === 'day') {
-    formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'day'))`
-  } else if (period === 'week') {
-    formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'week'))`
-  } else if (period === 'month') {
-    formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'month'))`
+  // Add user ID condition if provided
+  if (userId) {
+    conditions.push(`{ID Usuari} = ${userId}`)
   }
 
-  return formula
+  // Add date condition based on period
+  if (period === 'day') {
+    conditions.push('IS_SAME({Data}, TODAY(), "day")')
+  } else if (period === 'week') {
+    conditions.push('IS_SAME({Data}, TODAY(), "week")')
+  } else if (period === 'month') {
+    conditions.push('IS_SAME({Data}, TODAY(), "month")')
+  }
+
+  // Join all conditions with AND
+  if (conditions.length === 1) {
+    return conditions[0]
+  } else {
+    return `AND(${conditions.join(', ')})`
+  }
 }
