@@ -1,10 +1,10 @@
 import 'jsr:@std/dotenv/load'
 
-import { Bot } from 'https://deno.land/x/grammy/mod.ts'
-import { Application } from 'https://deno.land/x/oak/mod.ts'
+import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
+//import { Application } from 'https://deno.land/x/oak/mod.ts'
 
 const dev = Deno.env.get('ENV') === 'dev'
-const app = new Application()
+//const app = new Application()
 
 // Airtable
 const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_DB_ID}/Puntuacions`
