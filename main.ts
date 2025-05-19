@@ -92,74 +92,74 @@ export default (req: Request) => {
 
 //bot.start()
 
-export function getPoints(message: string) {
-  const tries = message.split(' ')[2].split('/')[0]
-  if (tries === 'X') {
-    return 0
-  }
+// export function getPoints(message: string) {
+//   const tries = message.split(' ')[2].split('/')[0]
+//   if (tries === 'X') {
+//     return 0
+//   }
 
-  const points = 6 - parseInt(tries)
+//   const points = 6 - parseInt(tries)
 
-  return points + 1
-}
+//   return points + 1
+// }
 
-function buildFormula(chatId: number, period: 'all' | 'week' | 'day') {
-  let formula = `{ID Xat} = ${chatId}`
+// function buildFormula(chatId: number, period: 'all' | 'week' | 'day') {
+//   let formula = `{ID Xat} = ${chatId}`
 
-  if (period === 'day') {
-    formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'day'))`
-  } else if (period === 'week') {
-    formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'week'))`
-  }
+//   if (period === 'day') {
+//     formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'day'))`
+//   } else if (period === 'week') {
+//     formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'week'))`
+//   }
 
-  return formula
-}
+//   return formula
+// }
 
-async function getChatPunctuations(
-  chatId: number,
-  period: 'all' | 'week' | 'day'
-) {
-  const params = new URLSearchParams({
-    filterByFormula: buildFormula(chatId, period),
-    view: 'Llista',
-  })
+// async function getChatPunctuations(
+//   chatId: number,
+//   period: 'all' | 'week' | 'day'
+// ) {
+//   const params = new URLSearchParams({
+//     filterByFormula: buildFormula(chatId, period),
+//     view: 'Llista',
+//   })
 
-  console.log(params.toString())
+//   console.log(params.toString())
 
-  const res = await fetch(`${url}?${params.toString()}`, {
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-  })
+//   const res = await fetch(`${url}?${params.toString()}`, {
+//     headers: {
+//       Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
+//       'Content-Type': 'application/json',
+//     },
+//   })
 
-  const data = await res.json()
+//   const data = await res.json()
 
-  console.log(data)
+//   console.log(data)
 
-  return data.records
-}
+//   return data.records
+// }
 
-async function createRecord(fields: Record<string, any>) {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      records: [
-        {
-          fields,
-        },
-      ],
-    }),
-  })
+// async function createRecord(fields: Record<string, any>) {
+//   const res = await fetch(url, {
+//     method: 'POST',
+//     headers: {
+//       Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       records: [
+//         {
+//           fields,
+//         },
+//       ],
+//     }),
+//   })
 
-  if (!res.ok) {
-    console.error('Error creant el registre:', await res.text())
-    return
-  }
+//   if (!res.ok) {
+//     console.error('Error creant el registre:', await res.text())
+//     return
+//   }
 
-  const data = await res.json()
-}
+//   const data = await res.json()
+// }
