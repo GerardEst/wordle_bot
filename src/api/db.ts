@@ -4,29 +4,8 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
 
 export async function getChatPunctuations(
   chatId: number,
-  period: 'all' | 'week' | 'month' | 'day'
-) {
-  const params = new URLSearchParams({
-    filterByFormula: buildFormula(chatId, period),
-    view: Deno.env.get('AIRTABLE_VIEW'),
-  })
-
-  const res = await fetch(`${airtableUrl}?${params.toString()}`, {
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-  })
-
-  const data = await res.json()
-
-  return data.records
-}
-
-export async function getChatPunctuationsByUser(
-  chatId: number,
   period: 'all' | 'week' | 'month' | 'day',
-  userId: number
+  userId: number | null = null
 ) {
   const params = new URLSearchParams({
     filterByFormula: buildFormula(chatId, period, userId),
@@ -65,6 +44,21 @@ export async function createRecord(fields: Record<string, any>) {
     console.error('Error creant el registre:', await res.text())
     return
   }
+}
+
+export async function getChats() {
+  const res = await fetch(airtableUrl, {
+    headers: {
+      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  const data = await res.json()
+
+  return [
+    ...new Set(data.records.map((record: any) => record.fields['ID Xat'])),
+  ]
 }
 
 function buildFormula(

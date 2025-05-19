@@ -22,7 +22,7 @@ export function setupActions(bot: Bot) {
     if (isFromElmot) {
       const points = getPoints(ctx.message.text)
 
-      const isGameToday = await !!api.getChatPunctuationsByUser(
+      const isGameToday = await !!api.getChatPunctuations(
         ctx.message.chat.id,
         'day',
         ctx.message.from.id

@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --watch --env --allow-env --allow-read --allow-net --allow-import main.ts",
+    "dev": "deno run --watch --env --allow-env --allow-read --allow-net --allow-import --unstable-cron main.ts",
     "set-webhook": "deno run --env --allow-net --allow-env --allow-read manage-webhook/setup-webhook.ts",
     "check-webhook": "deno run --env --allow-net --allow-env --allow-read manage-webhook/check-webhook.ts"
   },
