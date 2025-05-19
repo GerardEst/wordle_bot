@@ -12,7 +12,6 @@ const url = `https://api.airtable.com/v0/${Deno.env.get(
 )}/Puntuacions`
 
 // Telegram
-const WEBHOOK_URL = 'https://motbot.deno.dev'
 const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN'))
 app.use(webhookCallback(bot, 'oak'))
 
@@ -125,7 +124,7 @@ async function getChatPunctuations(
 
   const res = await fetch(`${url}?${params.toString()}`, {
     headers: {
-      Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
       'Content-Type': 'application/json',
     },
   })
@@ -141,7 +140,7 @@ async function createRecord(fields: Record<string, any>) {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
