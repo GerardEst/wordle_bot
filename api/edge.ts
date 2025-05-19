@@ -1,4 +1,5 @@
 // import 'jsr:@std/dotenv/load'
+export const config = { runtime: 'edge' }
 
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
 
