@@ -19,22 +19,10 @@ if (dev) {
     url: 'https://motbot.deno.dev',
   })
 
-  addEventListener('fetch', async (event) => {
-    try {
-      const update = await event.request.json()
+  const webhookHandler = bot.updates.getWebhookMiddleware()
 
-      const ctx = await bot.handleWebhookUpdate(update)
-
-      if (ctx.isMessage) {
-        console.log('Missatge rebut:', ctx.text)
-        await ctx.send('Hola des de webhook!')
-      }
-
-      event.respondWith(new Response('OK'))
-    } catch (err) {
-      console.error('Error processant el webhook:', err)
-      event.respondWith(new Response('Error', { status: 500 }))
-    }
+  Deno.serve(async (req) => {
+    return webhookHandler(req)
   })
 }
 
