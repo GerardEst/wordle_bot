@@ -15,15 +15,16 @@ const bot = new Telegram({
 if (dev) {
   bot.updates.startPolling()
 } else {
-  bot.api.setWebhook({
-    url: 'https://motbot.deno.dev',
-  })
+  bot.updates.startPolling()
+  // bot.api.setWebhook({
+  //   url: 'https://motbot.deno.dev',
+  // })
 
-  const webhookHandler = bot.updates.getWebhookMiddleware()
+  // const webhookHandler = bot.updates.getWebhookMiddleware()
 
-  Deno.serve(async (req) => {
-    return webhookHandler(req)
-  })
+  // Deno.serve(async (req) => {
+  //   return webhookHandler(req)
+  // })
 }
 
 bot.updates.on('message', async (context) => {
