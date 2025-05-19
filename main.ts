@@ -12,7 +12,7 @@ const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_DB_ID}/Puntuacio
 // Telegram
 const WEBHOOK_URL = 'https://motbot.deno.dev'
 const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN'))
-app.use(webhookCallback(bot, 'oak'))
+//app.use(webhookCallback(bot, 'oak'))
 
 // Deno.serve(async (req) => {
 //   // Grammy gestiona la resposta internament
