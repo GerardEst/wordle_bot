@@ -1,6 +1,8 @@
-import 'jsr:@std/dotenv/load'
-
-import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
+import {
+  Bot,
+  webhookCallback,
+  Context,
+} from 'https://deno.land/x/grammy/mod.ts'
 
 const dev = Deno.env.get('ENV') === 'dev'
 
@@ -13,7 +15,11 @@ const url = `https://api.airtable.com/v0/${Deno.env.get(
 const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN')!)
 
 // Set up bot commands and handlers
-bot.command('punts', async (context) => {
+bot.command('punts', async (context: Context) => {
+  if (!context.chat) {
+    return
+  }
+
   const records = await getChatPunctuations(context.chat.id, 'all')
 
   if (!records || records.length === 0) {
@@ -57,8 +63,12 @@ bot.command('punts', async (context) => {
   context.reply(resposta)
 })
 
-bot.on('message', async (context) => {
+bot.on('message', async (context: Context) => {
   console.log(context)
+  if (!context.message || !context.message.text) {
+    return
+  }
+
   const isFromElmot = context.message.text.includes('#ElMot')
 
   if (isFromElmot) {
@@ -81,11 +91,11 @@ addEventListener('unhandledrejection', (event) => {
 })
 
 // Add logging to bot events
-bot.on('message', (ctx) => {
+bot.on('message', (ctx: Context) => {
   console.log('Bot received message:', ctx.message)
 })
 
-bot.errorHandler = (err) => {
+bot.errorHandler = (err: Error) => {
   console.error('Bot error:', err)
   return true // Return true to prevent the error from being propagated
 }
@@ -94,7 +104,10 @@ if (dev) {
   console.log('Starting bot in development mode (polling)')
   bot.start()
 } else {
-  bot.api.setWebhook(Deno.env.get('DOMAIN'))
+  const domain = Deno.env.get('DOMAIN')
+  if (!domain) throw new Error('DOMAIN is not set')
+
+  bot.api.setWebhook(domain)
   console.log('Starting bot in production mode (webhook)')
   // Set up webhook handling with Deno.serve
   const handleUpdate = webhookCallback(bot, 'std/http')
@@ -229,5 +242,5 @@ async function createRecord(fields: Record<string, any>) {
     return
   }
 
-  const data = await res.json()
+  // const data = await res.json()
 }
