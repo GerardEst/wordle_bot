@@ -1,85 +1,75 @@
 import 'jsr:@std/dotenv/load'
 
-import { Telegram } from 'npm:puregram'
+import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
+import { Application } from 'https://deno.land/x/oak/mod.ts'
 
 const dev = Deno.env.get('ENV') === 'dev'
+const app = new Application()
 
 // Airtable
 const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_DB_ID}/Puntuacions`
 
 // Telegram
-const bot = new Telegram({
-  token: Deno.env.get('TELEGRAM_TOKEN'),
+const WEBHOOK_URL = 'https://motbot.deno.dev'
+const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN'))
+app.use(webhookCallback(bot, 'oak'))
+
+// Deno.serve(async (req) => {
+//   // Grammy gestiona la resposta internament
+//   try {
+//     return await bot.handleUpdate(req)
+//   } catch (err) {
+//     console.error('Error al processar update:', err)
+//     return new Response('Error', { status: 500 })
+//   }
+// })
+
+bot.command('punts', async (context) => {
+  const records = await getChatPunctuations(context.chat.id, 'all')
+
+  if (!records || records.length === 0) {
+    return context.reply('Encara no hi ha puntuacions en aquest xat.')
+  }
+
+  // Agrupar i sumar punts per usuari
+  const puntuacionsPerUsuari: Record<string, { nom: string; total: number }> =
+    {}
+
+  for (const record of records) {
+    const usuariId = record.fields['ID Usuari']
+    const nomUsuari = record.fields['Nom Usuari']
+    const punts = record.fields['Puntuació']
+
+    if (!puntuacionsPerUsuari[usuariId]) {
+      puntuacionsPerUsuari[usuariId] = {
+        nom: nomUsuari,
+        total: 0,
+      }
+    }
+
+    puntuacionsPerUsuari[usuariId].total += punts
+  }
+
+  // Ordenar de més a menys
+  const rànquing = Object.values(puntuacionsPerUsuari).sort(
+    (a, b) => b.total - a.total
+  )
+
+  // Generar text amb emojis
+  const medalles = ['🥇', '🥈', '🥉']
+  const resposta = rànquing
+    .map((u, i) => {
+      const posició = i + 1
+      const prefix = medalles[i] || `${posició}.`
+      return `${prefix} ${u.nom} - ${u.total} punts`
+    })
+    .join('\n')
+
+  context.reply(resposta)
 })
 
-if (dev) {
-  bot.updates.startPolling()
-} else {
-  bot.updates.startPolling()
-  // bot.api.setWebhook({
-  //   url: 'https://motbot.deno.dev',
-  // })
-
-  // const webhookHandler = bot.updates.getWebhookMiddleware()
-
-  // Deno.serve(async (req) => {
-  //   return webhookHandler(req)
-  // })
-}
-
-bot.updates.on('message', async (context) => {
+bot.on('message', async (context) => {
   const isFromElmot = context.text.includes('#ElMot')
-  const isBotRequest = context.text[0] === '/'
-
-  if (isBotRequest) {
-    if (context.text === '/punts') {
-      // TODO - Treure això d'aquí i personalitzar-ho una mica
-
-      const records = await getChatPunctuations(context.chat.id, 'all')
-
-      if (!records || records.length === 0) {
-        return context.send('Encara no hi ha puntuacions en aquest xat.')
-      }
-
-      // Agrupar i sumar punts per usuari
-      const puntuacionsPerUsuari: Record<
-        string,
-        { nom: string; total: number }
-      > = {}
-
-      for (const record of records) {
-        const usuariId = record.fields['ID Usuari']
-        const nomUsuari = record.fields['Nom Usuari']
-        const punts = record.fields['Puntuació']
-
-        if (!puntuacionsPerUsuari[usuariId]) {
-          puntuacionsPerUsuari[usuariId] = {
-            nom: nomUsuari,
-            total: 0,
-          }
-        }
-
-        puntuacionsPerUsuari[usuariId].total += punts
-      }
-
-      // Ordenar de més a menys
-      const rànquing = Object.values(puntuacionsPerUsuari).sort(
-        (a, b) => b.total - a.total
-      )
-
-      // Generar text amb emojis
-      const medalles = ['🥇', '🥈', '🥉']
-      const resposta = rànquing
-        .map((u, i) => {
-          const posició = i + 1
-          const prefix = medalles[i] || `${posició}.`
-          return `${prefix} ${u.nom} - ${u.total} punts`
-        })
-        .join('\n')
-
-      context.send(resposta)
-    }
-  }
 
   if (isFromElmot) {
     const points = getPoints(context.text)
@@ -94,6 +84,8 @@ bot.updates.on('message', async (context) => {
     })
   }
 })
+
+//bot.start()
 
 export function getPoints(message: string) {
   const tries = message.split(' ')[2].split('/')[0]

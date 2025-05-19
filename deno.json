@@ -1,10 +1,9 @@
 {
   "tasks": {
-    "dev": "deno run --watch --env-file=.env --allow-env --allow-read --allow-net main.ts"
+    "dev": "deno run --watch --env-file=.env --allow-env --allow-read --allow-net --allow-import main.ts"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
-    "airtable": "npm:airtable@^0.12.2",
-    "puregram": "npm:puregram@^2.26.8"
+    "airtable": "npm:airtable@^0.12.2"
   }
 }
