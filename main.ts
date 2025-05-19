@@ -82,6 +82,7 @@ if (dev) {
   const handleUpdate = webhookCallback(bot, 'std/http')
 
   Deno.serve(async (req) => {
+    console.log(req)
     try {
       console.log('try to handle update')
       // Check if the request is a valid webhook update from Telegram
