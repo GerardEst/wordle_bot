@@ -1,4 +1,4 @@
-import 'jsr:@std/dotenv/load'
+// import 'jsr:@std/dotenv/load'
 
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
 
