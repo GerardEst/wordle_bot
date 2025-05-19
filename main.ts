@@ -18,9 +18,9 @@ const url = `https://api.airtable.com/v0/${Deno.env.get(
 const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN')!)
 app.use(webhookCallback(bot, 'oak'))
 
-Deno.serve(async (req) => {
-  return new Response('Hello, world!')
-})
+// Deno.serve(async (req) => {
+//   return new Response('Hello, world!')
+// })
 
 bot.command('punts', async (context) => {
   const records = await getChatPunctuations(context.chat.id, 'all')
