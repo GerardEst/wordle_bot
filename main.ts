@@ -83,6 +83,7 @@ if (dev) {
 
   Deno.serve(async (req) => {
     try {
+      console.log('try to handle update')
       // Check if the request is a valid webhook update from Telegram
       const contentType = req.headers.get('content-type') || ''
       if (contentType.includes('application/json')) {
