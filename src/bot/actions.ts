@@ -3,11 +3,9 @@ import { getChatPunctuations, createRecord } from '../api/db.ts'
 
 export function setupActions(bot: Bot) {
   bot.command('punts', async (context: Context) => {
-    if (!context.chat) {
-      return
-    }
+    if (!context.chat) return
 
-    const records = await getChatPunctuations(context.chat.id, 'all')
+    const records = await getChatPunctuations(context.chat.id, 'month')
 
     if (!records || records.length === 0) {
       return context.reply('Encara no hi ha puntuacions en aquest xat.')
@@ -38,16 +36,39 @@ export function setupActions(bot: Bot) {
     )
 
     // Generar text amb emojis
-    const medalles = ['🥇', '🥈', '🥉']
-    const resposta = rànquing
-      .map((u, i) => {
-        const posició = i + 1
-        const prefix = medalles[i] || `${posició}.`
-        return `${prefix} ${u.nom} - ${u.total} punts`
-      })
-      .join('\n')
+    let resposta = '🏆 *Classificació del mes* 🏆\n\n'
 
-    context.reply(resposta)
+    // Calcular els dies que falten per acabar el mes actual
+    const avui = new Date()
+    const ultimDiaMes = new Date(
+      avui.getFullYear(),
+      avui.getMonth() + 1,
+      0
+    ).getDate()
+    const diesRestants = ultimDiaMes - avui.getDate()
+
+    resposta += `Falten *${diesRestants} dies* pel final de la lliga!\n\n`
+    resposta += '```\n'
+    resposta += 'Pos  Nom            Punts\n'
+    resposta += '—————————————————————————\n'
+
+    rànquing.forEach((usuari, index) => {
+      // Determinar posició
+      let posicio = `${index + 1}`.padEnd(4)
+      if (index === 0) posicio = '1 🥇'
+      else if (index === 1) posicio = '2 🥈'
+      else if (index === 2) posicio = '3 🥉'
+      else posicio = `${index + 1}. `
+
+      // Formatar el nom amb padding
+      const nomPadded = `${usuari.nom}`.padEnd(15)
+
+      resposta += `${posicio} ${nomPadded} ${usuari.total}\n`
+    })
+
+    resposta += '```' // End monospace block
+
+    context.reply(resposta, { parse_mode: 'Markdown' })
   })
 
   bot.on('message', async (context: Context) => {
@@ -67,6 +88,7 @@ export function setupActions(bot: Bot) {
         'ID Usuari': context.message.from.id,
         'Nom Usuari': context.message.from.first_name,
         Puntuació: points,
+        Joc: 'elmot',
         Data: new Date().toISOString(),
       })
     }

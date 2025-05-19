@@ -4,7 +4,7 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
 
 export async function getChatPunctuations(
   chatId: number,
-  period: 'all' | 'week' | 'day'
+  period: 'all' | 'week' | 'month' | 'day'
 ) {
   const params = new URLSearchParams({
     filterByFormula: buildFormula(chatId, period),
@@ -45,13 +45,18 @@ export async function createRecord(fields: Record<string, any>) {
   }
 }
 
-function buildFormula(chatId: number, period: 'all' | 'week' | 'day') {
+function buildFormula(
+  chatId: number,
+  period: 'all' | 'week' | 'month' | 'day'
+) {
   let formula = `{ID Xat} = ${chatId}`
 
   if (period === 'day') {
     formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'day'))`
   } else if (period === 'week') {
     formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'week'))`
+  } else if (period === 'month') {
+    formula = `AND({ID Xat} = ${chatId}, IS_SAME({Data}, TODAY(), 'month'))`
   }
 
   return formula
