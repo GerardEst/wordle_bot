@@ -1,5 +1,9 @@
 //import 'jsr:@std/dotenv/load'
 
+export default (req: Request) => {
+  return new Response('Hello from Deno Deploy!')
+}
+
 // import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
 // import { Application } from 'https://deno.land/x/oak/mod.ts'
 
