@@ -2,7 +2,11 @@
 // export const config = { runtime: 'edge' }
 
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
+import { Application } from 'https://deno.land/x/oak/mod.ts'
 
+const app = new Application() // or whatever you're using
+
+// Make sure to specify the framework you use.
 const dev = Deno.env.get('ENV') === 'dev'
 
 // Airtable
@@ -12,6 +16,7 @@ const url = `https://api.airtable.com/v0/${Deno.env.get(
 
 // Telegram
 const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN')!)
+app.use(webhookCallback(bot, 'oak'))
 
 Deno.serve(async (req) => {
   return new Response('Hello, world!')
