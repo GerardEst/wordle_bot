@@ -83,10 +83,33 @@ if (dev) {
 
   Deno.serve(async (req) => {
     try {
-      return await handleUpdate(req)
+      // Check if the request is a valid webhook update from Telegram
+      const contentType = req.headers.get('content-type') || ''
+      if (contentType.includes('application/json')) {
+        // Clone the request before trying to read the body
+        const clonedReq = req.clone()
+
+        try {
+          // Try to parse body as JSON to validate it's a proper update
+          const body = await clonedReq.json()
+          if (
+            body &&
+            (body.update_id !== undefined || body.message !== undefined)
+          ) {
+            return await handleUpdate(req)
+          }
+        } catch (jsonError) {
+          console.error('Invalid JSON in request:', jsonError)
+          return new Response('Invalid JSON', { status: 400 })
+        }
+      }
+
+      // If we reach here, it's not a valid Telegram update
+      // Return a simple response for health checks or invalid requests
+      return new Response('Bot server running!', { status: 200 })
     } catch (err) {
-      console.error(err)
-      return new Response('Error handling bot update', { status: 500 })
+      console.error('Error handling request:', err)
+      return new Response('Error handling request', { status: 500 })
     }
   })
 }
