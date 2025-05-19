@@ -94,6 +94,7 @@ if (dev) {
   console.log('Starting bot in development mode (polling)')
   bot.start()
 } else {
+  bot.api.setWebhook(Deno.env.get('DOMAIN'))
   console.log('Starting bot in production mode (webhook)')
   // Set up webhook handling with Deno.serve
   const handleUpdate = webhookCallback(bot, 'std/http')
