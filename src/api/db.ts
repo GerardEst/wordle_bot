@@ -6,10 +6,10 @@ export async function getChatPunctuations(
   chatId: number,
   period: 'all' | 'week' | 'month' | 'day',
   userId: number | null = null
-) {
+): Promise<any[]> {
   const params = new URLSearchParams({
     filterByFormula: buildFormula(chatId, period, userId),
-    view: Deno.env.get('AIRTABLE_VIEW'),
+    view: Deno.env.get('AIRTABLE_VIEW')!,
   })
 
   const res = await fetch(`${airtableUrl}?${params.toString()}`, {

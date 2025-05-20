@@ -4,6 +4,8 @@ import { getDaysRemainingInMonth } from './utils.ts'
 
 export function setupActions(bot: Bot) {
   bot.command('punts', async (ctx: Context) => {
+    if (!ctx.chat) return
+
     const records = await api.getChatPunctuations(ctx.chat.id, 'month')
 
     if (!records || records.length === 0) {
@@ -17,16 +19,20 @@ export function setupActions(bot: Bot) {
   })
 
   bot.on('message', async (ctx: Context) => {
+    if (!ctx.message || !ctx.message.text) return
+
     const isFromElmot = ctx.message.text.includes('#ElMot')
 
     if (isFromElmot) {
       const points = getPoints(ctx.message.text)
 
-      const isGameToday = await !!api.getChatPunctuations(
+      const userTodayGames = await api.getChatPunctuations(
         ctx.message.chat.id,
         'day',
         ctx.message.from.id
       )
+      const isGameToday = userTodayGames.length > 0
+
       if (isGameToday) {
         ctx.react('🌚')
       } else {
