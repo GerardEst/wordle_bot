@@ -18,7 +18,7 @@ export function buildRankingMessageFrom(records: any[]): FormattedMessage {
   }
 
   const ranking = getCleanedRanking(records)
-  let answer = `*${LEAGUE_NAMES[getCurrentMonth()]}*\n\n`
+  let answer = `*${LEAGUE_NAMES[getCurrentMonth()]}*\n`
   answer += '🏆 *Classificació actual* 🏆\n\n'
   answer += `Falten *${getDaysRemainingInMonth()} dies* pel final de la lliga!\n\n`
   answer += '```\n'
@@ -78,7 +78,7 @@ export function buildFinalResultsMessage(results: any[]): FormattedMessage {
   )
 
   // Create podium visualization
-  let podiumText = `<b>🏆 Final de ${
+  let podiumText = `<b>🏆 Final de la ${
     LEAGUE_NAMES[getCurrentMonth()]
   }! 🏆</b>\n\n`
 
