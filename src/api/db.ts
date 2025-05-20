@@ -2,11 +2,32 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
 )}/Puntuacions`
 
+// DB interfaces
+export interface AirtableRecord<T> {
+  id: string
+  fields: T
+  createdTime: string
+}
+
+export interface AirtableResponse<T> {
+  records: AirtableRecord<T>[]
+  offset?: string
+}
+
+export interface PuntuacioFields {
+  'ID Xat': number
+  'ID Usuari': number
+  'Nom Usuari': string
+  Puntuació: number
+  Joc: string
+  Data: string
+}
+
 export async function getChatPunctuations(
   chatId: number,
   period: 'all' | 'week' | 'month' | 'day',
   userId: number | null = null
-): Promise<any[]> {
+): Promise<AirtableRecord<PuntuacioFields>[]> {
   const params = new URLSearchParams({
     filterByFormula: buildFormula(chatId, period, userId),
     view: Deno.env.get('AIRTABLE_VIEW')!,
@@ -19,12 +40,12 @@ export async function getChatPunctuations(
     },
   })
 
-  const data = await res.json()
+  const data = (await res.json()) as AirtableResponse<PuntuacioFields>
 
   return data.records
 }
 
-export async function createRecord(fields: Record<string, any>) {
+export async function createRecord(fields: Partial<PuntuacioFields>) {
   const res = await fetch(airtableUrl, {
     method: 'POST',
     headers: {
@@ -46,7 +67,7 @@ export async function createRecord(fields: Record<string, any>) {
   }
 }
 
-export async function getChats() {
+export async function getChats(): Promise<number[]> {
   const res = await fetch(airtableUrl, {
     headers: {
       Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
@@ -54,11 +75,9 @@ export async function getChats() {
     },
   })
 
-  const data = await res.json()
+  const data = (await res.json()) as AirtableResponse<PuntuacioFields>
 
-  return [
-    ...new Set(data.records.map((record: any) => record.fields['ID Xat'])),
-  ]
+  return [...new Set(data.records.map((record) => record.fields['ID Xat']))]
 }
 
 function buildFormula(
