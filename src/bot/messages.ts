@@ -1,4 +1,5 @@
 import { getDaysRemainingInMonth, getCurrentMonth } from './utils.ts'
+import { LEAGUE_NAMES } from '../conf.ts'
 
 // Define an interface for formatted messages
 interface FormattedMessage {
@@ -17,7 +18,8 @@ export function buildRankingMessageFrom(records: any[]): FormattedMessage {
   }
 
   const ranking = getCleanedRanking(records)
-  let answer = '🏆 *Classificació actual* 🏆\n\n'
+  let answer = `*${LEAGUE_NAMES[getCurrentMonth()]}*\n\n`
+  answer += '🏆 *Classificació actual* 🏆\n\n'
   answer += `Falten *${getDaysRemainingInMonth()} dies* pel final de la lliga!\n\n`
   answer += '```\n'
   answer += 'Pos  Nom            Punts\n'
@@ -62,7 +64,9 @@ export function buildPunctuationTableMessage(): FormattedMessage {
 
 export function buildFinalAdviseMessage(): FormattedMessage {
   return {
-    text: `🐣 *Anunci important*\n\nAvui a les 22:00 acaba la *Lliga de ${getCurrentMonth()}*\nEnvieu els vostres resultats d'avui _abans d'aquesta hora_!`,
+    text: `🐣 *Anunci important*\n\nAvui a les 22:00 acaba la *${
+      LEAGUE_NAMES[getCurrentMonth()]
+    }*\nEnvieu els vostres resultats d'avui _abans d'aquesta hora_!`,
     parse_mode: 'Markdown',
   }
 }
@@ -74,7 +78,9 @@ export function buildFinalResultsMessage(results: any[]): FormattedMessage {
   )
 
   // Create podium visualization
-  let podiumText = `<b>🏆 FINAL DE LA LLIGA DE ${getCurrentMonth()}! 🏆</b>\n\n`
+  let podiumText = `<b>🏆 Final de ${
+    LEAGUE_NAMES[getCurrentMonth()]
+  }! 🏆</b>\n\n`
 
   // Add podium emojis for top 3
   if (sortedResults.length > 0) {

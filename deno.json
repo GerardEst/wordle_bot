@@ -3,7 +3,7 @@
     "dev": "deno run --watch --env --allow-env --allow-read --allow-net --allow-import --unstable-cron main.ts",
     "set-webhook": "deno run --env --allow-net --allow-env --allow-read manage-webhook/setup-webhook.ts",
     "check-webhook": "deno run --env --allow-net --allow-env --allow-read manage-webhook/check-webhook.ts",
-    "dev:send-ranking": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-ranking",
+    "dev:send-classificacio": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-classificacio",
     "dev:send-puntatge": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-puntatge",
     "dev:send-final-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-advise",
     "dev:send-final-results": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-results"

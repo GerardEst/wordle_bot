@@ -10,9 +10,9 @@ export function getDaysRemainingInMonth() {
   return diesRestants
 }
 
-export function getCurrentMonth() {
+export function getCurrentMonth(): number {
   const now = new Date()
-  return now.toLocaleString('default', { month: 'long' })
+  return now.getMonth() + 1
 }
 
 export function getPoints(message: string) {
