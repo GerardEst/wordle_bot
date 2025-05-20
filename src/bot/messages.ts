@@ -1,5 +1,5 @@
 import { getDaysRemainingInMonth, getCurrentMonth } from './utils.ts'
-import { LEAGUE_NAMES } from '../conf.ts'
+import { LEAGUE_NAMES, LEAGUE_EMOJI } from '../conf.ts'
 
 // Define an interface for formatted messages
 interface FormattedMessage {
@@ -18,9 +18,9 @@ export function buildRankingMessageFrom(records: any[]): FormattedMessage {
   }
 
   const ranking = getCleanedRanking(records)
-  let answer = `*${LEAGUE_NAMES[getCurrentMonth()]}*\n`
-  answer += '🏆 *Classificació actual* 🏆\n\n'
-  answer += `Falten *${getDaysRemainingInMonth()} dies* pel final de la lliga!\n\n`
+  let answer = `${LEAGUE_EMOJI[getCurrentMonth()]} *${
+    LEAGUE_NAMES[getCurrentMonth()]
+  }* - Classificació actual \n\n`
   answer += '```\n'
   answer += 'Pos  Nom            Punts\n'
   answer += '—————————————————————————\n'
@@ -37,6 +37,7 @@ export function buildRankingMessageFrom(records: any[]): FormattedMessage {
   })
 
   answer += '```' // End monospace block
+  answer += `\nFalten *${getDaysRemainingInMonth()} dies* pel final de la lliga!\n\n`
 
   return {
     text: answer,
