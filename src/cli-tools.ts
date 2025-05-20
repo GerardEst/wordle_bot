@@ -1,4 +1,5 @@
 import * as api from './api/db.ts'
+import { sendCharactersActions } from './cronjobs/cronjobs.ts'
 import { startUp } from './bot/startup.ts'
 import {
   buildFinalAdviseMessage,
@@ -79,6 +80,12 @@ if (import.meta.main) {
     }
 
     await sendFinalResults()
+  }
+
+  if (command === 'send-characters-actions') {
+    console.log(`Sending characters actions to everyone`)
+
+    await sendCharactersActions(bot, parseInt(DEV_CHAT_ID))
   }
 
   bot.stop()

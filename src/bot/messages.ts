@@ -140,3 +140,15 @@ export function getCleanedRanking(records: any[]) {
 
   return ranking
 }
+
+export function buildCharactersActionsMessage(
+  name: string,
+  points: number
+): FormattedMessage {
+  return {
+    text: `*${name}* acaba de jugar i ha aconseguit *${points} punt${
+      points === 1 ? '' : 's'
+    }*.`,
+    parse_mode: 'Markdown',
+  }
+}

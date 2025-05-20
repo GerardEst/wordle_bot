@@ -27,3 +27,21 @@ export const LEAGUE_EMOJI: Record<number, string> = {
   11: '🪰',
   12: '🐫🐫🐫',
 }
+
+export const CHARACTERS = [
+  {
+    id: 1,
+    name: 'Jacint Verdaguer',
+    hability: 8,
+  },
+  {
+    id: 2,
+    name: 'Josep Lopez',
+    hability: 6,
+  },
+  {
+    id: 3,
+    name: 'Rovelló',
+    hability: 2,
+  },
+]

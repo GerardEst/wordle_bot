@@ -2,6 +2,8 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
 )}/Puntuacions`
 
+import { Character } from './characters.ts'
+
 // DB interfaces
 export interface AirtableRecord<T> {
   id: string
@@ -21,6 +23,11 @@ export interface PuntuacioFields {
   Puntuació: number
   Joc: string
   Data: string
+}
+
+export interface User {
+  id: number
+  name: string
 }
 
 export async function getChatPunctuations(
@@ -45,7 +52,20 @@ export async function getChatPunctuations(
   return data.records
 }
 
-export async function createRecord(fields: Partial<PuntuacioFields>) {
+export async function createRecord(
+  chatId: number,
+  character: Character | User,
+  points: number
+) {
+  const fields = {
+    'ID Xat': chatId,
+    'ID Usuari': character.id,
+    'Nom Usuari': character.name,
+    Puntuació: points,
+    Joc: 'elmot',
+    Data: new Date().toISOString(),
+  }
+
   const res = await fetch(airtableUrl, {
     method: 'POST',
     headers: {
