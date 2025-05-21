@@ -1,10 +1,12 @@
 import { Bot, Context, Keyboard } from 'https://deno.land/x/grammy/mod.ts'
 import * as api from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
+import * as awardsApi from '../api/awards.ts'
 import { Character } from '../interfaces.ts'
 import {
   buildRankingMessageFrom,
   buildPunctuationTableMessage,
+  buildAwardsMessage,
 } from './messages.ts'
 import { getPoints } from './utils.ts'
 import { CHARACTERS, EMOJI_REACTIONS } from '../conf.ts'
@@ -41,6 +43,24 @@ export function setupCommands(bot: Bot) {
     ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
   })
 
+  bot.command('premis', async (ctx: Context) => {
+    if (!ctx.chat) return
+
+    const keyboard = new Keyboard()
+    keyboard.text('Tots els premis')
+    keyboard.row()
+    // const USERS = await api.getChatUsers(ctx.chat.id)
+    // for (const user of USERS) {
+    //   keyboard.text(user.name)
+    //   keyboard.row()
+    // }
+    keyboard.text('🔙 Tancar opcions')
+    keyboard.resized()
+    keyboard.oneTime()
+
+    ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
+  })
+
   bot.on('message', async (ctx: Context) => {
     if (!ctx.message || !ctx.message.text) return
 
@@ -54,7 +74,15 @@ export function setupCommands(bot: Bot) {
       ctx.reply(`${characterName} s'ha afegit a la partida!`, {
         reply_markup: { remove_keyboard: true },
       })
-    } else if (ctx.message.text.includes('Tancar opcions')) {
+    } else if (ctx.message.text === 'Tots els premis') {
+      const awards = await awardsApi.getAwardsOf(ctx.message.chat.id)
+      const message = buildAwardsMessage(awards)
+
+      ctx.reply(message.text, {
+        parse_mode: message.parse_mode,
+        reply_markup: { remove_keyboard: true },
+      })
+    } else if (ctx.message.text === '🔙 Tancar opcions') {
       await ctx.reply('Opcions tancades', {
         reply_markup: { remove_keyboard: true },
       })

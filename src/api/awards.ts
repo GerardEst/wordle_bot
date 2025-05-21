@@ -1,17 +1,28 @@
 const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
 )}/${Deno.env.get('TABLE_AWARDS_CHATS')}`
+import { AWARDS } from '../conf.ts'
+
+export interface Award {
+  id: number
+  userId: number
+  userName: string
+  chatId: number
+  name: string
+  emoji: string
+  date: string
+}
 
 export async function getAwardsOf(
   chatId: number,
   userId?: number
-): Promise<AirtableRecord<PuntuacioFields>[]> {
+): Promise<Award[]> {
   const params = new URLSearchParams({
-    filterByFormula: `{ID Xat} = ${chatId}`,
+    filterByFormula: userId
+      ? `{ID Xat} = ${chatId} AND {ID Usuari} = ${userId}`
+      : `{ID Xat} = ${chatId}`,
     view: Deno.env.get('TABLE_AWARDS_CHATS')!,
   })
-
-  console.log(params, params.toString())
 
   const res = await fetch(`${airtableUrl}?${params.toString()}`, {
     headers: {
@@ -22,12 +33,25 @@ export async function getAwardsOf(
 
   const data = (await res.json()) as AirtableResponse<PuntuacioFields>
 
-  return data.records
+  return data.records.map((record) => {
+    const award = AWARDS.find((award) => award.id === record.fields['ID Premi'])
+
+    return {
+      id: award.id,
+      chatId: record.fields['ID Xat'],
+      userId: record.fields['ID Usuari'],
+      userName: record.fields['Nom Usuari'],
+      name: award.name,
+      emoji: award.emoji,
+      date: record.fields['Data'],
+    }
+  })
 }
 
 export async function giveAwardTo(
   chatId: number,
   userId: number,
+  userName: string,
   awardId: number
 ) {
   const res = await fetch(airtableUrl, {
@@ -42,6 +66,7 @@ export async function giveAwardTo(
           fields: {
             'ID Xat': chatId,
             'ID Usuari': userId,
+            'Nom Usuari': userName,
             'ID Premi': awardId,
           },
         },

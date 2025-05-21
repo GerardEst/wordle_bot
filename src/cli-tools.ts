@@ -7,6 +7,7 @@ import {
   buildFinalResultsMessage,
   buildPunctuationTableMessage,
   buildRankingMessageFrom,
+  buildAwardsMessage,
 } from './bot/messages.ts'
 
 const DEV_CHAT_ID = Deno.env.get('DEV_CHAT_ID')!
@@ -98,8 +99,27 @@ if (import.meta.main) {
     await awardsApi.giveAwardTo(
       parseInt(DEV_CHAT_ID),
       parseInt(DEV_USER_ID),
+      'Dev User',
       parseInt(args[1])
     )
+  }
+
+  if (command === 'check-group-awards') {
+    console.log(`Checking group awards for dev chat: ${DEV_CHAT_ID}`)
+
+    const sendAwards = async () => {
+      const awards = await awardsApi.getAwardsOf(parseInt(DEV_CHAT_ID))
+
+      console.log(awards)
+
+      const message = buildAwardsMessage(awards)
+
+      await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
+        parse_mode: message.parse_mode,
+      })
+    }
+
+    await sendAwards()
   }
 
   bot.stop()

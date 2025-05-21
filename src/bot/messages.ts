@@ -1,5 +1,6 @@
 import { getDaysRemainingInMonth, getCurrentMonth } from './utils.ts'
 import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS } from '../conf.ts'
+import { Award } from '../api/awards.ts'
 
 // Define an interface for formatted messages
 interface FormattedMessage {
@@ -104,6 +105,23 @@ export function buildFinalResultsMessage(results: any[]): FormattedMessage {
 
   return {
     text: podiumText,
+    parse_mode: 'HTML',
+  }
+}
+
+export function buildAwardsMessage(awards: Award[]): FormattedMessage {
+  const awardsByUser = awards.reduce((acc, award) => {
+    if (!acc[award.userName]) {
+      acc[award.userName] = []
+    }
+    acc[award.userName].push(award.name)
+    return acc
+  }, {})
+
+  return {
+    text: Object.entries(awardsByUser)
+      .map(([userName, awards]) => `${userName}: ${awards.join(', ')}`)
+      .join('\n'),
     parse_mode: 'HTML',
   }
 }
