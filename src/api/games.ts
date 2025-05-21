@@ -49,7 +49,21 @@ export async function getChatPunctuations(
 
   const data = (await res.json()) as AirtableResponse<PuntuacioFields>
 
-  return data.records
+  // Sort results by score (descending)
+  const sortedResults = [...data.records].sort(
+    (a, b) => b.fields['Puntuació'] - a.fields['Puntuació']
+  )
+
+  return sortedResults
+}
+
+export async function getChatRanking(
+  chatId: number,
+  period: 'all' | 'week' | 'month' | 'day',
+  userId: number | null = null
+) {
+  const records = await getChatPunctuations(chatId, period, userId)
+  return getCleanedRanking(records)
 }
 
 export async function createRecord(
@@ -137,4 +151,41 @@ function buildFormula(
   } else {
     return `AND(${conditions.join(', ')})`
   }
+}
+
+function getCleanedRanking(records: any[]) {
+  const userPoints: Record<
+    string,
+    { id: number; name: string; total: number }
+  > = {}
+  // Keep track of dates already processed for each user
+  const processedUserDates: Record<string, Set<string>> = {}
+
+  for (const record of records) {
+    const userId = record.fields['ID Usuari']
+    const userName = record.fields['Nom Usuari']
+    const points = record.fields['Puntuació']
+    const date = record.fields['Data'].split('T')[0]
+
+    // Initialize user entry if it doesn't exist
+    if (!userPoints[userId]) {
+      userPoints[userId] = {
+        id: userId,
+        name: userName,
+        total: 0,
+      }
+      processedUserDates[userId] = new Set()
+    }
+
+    // Only count this record if we haven't seen this date for this user yet
+    if (!processedUserDates[userId].has(date)) {
+      userPoints[userId].total += points
+      processedUserDates[userId].add(date)
+    }
+  }
+
+  // Sort points descending
+  const ranking = Object.values(userPoints).sort((a, b) => b.total - a.total)
+
+  return ranking
 }

@@ -2,11 +2,13 @@ import * as api from '../api/games.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import {
   buildFinalAdviseMessage,
-  buildFinalResultsMessage,
   buildCharactersActionsMessage,
+  buildNewAwardsMessage,
 } from '../bot/messages.ts'
 import { getChatCharacters } from '../api/characters.ts'
-import { getPointsForHability } from '../bot/utils.ts'
+import { getPointsForHability, getCurrentMonth } from '../bot/utils.ts'
+import { giveAwardTo } from '../api/awards.ts'
+
 export function setupCronjobs(bot: Bot) {
   Deno.cron(
     'Send league ending advise message at 10 of every end of month',
@@ -23,20 +25,14 @@ export function setupCronjobs(bot: Bot) {
     }
   )
 
-  Deno.cron(
-    'Send classification results message at 22 of every end of month',
-    '0 22 28-31 * *',
-    () => {
-      const now = new Date()
-      const isLastDay =
-        now.getDate() ===
-        new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
+  Deno.cron('End league at 22 of every end of month', '0 22 28-31 * *', () => {
+    const now = new Date()
+    const isLastDay =
+      now.getDate() ===
+      new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
 
-      if (isLastDay) {
-        sendResultsToChats(bot)
-      }
-    }
-  )
+    if (isLastDay) handleEndOfMonth(bot)
+  })
 
   Deno.cron('Send characters actions at 12 of every day', '0 12 * * *', () => {
     sendCharactersActions(bot)
@@ -54,16 +50,37 @@ async function sendEndAdviseToChats(bot: Bot) {
   }
 }
 
-async function sendResultsToChats(bot: Bot) {
-  const chats = await api.getChats()
+export async function handleEndOfMonth(bot: Bot, chatId?: number) {
+  const chats = chatId ? [chatId] : await api.getChats()
 
   for (const chat of chats) {
-    const results = await api.getChatPunctuations(chat, 'month')
-    const message = buildFinalResultsMessage(results)
-    await bot.api.sendMessage(chat, message.text, {
-      parse_mode: message.parse_mode,
-    })
+    const results = await api.getChatRanking(chat, 'month')
+    await saveAwardsToDb(chat, results)
+    await sendResultsToChats(bot, chat, results)
   }
+}
+
+async function saveAwardsToDb(chat: number, results: any[]) {
+  for (let i = 1; i <= 3; i++) {
+    await giveAwardTo(
+      chat,
+      results[i].id,
+      results[i].name,
+      parseInt(`${getCurrentMonth()}${i}`)
+    )
+  }
+}
+
+async function sendResultsToChats(bot: Bot, chat: number, results: any[]) {
+  const message = buildNewAwardsMessage(results)
+
+  await bot.api.sendMessage(chat, message.text, {
+    parse_mode: message.parse_mode,
+  })
+
+  await bot.api.sendMessage(chat, message.text, {
+    parse_mode: message.parse_mode,
+  })
 }
 
 export async function sendCharactersActions(bot: Bot, chatId?: number) {

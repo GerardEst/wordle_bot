@@ -2,7 +2,6 @@ import { Bot, Context, Keyboard } from 'https://deno.land/x/grammy/mod.ts'
 import * as api from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
 import * as awardsApi from '../api/awards.ts'
-import { Character } from '../interfaces.ts'
 import {
   buildRankingMessageFrom,
   buildPunctuationTableMessage,
@@ -15,7 +14,7 @@ export function setupCommands(bot: Bot) {
   bot.command('classificacio', async (ctx: Context) => {
     if (!ctx.chat) return
 
-    const records = await api.getChatPunctuations(ctx.chat.id, 'month')
+    const records = await api.getChatRanking(ctx.chat.id, 'month')
     const message = buildRankingMessageFrom(records)
 
     ctx.reply(message.text, { parse_mode: message.parse_mode })

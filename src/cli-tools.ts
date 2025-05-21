@@ -1,10 +1,10 @@
 import * as api from './api/games.ts'
 import * as awardsApi from './api/awards.ts'
-import { sendCharactersActions } from './cronjobs/cronjobs.ts'
+import { sendCharactersActions, handleEndOfMonth } from './cronjobs/cronjobs.ts'
 import { startUp } from './bot/startup.ts'
 import {
   buildFinalAdviseMessage,
-  buildFinalResultsMessage,
+  buildNewAwardsMessage,
   buildPunctuationTableMessage,
   buildRankingMessageFrom,
   buildAwardsMessage,
@@ -23,10 +23,7 @@ if (import.meta.main) {
     console.log(`Sending ranking to dev chat: ${DEV_CHAT_ID}`)
 
     const sendRanking = async () => {
-      const records = await api.getChatPunctuations(
-        parseInt(DEV_CHAT_ID),
-        'month'
-      )
+      const records = await api.getChatRanking(parseInt(DEV_CHAT_ID), 'month')
 
       const message = buildRankingMessageFrom(records)
 
@@ -75,7 +72,7 @@ if (import.meta.main) {
         'month'
       )
 
-      const message = buildFinalResultsMessage(results)
+      const message = buildNewAwardsMessage(results)
 
       await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
         parse_mode: message.parse_mode,
@@ -110,8 +107,6 @@ if (import.meta.main) {
     const sendAwards = async () => {
       const awards = await awardsApi.getAwardsOf(parseInt(DEV_CHAT_ID))
 
-      console.log(awards)
-
       const message = buildAwardsMessage(awards)
 
       await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
@@ -120,6 +115,16 @@ if (import.meta.main) {
     }
 
     await sendAwards()
+  }
+
+  if (command === 'simulate-end-of-month') {
+    console.log(`Simulating end of month for dev chat: ${DEV_CHAT_ID}`)
+
+    const simulateEndOfMonth = async () => {
+      await handleEndOfMonth(bot, parseInt(DEV_CHAT_ID))
+    }
+
+    await simulateEndOfMonth()
   }
 
   bot.stop()

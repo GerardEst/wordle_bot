@@ -56,37 +56,38 @@ export const CHARACTERS = [
   },
 ]
 
+// ID is the month and the position
 export const AWARDS = [
   // Lliga del Raig
   {
-    id: 1,
+    id: 51,
     name: "Zeus d'or",
     emoji: '⚡🧔🏼',
   },
   {
-    id: 2,
+    id: 52,
     name: 'Tro de plata',
     emoji: '⚡⛈️',
   },
   {
-    id: 3,
+    id: 53,
     name: 'Patac de bronze',
     emoji: '⚡☂️',
   },
   // Lliga del meló
   {
-    id: 4,
+    id: 61,
     name: "Meló d'or amb pernil",
     emoji: '🍈🍗',
   },
   {
-    id: 5,
-    name: 'Melons de plata',
-    emoji: '🍈🍈',
+    id: 62,
+    name: 'Llavor de plata',
+    emoji: '🍈🌱',
   },
   {
-    id: 6,
-    name: 'Llavor de bronze',
-    emoji: '🍈🌱',
+    id: 63,
+    name: 'Coco de bronze',
+    emoji: '🥥',
   },
 ]

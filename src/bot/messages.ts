@@ -1,5 +1,5 @@
 import { getDaysRemainingInMonth, getCurrentMonth } from './utils.ts'
-import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS } from '../conf.ts'
+import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS, AWARDS } from '../conf.ts'
 import { Award } from '../api/awards.ts'
 
 // Define an interface for formatted messages
@@ -9,8 +9,6 @@ interface FormattedMessage {
 }
 
 export function buildRankingMessageFrom(records: any[]): FormattedMessage {
-  console.log('records', records)
-
   if (!records || records.length === 0) {
     return {
       text: 'Encara no hi ha puntuacions en aquest xat',
@@ -18,7 +16,6 @@ export function buildRankingMessageFrom(records: any[]): FormattedMessage {
     }
   }
 
-  const ranking = getCleanedRanking(records)
   let answer = `${LEAGUE_EMOJI[getCurrentMonth()]} *${
     LEAGUE_NAMES[getCurrentMonth()]
   }* - Classificació actual \n\n`
@@ -26,7 +23,7 @@ export function buildRankingMessageFrom(records: any[]): FormattedMessage {
   answer += 'Pos  Nom            Punts\n'
   answer += '—————————————————————————\n'
 
-  ranking.forEach((user, index) => {
+  records.forEach((user, index) => {
     let rank = `${index + 1}`.padEnd(4)
     if (index === 0) rank = '1 🥇'
     else if (index === 1) rank = '2 🥈'
@@ -73,90 +70,64 @@ export function buildFinalAdviseMessage(): FormattedMessage {
   }
 }
 
-export function buildFinalResultsMessage(results: any[]): FormattedMessage {
-  // Sort results by score (descending)
-  const sortedResults = [...results].sort(
-    (a, b) => b.fields['Puntuació'] - a.fields['Puntuació']
-  )
-
-  // Create podium visualization
-  let podiumText = `<b>🏆 Final de la ${
-    LEAGUE_NAMES[getCurrentMonth()]
-  }! 🏆</b>\n\n`
-
-  // Add podium emojis for top 3
-  if (sortedResults.length > 0) {
-    podiumText += `🥇 <b>${
-      sortedResults[0]?.fields['Nom Usuari'] || '?'
-    }</b>: ${sortedResults[0]?.fields['Puntuació'] || 0} punts\n`
-  }
-
-  if (sortedResults.length > 1) {
-    podiumText += `🥈 <b>${
-      sortedResults[1]?.fields['Nom Usuari'] || '?'
-    }</b>: ${sortedResults[1]?.fields['Puntuació'] || 0} punts\n`
-  }
-
-  if (sortedResults.length > 2) {
-    podiumText += `🥉 <b>${
-      sortedResults[2]?.fields['Nom Usuari'] || '?'
-    }</b>: ${sortedResults[2]?.fields['Puntuació'] || 0} punts\n`
-  }
-
-  return {
-    text: podiumText,
-    parse_mode: 'HTML',
-  }
-}
-
 export function buildAwardsMessage(awards: Award[]): FormattedMessage {
-  const awardsByUser = awards.reduce((acc, award) => {
-    if (!acc[award.userName]) {
-      acc[award.userName] = []
+  const awardsByUser: Record<string, Award[]> = {}
+
+  for (const award of awards) {
+    if (!awardsByUser[award.userName]) {
+      awardsByUser[award.userName] = []
     }
-    acc[award.userName].push(award.name)
-    return acc
-  }, {})
+    awardsByUser[award.userName].push(award)
+  }
+
+  let message =
+    "_Exposició amb tots els premis que han guanyat els membres d'aquest xat_\n"
+
+  const userEntries = Object.entries(awardsByUser)
+
+  userEntries.forEach((entry) => {
+    const [userName, userAwards] = entry
+
+    message += `\n*${userName}*\n`
+    message += '╔─────────────────────╗\n'
+
+    userAwards.forEach((award, awardIndex) => {
+      const isLastAward = awardIndex === userAwards.length - 1
+      message += `░  ${award.emoji} ${award.name} \n`
+
+      if (isLastAward) {
+        message += '╚─────────────────────╝\n'
+      } else {
+        message += '╠─────────────────────╣\n'
+      }
+    })
+  })
 
   return {
-    text: Object.entries(awardsByUser)
-      .map(([userName, awards]) => `${userName}: ${awards.join(', ')}`)
-      .join('\n'),
-    parse_mode: 'HTML',
+    text: message,
+    parse_mode: 'Markdown',
   }
 }
 
-export function getCleanedRanking(records: any[]) {
-  const userPoints: Record<string, { name: string; total: number }> = {}
-  // Keep track of dates already processed for each user
-  const processedUserDates: Record<string, Set<string>> = {}
-
-  for (const record of records) {
-    const userId = record.fields['ID Usuari']
-    const userName = record.fields['Nom Usuari']
-    const points = record.fields['Puntuació']
-    const date = record.fields['Data'].split('T')[0]
-
-    // Initialize user entry if it doesn't exist
-    if (!userPoints[userId]) {
-      userPoints[userId] = {
-        name: userName,
-        total: 0,
-      }
-      processedUserDates[userId] = new Set()
-    }
-
-    // Only count this record if we haven't seen this date for this user yet
-    if (!processedUserDates[userId].has(date)) {
-      userPoints[userId].total += points
-      processedUserDates[userId].add(date)
-    }
+export function buildNewAwardsMessage(results: any[]): FormattedMessage {
+  let message = `*${LEAGUE_EMOJI[getCurrentMonth()]} Final de la ${
+    LEAGUE_NAMES[getCurrentMonth()]
+  } ${LEAGUE_EMOJI[getCurrentMonth()]}*\n\n`
+  for (let i = 0; i < 3; i++) {
+    const award = AWARDS.find(
+      (award) => award.id === parseInt(`${getCurrentMonth()}${i + 1}`)
+    )
+    message += `*${results[i].name}*, amb *${results[i].total} punts*, rep el trofeu *${award?.name} ${award?.emoji}*\n\n`
   }
+  message += `\nEnhorabona a tots! 🥳 I recordeu que demà comença la *${
+    LEAGUE_NAMES[getCurrentMonth() + 1]
+  }*!`
+  message += `\n\n_Podeu veure els premis enviant /premis_`
 
-  // Sort points descending
-  const ranking = Object.values(userPoints).sort((a, b) => b.total - a.total)
-
-  return ranking
+  return {
+    text: message,
+    parse_mode: 'Markdown',
+  }
 }
 
 export function buildCharactersActionsMessage(
