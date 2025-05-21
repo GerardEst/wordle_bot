@@ -71,6 +71,13 @@ export function buildFinalAdviseMessage(): FormattedMessage {
 }
 
 export function buildAwardsMessage(awards: Award[]): FormattedMessage {
+  if (!awards || awards.length === 0) {
+    return {
+      text: "_Vitrina virtual amb tots els premis que han guanyat els membres d'aquest xat_\n\nNingú ha guanyat cap trofeu encara",
+      parse_mode: 'Markdown',
+    }
+  }
+
   const awardsByUser: Record<string, Award[]> = {}
 
   for (const award of awards) {
@@ -81,7 +88,7 @@ export function buildAwardsMessage(awards: Award[]): FormattedMessage {
   }
 
   let message =
-    "_Exposició amb tots els premis que han guanyat els membres d'aquest xat_\n"
+    "_Vitrina virtual amb tots els premis que han guanyat els membres d'aquest xat_\n"
 
   const userEntries = Object.entries(awardsByUser)
 
@@ -102,6 +109,29 @@ export function buildAwardsMessage(awards: Award[]): FormattedMessage {
       }
     })
   })
+
+  return {
+    text: message,
+    parse_mode: 'Markdown',
+  }
+}
+
+export function buildCurrentAwardsMessage(): FormattedMessage {
+  const getAwardByPosition = (position: number) =>
+    AWARDS.find(
+      (award) => award.id === parseInt(`${getCurrentMonth()}${position}`)
+    )
+
+  let message = `_Premis en joc a la ${LEAGUE_NAMES[getCurrentMonth()]}_\n\n`
+  message += `1r premi:*${getAwardByPosition(1)?.emoji} ${
+    getAwardByPosition(1)?.name
+  } *\n\n`
+  message += `2n premi:*${getAwardByPosition(2)?.emoji} ${
+    getAwardByPosition(2)?.name
+  } *\n\n`
+  message += `3r premi:*${getAwardByPosition(3)?.emoji} ${
+    getAwardByPosition(3)?.name
+  } *\n\n`
 
   return {
     text: message,

@@ -10,7 +10,8 @@
     "dev:send-characters-actions": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions",
     "dev:give-award": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts give-award",
     "dev:check-group-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts check-group-awards",
-    "dev:simulate-end-of-month": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts simulate-end-of-month"
+    "dev:simulate-end-of-month": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts simulate-end-of-month",
+    "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",

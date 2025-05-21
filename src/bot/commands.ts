@@ -6,6 +6,7 @@ import {
   buildRankingMessageFrom,
   buildPunctuationTableMessage,
   buildAwardsMessage,
+  buildCurrentAwardsMessage,
 } from './messages.ts'
 import { getPoints } from './utils.ts'
 import { CHARACTERS, EMOJI_REACTIONS } from '../conf.ts'
@@ -46,13 +47,10 @@ export function setupCommands(bot: Bot) {
     if (!ctx.chat) return
 
     const keyboard = new Keyboard()
-    keyboard.text('Tots els premis')
+    keyboard.text('Vitrina virtual')
     keyboard.row()
-    // const USERS = await api.getChatUsers(ctx.chat.id)
-    // for (const user of USERS) {
-    //   keyboard.text(user.name)
-    //   keyboard.row()
-    // }
+    keyboard.text('Trofeus en joc')
+    keyboard.row()
     keyboard.text('🔙 Tancar opcions')
     keyboard.resized()
     keyboard.oneTime()
@@ -73,9 +71,16 @@ export function setupCommands(bot: Bot) {
       ctx.reply(`${characterName} s'ha afegit a la partida!`, {
         reply_markup: { remove_keyboard: true },
       })
-    } else if (ctx.message.text === 'Tots els premis') {
+    } else if (ctx.message.text === 'Vitrina virtual') {
       const awards = await awardsApi.getAwardsOf(ctx.message.chat.id)
       const message = buildAwardsMessage(awards)
+
+      ctx.reply(message.text, {
+        parse_mode: message.parse_mode,
+        reply_markup: { remove_keyboard: true },
+      })
+    } else if (ctx.message.text === 'Trofeus en joc') {
+      const message = buildCurrentAwardsMessage()
 
       ctx.reply(message.text, {
         parse_mode: message.parse_mode,

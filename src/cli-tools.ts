@@ -8,6 +8,7 @@ import {
   buildPunctuationTableMessage,
   buildRankingMessageFrom,
   buildAwardsMessage,
+  buildCurrentAwardsMessage,
 } from './bot/messages.ts'
 
 const DEV_CHAT_ID = Deno.env.get('DEV_CHAT_ID')!
@@ -125,6 +126,19 @@ if (import.meta.main) {
     }
 
     await simulateEndOfMonth()
+  }
+
+  if (command === 'send-current-awards') {
+    console.log(`Sending current awards to dev chat: ${DEV_CHAT_ID}`)
+
+    const sendCurrentAwards = async () => {
+      const message = buildCurrentAwardsMessage()
+      await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
+        parse_mode: message.parse_mode,
+      })
+    }
+
+    await sendCurrentAwards()
   }
 
   bot.stop()
