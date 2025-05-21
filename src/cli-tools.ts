@@ -1,4 +1,5 @@
 import * as api from './api/games.ts'
+import * as awardsApi from './api/awards.ts'
 import { sendCharactersActions } from './cronjobs/cronjobs.ts'
 import { startUp } from './bot/startup.ts'
 import {
@@ -9,6 +10,7 @@ import {
 } from './bot/messages.ts'
 
 const DEV_CHAT_ID = Deno.env.get('DEV_CHAT_ID')!
+const DEV_USER_ID = Deno.env.get('DEV_USER_ID')!
 
 // CLI for sending specific messages to dev chat
 if (import.meta.main) {
@@ -83,9 +85,21 @@ if (import.meta.main) {
   }
 
   if (command === 'send-characters-actions') {
-    console.log(`Sending characters actions to everyone`)
+    console.log(`Sending characters actions to dev chat: ${DEV_CHAT_ID}`)
 
     await sendCharactersActions(bot, parseInt(DEV_CHAT_ID))
+  }
+
+  if (command === 'give-award') {
+    console.log(
+      `Giving award ${args[1]} to user ${DEV_USER_ID} in dev chat: ${DEV_CHAT_ID}`
+    )
+
+    await awardsApi.giveAwardTo(
+      parseInt(DEV_CHAT_ID),
+      parseInt(DEV_USER_ID),
+      parseInt(args[1])
+    )
   }
 
   bot.stop()
