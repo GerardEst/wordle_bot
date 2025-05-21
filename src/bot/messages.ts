@@ -8,7 +8,15 @@ interface FormattedMessage {
   parse_mode: 'HTML' | 'Markdown' | 'MarkdownV2'
 }
 
-export function buildRankingMessageFrom(records: any[]): FormattedMessage {
+interface Puntuacio {
+  id: number
+  name: string
+  total: number
+}
+
+export function buildRankingMessageFrom(
+  records: Puntuacio[]
+): FormattedMessage {
   if (!records || records.length === 0) {
     return {
       text: 'Encara no hi ha puntuacions en aquest xat',

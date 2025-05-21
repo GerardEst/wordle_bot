@@ -43,7 +43,7 @@ export function setupCommands(bot: Bot) {
     ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
   })
 
-  bot.command('premis', async (ctx: Context) => {
+  bot.command('premis', (ctx: Context) => {
     if (!ctx.chat) return
 
     const keyboard = new Keyboard()

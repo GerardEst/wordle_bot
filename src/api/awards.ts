@@ -3,6 +3,16 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
 )}/${Deno.env.get('TABLE_AWARDS_CHATS')}`
 import { AWARDS } from '../conf.ts'
 
+export interface AirtableAward {
+  fields: {
+    'ID Premi': number
+    'ID Xat': number
+    'ID Usuari': number
+    'Nom Usuari': string
+    Data: string
+  }
+}
+
 export interface Award {
   id: number
   userId: number
@@ -31,10 +41,15 @@ export async function getAwardsOf(
     },
   })
 
-  const data = (await res.json()) as AirtableResponse<PuntuacioFields>
+  const data = await res.json()
 
-  return data.records.map((record) => {
+  return data.records.map((record: AirtableAward) => {
     const award = AWARDS.find((award) => award.id === record.fields['ID Premi'])
+
+    if (!award) {
+      console.error('Award not found', record.fields['ID Premi'])
+      return null
+    }
 
     return {
       id: award.id,

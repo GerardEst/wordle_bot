@@ -153,7 +153,7 @@ function buildFormula(
   }
 }
 
-function getCleanedRanking(records: any[]) {
+function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {
   const userPoints: Record<
     string,
     { id: number; name: string; total: number }

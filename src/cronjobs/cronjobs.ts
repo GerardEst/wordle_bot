@@ -7,7 +7,7 @@ import {
 } from '../bot/messages.ts'
 import { getChatCharacters } from '../api/characters.ts'
 import { getPointsForHability, getCurrentMonth } from '../bot/utils.ts'
-import { giveAwardTo } from '../api/awards.ts'
+import { Award, giveAwardTo } from '../api/awards.ts'
 
 export function setupCronjobs(bot: Bot) {
   Deno.cron(
@@ -71,7 +71,7 @@ async function saveAwardsToDb(chat: number, results: any[]) {
   }
 }
 
-async function sendResultsToChats(bot: Bot, chat: number, results: any[]) {
+async function sendResultsToChats(bot: Bot, chat: number, results: any) {
   const message = buildNewAwardsMessage(results)
 
   await bot.api.sendMessage(chat, message.text, {
