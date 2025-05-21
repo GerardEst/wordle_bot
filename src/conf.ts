@@ -28,6 +28,16 @@ export const LEAGUE_EMOJI: Record<number, string> = {
   12: '🐫🐫🐫',
 }
 
+export const EMOJI_REACTIONS = {
+  0: '🤡',
+  1: '😭',
+  2: '😐',
+  3: '😎',
+  4: '🤯',
+  5: '🏆',
+  6: '🤨',
+}
+
 export const CHARACTERS = [
   {
     id: 1,
@@ -43,5 +53,40 @@ export const CHARACTERS = [
     id: 3,
     name: 'Rovelló',
     hability: 2,
+  },
+]
+
+export const AWARDS = [
+  // Lliga del Raig
+  {
+    id: 1,
+    name: "Zeus d'or",
+    emoji: '⚡🧔🏼',
+  },
+  {
+    id: 2,
+    name: 'Tro de plata',
+    emoji: '⚡⛈️',
+  },
+  {
+    id: 3,
+    name: 'Patac de bronze',
+    emoji: '⚡☂️',
+  },
+  // Lliga del meló
+  {
+    id: 4,
+    name: "Meló d'or amb pernil",
+    emoji: '🍈🍗',
+  },
+  {
+    id: 5,
+    name: 'Melons de plata',
+    emoji: '🍈🍈',
+  },
+  {
+    id: 6,
+    name: 'Llavor de bronze',
+    emoji: '🍈🌱',
   },
 ]

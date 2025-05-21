@@ -1,5 +1,5 @@
 import { getDaysRemainingInMonth, getCurrentMonth } from './utils.ts'
-import { LEAGUE_NAMES, LEAGUE_EMOJI } from '../conf.ts'
+import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS } from '../conf.ts'
 
 // Define an interface for formatted messages
 interface FormattedMessage {
@@ -47,13 +47,13 @@ export function buildRankingMessageFrom(records: any[]): FormattedMessage {
 
 export function buildPunctuationTableMessage(): FormattedMessage {
   let message = '*🧮 Taula de puntuacions i reaccions*\n\n'
-  message += '1/6 - *6 punts* - 🏆\n'
-  message += '2/6 - *5 punts* - 🤯\n'
-  message += '3/6 - *4 punts* - 😎\n'
-  message += '4/6 - *3 punts* - 😐\n'
-  message += '5/6 - *2 punts* - 😭\n'
-  message += '6/6 - *1 punt* -- 🤡\n'
-  message += 'X/6 - *0 punts* - 🤷\n'
+  message += `1/6 - *6 punts* - ${EMOJI_REACTIONS[6]}\n`
+  message += `2/6 - *5 punts* - ${EMOJI_REACTIONS[5]}\n`
+  message += `3/6 - *4 punts* - ${EMOJI_REACTIONS[4]}\n`
+  message += `4/6 - *3 punts* - ${EMOJI_REACTIONS[3]}\n`
+  message += `5/6 - *2 punts* - ${EMOJI_REACTIONS[2]}\n`
+  message += `6/6 - *1 punt* - ${EMOJI_REACTIONS[1]}\n`
+  message += `X/6 - *0 punts* - ${EMOJI_REACTIONS[0]}\n`
   message += '\n'
   message += `S'otorgaran els punts al enviar els resultats al xat, i es reaccionarà al comentari amb l'emoji corresponent`
 

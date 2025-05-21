@@ -7,7 +7,7 @@
     "dev:send-puntatge": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-puntatge",
     "dev:send-final-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-advise",
     "dev:send-final-results": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-results",
-    "dev:danger:send-characters-actions": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions"
+    "dev:send-characters-actions": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",

@@ -1,4 +1,4 @@
-import * as api from './api/db.ts'
+import * as api from './api/games.ts'
 import { sendCharactersActions } from './cronjobs/cronjobs.ts'
 import { startUp } from './bot/startup.ts'
 import {

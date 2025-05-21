@@ -1,4 +1,4 @@
-import * as api from '../api/db.ts'
+import * as api from '../api/games.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import {
   buildFinalAdviseMessage,

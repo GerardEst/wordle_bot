@@ -1,8 +1,8 @@
 const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
-)}/Puntuacions`
+)}/${Deno.env.get('TABLE_GAMES')}`
 
-import { Character } from './characters.ts'
+import { Character } from '../interfaces.ts'
 
 // DB interfaces
 export interface AirtableRecord<T> {
@@ -37,7 +37,7 @@ export async function getChatPunctuations(
 ): Promise<AirtableRecord<PuntuacioFields>[]> {
   const params = new URLSearchParams({
     filterByFormula: buildFormula(chatId, period, userId),
-    view: Deno.env.get('AIRTABLE_VIEW')!,
+    view: Deno.env.get('TABLE_GAMES')!,
   })
 
   const res = await fetch(`${airtableUrl}?${params.toString()}`, {
@@ -105,6 +105,15 @@ function buildFormula(
   period: 'all' | 'week' | 'month' | 'day',
   userId: number | null
 ) {
+  // TODO - Solucionar problemes de timezone que fan que fins les 2 (a l'estiu) no
+  // retorni els records correctes i per tant no es pugui jugar fins passades les 2
+  // perquè detecti bé si ja ha jugat o no
+  /** Tant deno (cronjobs) com airtable fan servir internament UTC. Nosé si potser seria més
+   * facil passar jo a guardar els events en UTC. Però igualment no em serviria de res ara mateix que
+   * lo que he fet a les 6 de la tarda estigui fet a les 4 o a les 8, igualment el dia actual mel pilla com
+   * a 20 encara...
+   */
+
   // Start with conditions array
   const conditions = [`{ID Xat} = ${chatId}`]
 

@@ -1,15 +1,8 @@
 const airtableChatCharactersUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
-)}/personatges_xats`
+)}/${Deno.env.get('TABLE_CHARS_CHATS')}`
 
 import { CHARACTERS } from '../conf.ts'
-
-// TODO - No m'agrada aquesta interface aquí
-export interface Character {
-  id: number
-  name: string
-  hability: number
-}
 
 export async function addCharacterToChat(
   chatId: number,
@@ -55,7 +48,7 @@ export async function addCharacterToChat(
 export async function getChatCharacters(chatId: number) {
   const params = new URLSearchParams({
     filterByFormula: `{ID Xat} = ${chatId}`,
-    view: Deno.env.get('AIRTABLE_CHARS_CHATS')!,
+    view: Deno.env.get('TABLE_CHARS_CHATS')!,
   })
 
   const res = await fetch(`${airtableChatCharactersUrl}?${params.toString()}`, {

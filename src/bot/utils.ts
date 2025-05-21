@@ -50,15 +50,3 @@ export function getPointsForHability(hability: number) {
     return 6
   }
 }
-
-// TODO - Això posar-ho a config en contes d'aquí
-export function getEmojiReactionFor(points: number) {
-  if (points === 0) return '🤡'
-  if (points === 1) return '😭'
-  if (points === 2) return '😐'
-  if (points === 3) return '😎'
-  if (points === 4) return '🤯'
-  if (points === 5) return '🏆'
-  if (points === 6) return '🤨'
-  return '🤷'
-}

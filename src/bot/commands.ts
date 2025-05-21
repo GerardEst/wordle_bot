@@ -1,16 +1,13 @@
 import { Bot, Context, Keyboard } from 'https://deno.land/x/grammy/mod.ts'
-import * as api from '../api/db.ts'
+import * as api from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
-import { Character } from '../api/characters.ts'
+import { Character } from '../interfaces.ts'
 import {
   buildRankingMessageFrom,
   buildPunctuationTableMessage,
 } from './messages.ts'
-import { getPoints, getEmojiReactionFor } from './utils.ts'
-import { CHARACTERS } from '../conf.ts'
-
-// TODO - Xapussero, però així evito haber de fer masses calls
-let characters: any
+import { getPoints } from './utils.ts'
+import { CHARACTERS, EMOJI_REACTIONS } from '../conf.ts'
 
 export function setupCommands(bot: Bot) {
   bot.command('classificacio', async (ctx: Context) => {
@@ -52,7 +49,6 @@ export function setupCommands(bot: Bot) {
     if (isFromElmot) {
       await reactToGame(ctx)
     } else if (ctx.message.text.includes('Afegir a ')) {
-      // TODO - Repassar
       const characterName = ctx.message.text.split('Afegir a ')[1]
       await charactersApi.addCharacterToChat(ctx.message.chat.id, characterName)
       ctx.reply(`${characterName} s'ha afegit a la partida!`, {
@@ -76,13 +72,10 @@ async function reactToGame(ctx: Context) {
     'day',
     ctx.message.from.id
   )
+
   const isGameToday = userTodayGames.length > 0
 
-  if (isGameToday) {
-    ctx.react('🌚')
-  } else {
-    ctx.react(getEmojiReactionFor(points))
-  }
+  isGameToday ? ctx.react('🌚') : ctx.react(EMOJI_REACTIONS[points])
 
   // We don't save the game if user already have a game today
   if (isGameToday) return
