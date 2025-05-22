@@ -1,8 +1,8 @@
-# MotBot 🤖
+# motbot
 
 ## Introducció
 
-MotBot és un bot de Telegram dissenyat per seguir i registrar les partides del joc "#ElMot" en grups de Telegram. Aquest bot permet als jugadors compartir les seves puntuacions diàries i competir en lligues mensuals amb premis virtuals.
+Motbot és un bot de Telegram dissenyat per seguir i registrar les partides del joc "#ElMot" en grups de Telegram. Aquest bot permet als jugadors compartir les seves puntuacions diàries i competir en lligues mensuals amb premis virtuals.
 
 ### Característiques principals
 
