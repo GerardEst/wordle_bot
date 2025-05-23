@@ -119,15 +119,6 @@ function buildFormula(
   period: 'all' | 'week' | 'month' | 'day',
   userId: number | null
 ) {
-  // TODO - Solucionar problemes de timezone que fan que fins les 2 (a l'estiu) no
-  // retorni els records correctes i per tant no es pugui jugar fins passades les 2
-  // perquè detecti bé si ja ha jugat o no
-  /** Tant deno (cronjobs) com airtable fan servir internament UTC. Nosé si potser seria més
-   * facil passar jo a guardar els events en UTC. Però igualment no em serviria de res ara mateix que
-   * lo que he fet a les 6 de la tarda estigui fet a les 4 o a les 8, igualment el dia actual mel pilla com
-   * a 20 encara...
-   */
-
   // Start with conditions array
   const conditions = [`{ID Xat} = ${chatId}`]
 
@@ -136,13 +127,26 @@ function buildFormula(
     conditions.push(`{ID Usuari} = ${userId}`)
   }
 
+  const now = new Date()
+
+  // For Spain timezone (UTC+1 or UTC+2 depending on DST)
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Madrid',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+
+  const [year, month, day] = formatter.format(now).split('-')
+  const dateStr = `${year}-${month}-${day}` // YYYY-MM-DD
+
   // Add date condition based on period
   if (period === 'day') {
-    conditions.push('IS_SAME({Data}, TODAY(), "day")')
+    conditions.push(`IS_SAME({Data}, DATE("${dateStr}"), "day")`)
   } else if (period === 'week') {
-    conditions.push('IS_SAME({Data}, TODAY(), "week")')
+    conditions.push(`IS_SAME({Data}, DATE("${dateStr}"), "week")`)
   } else if (period === 'month') {
-    conditions.push('IS_SAME({Data}, TODAY(), "month")')
+    conditions.push(`IS_SAME({Data}, DATE("${dateStr}"), "month")`)
   }
 
   // Join all conditions with AND
