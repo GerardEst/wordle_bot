@@ -15,6 +15,16 @@ export function getCurrentMonth(): number {
   return now.getMonth() + 1
 }
 
+export function isSummerTime() {
+  const now = new Date()
+  const diferencia = now.getTimezoneOffset()
+
+  // Spain:
+  // - Horario de invierno → UTC+1 → offset = -60
+  // - Horario de verano → UTC+2 → offset = -120
+  return diferencia === -120
+}
+
 export function getPoints(message: string) {
   const tries = message.split(' ')[2].split('/')[0]
 

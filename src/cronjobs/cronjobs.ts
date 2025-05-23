@@ -7,12 +7,12 @@ import {
 } from '../bot/messages.ts'
 import { getChatCharacters } from '../api/characters.ts'
 import { getPointsForHability, getCurrentMonth } from '../bot/utils.ts'
-import { Award, giveAwardTo } from '../api/awards.ts'
+import { giveAwardTo } from '../api/awards.ts'
 
 export function setupCronjobs(bot: Bot) {
   Deno.cron(
-    'Send league ending advise message at 10 of every end of month',
-    '0 10 28-31 * *',
+    'Send league ending advise message at 9 (or 10 depending on UTC) of every end of month',
+    '0 8 28-31 * *',
     () => {
       const now = new Date()
       const isLastDay =
@@ -25,18 +25,26 @@ export function setupCronjobs(bot: Bot) {
     }
   )
 
-  Deno.cron('End league at 22 of every end of month', '0 22 28-31 * *', () => {
-    const now = new Date()
-    const isLastDay =
-      now.getDate() ===
-      new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
+  Deno.cron(
+    'End league at 22 (or 23 depending on UTC) of every end of month',
+    '0 21 28-31 * *',
+    () => {
+      const now = new Date()
+      const isLastDay =
+        now.getDate() ===
+        new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
 
-    if (isLastDay) handleEndOfMonth(bot)
-  })
+      if (isLastDay) handleEndOfMonth(bot)
+    }
+  )
 
-  Deno.cron('Send characters actions at 12 of every day', '0 12 * * *', () => {
-    sendCharactersActions(bot)
-  })
+  Deno.cron(
+    'Send characters actions at 12 (or 13 depending on UTC) of every day',
+    '0 11 * * *',
+    () => {
+      sendCharactersActions(bot)
+    }
+  )
 }
 
 async function sendEndAdviseToChats(bot: Bot) {

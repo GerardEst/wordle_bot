@@ -1,4 +1,8 @@
-import { getDaysRemainingInMonth, getCurrentMonth } from './utils.ts'
+import {
+  getDaysRemainingInMonth,
+  getCurrentMonth,
+  isSummerTime,
+} from './utils.ts'
 import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS, AWARDS } from '../conf.ts'
 import { Award } from '../api/awards.ts'
 
@@ -71,7 +75,9 @@ export function buildPunctuationTableMessage(): FormattedMessage {
 
 export function buildFinalAdviseMessage(): FormattedMessage {
   return {
-    text: `🐣 *Anunci important*\n\nAvui a les 22:00 acaba la *${
+    text: `🐣 *Anunci important*\n\nAvui a les ${
+      isSummerTime() ? '23:00' : '22:00'
+    } acaba la *${
       LEAGUE_NAMES[getCurrentMonth()]
     }*\nEnvieu els vostres resultats d'avui _abans d'aquesta hora_!`,
     parse_mode: 'Markdown',
