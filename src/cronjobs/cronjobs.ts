@@ -11,7 +11,7 @@ import { giveAwardTo } from '../api/awards.ts'
 
 export function setupCronjobs(bot: Bot) {
   Deno.cron(
-    'Send league ending advise message at 9 (or 10) of every end of month',
+    'Send league end advise msg at 9 (or 10) of every end of month',
     '0 8 28-31 * *',
     () => {
       const now = new Date()
