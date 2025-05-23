@@ -32,11 +32,13 @@ export interface User {
 
 export async function getChatPunctuations(
   chatId: number,
-  period: 'all' | 'week' | 'month' | 'day',
+  period: 'all' | 'month' | 'day',
   userId: number | null = null
 ): Promise<AirtableRecord<PuntuacioFields>[]> {
   const params = new URLSearchParams({
-    filterByFormula: buildFormula(chatId, period, userId),
+    filterByFormula: userId
+      ? `AND({ID Xat} = ${chatId}, {ID Usuari} = ${userId})`
+      : `{ID Xat} = ${chatId}`,
     view: Deno.env.get('TABLE_GAMES')!,
   })
 
@@ -49,8 +51,14 @@ export async function getChatPunctuations(
 
   const data = (await res.json()) as AirtableResponse<PuntuacioFields>
 
+  // Filter records by period
+  let filteredRecords = data.records
+  if (period !== 'all') {
+    filteredRecords = filterRecordsByPeriod(data.records, period)
+  }
+
   // Sort results by score (descending)
-  const sortedResults = [...data.records].sort(
+  const sortedResults = [...filteredRecords].sort(
     (a, b) => b.fields['Puntuació'] - a.fields['Puntuació']
   )
 
@@ -59,7 +67,7 @@ export async function getChatPunctuations(
 
 export async function getChatRanking(
   chatId: number,
-  period: 'all' | 'week' | 'month' | 'day',
+  period: 'all' | 'month' | 'day',
   userId: number | null = null
 ) {
   const records = await getChatPunctuations(chatId, period, userId)
@@ -114,47 +122,38 @@ export async function getChats(): Promise<number[]> {
   return [...new Set(data.records.map((record) => record.fields['ID Xat']))]
 }
 
-function buildFormula(
-  chatId: number,
-  period: 'all' | 'week' | 'month' | 'day',
-  userId: number | null
-) {
-  // Start with conditions array
-  const conditions = [`{ID Xat} = ${chatId}`]
-
-  // Add user ID condition if provided
-  if (userId) {
-    conditions.push(`{ID Usuari} = ${userId}`)
-  }
-
+function filterRecordsByPeriod(
+  records: AirtableRecord<PuntuacioFields>[],
+  period: 'month' | 'day'
+): AirtableRecord<PuntuacioFields>[] {
   const now = new Date()
 
   // For Spain timezone (UTC+1 or UTC+2 depending on DST)
-  const formatter = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Madrid',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
+  const todayInSpain = new Date(
+    now.toLocaleString('en-US', { timeZone: 'Europe/Madrid' })
+  )
+
+  return records.filter((record) => {
+    const recordDate = new Date(record.fields.Data)
+    const recordDateInSpain = new Date(
+      recordDate.toLocaleString('en-US', { timeZone: 'Europe/Madrid' })
+    )
+
+    if (period === 'day') {
+      return (
+        recordDateInSpain.getFullYear() === todayInSpain.getFullYear() &&
+        recordDateInSpain.getMonth() === todayInSpain.getMonth() &&
+        recordDateInSpain.getDate() === todayInSpain.getDate()
+      )
+    } else if (period === 'month') {
+      return (
+        recordDateInSpain.getFullYear() === todayInSpain.getFullYear() &&
+        recordDateInSpain.getMonth() === todayInSpain.getMonth()
+      )
+    }
+
+    return false
   })
-
-  const [year, month, day] = formatter.format(now).split('-')
-  const dateStr = `${year}-${month}-${day}` // YYYY-MM-DD
-
-  // Add date condition based on period
-  if (period === 'day') {
-    conditions.push(`IS_SAME({Data}, DATE("${dateStr}"), "day")`)
-  } else if (period === 'week') {
-    conditions.push(`IS_SAME({Data}, DATE("${dateStr}"), "week")`)
-  } else if (period === 'month') {
-    conditions.push(`IS_SAME({Data}, DATE("${dateStr}"), "month")`)
-  }
-
-  // Join all conditions with AND
-  if (conditions.length === 1) {
-    return conditions[0]
-  } else {
-    return `AND(${conditions.join(', ')})`
-  }
 }
 
 function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {
