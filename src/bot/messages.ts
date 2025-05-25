@@ -4,19 +4,9 @@ import {
   isSummerTime,
 } from './utils.ts'
 import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS, AWARDS } from '../conf.ts'
-import { Award } from '../api/awards.ts'
+import { FormattedMessage, Puntuacio, Award, Result } from '../interfaces.ts'
 
 // Define an interface for formatted messages
-interface FormattedMessage {
-  text: string
-  parse_mode: 'HTML' | 'Markdown' | 'MarkdownV2'
-}
-
-interface Puntuacio {
-  id: number
-  name: string
-  total: number
-}
 
 export function buildRankingMessageFrom(
   records: Puntuacio[]
@@ -153,7 +143,7 @@ export function buildCurrentAwardsMessage(): FormattedMessage {
   }
 }
 
-export function buildNewAwardsMessage(results: any[]): FormattedMessage {
+export function buildNewAwardsMessage(results: Result[]): FormattedMessage {
   let message = `*${LEAGUE_EMOJI[getCurrentMonth()]} Final de la ${
     LEAGUE_NAMES[getCurrentMonth()]
   } ${LEAGUE_EMOJI[getCurrentMonth()]}*\n\n`

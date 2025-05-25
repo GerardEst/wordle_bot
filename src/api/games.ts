@@ -2,33 +2,14 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
 )}/${Deno.env.get('TABLE_GAMES')}`
 
-import { Character } from '../interfaces.ts'
-
-// DB interfaces
-export interface AirtableRecord<T> {
-  id: string
-  fields: T
-  createdTime: string
-}
-
-export interface AirtableResponse<T> {
-  records: AirtableRecord<T>[]
-  offset?: string
-}
-
-export interface PuntuacioFields {
-  'ID Xat': number
-  'ID Usuari': number
-  'Nom Usuari': string
-  Puntuació: number
-  Joc: string
-  Data: string
-}
-
-export interface User {
-  id: number
-  name: string
-}
+import {
+  AirtableRecord,
+  AirtableResponse,
+  Character,
+  PuntuacioFields,
+  User,
+} from '../interfaces.ts'
+import { getSpainDateFromUTC } from '../bot/utils.ts'
 
 export async function getChatPunctuations(
   chatId: number,
@@ -126,18 +107,10 @@ function filterRecordsByPeriod(
   records: AirtableRecord<PuntuacioFields>[],
   period: 'month' | 'day'
 ): AirtableRecord<PuntuacioFields>[] {
-  const now = new Date()
-
-  // Get current date in Spain timezone using proper offset calculation
-  const spainOffset = now.getTimezoneOffset() * 60000 // Convert to milliseconds
-  const spainTime = new Date(now.getTime() + spainOffset + 2 * 60 * 60 * 1000) // Add 2 hours for Spain (UTC+2 in summer)
+  const spainTime = getSpainDateFromUTC(new Date().toISOString())
 
   return records.filter((record) => {
-    const recordDate = new Date(record.fields.Data)
-    // Convert record date to Spain timezone using the same method
-    const recordInSpain = new Date(
-      recordDate.getTime() + spainOffset + 2 * 60 * 60 * 1000
-    )
+    const recordInSpain = getSpainDateFromUTC(record.fields.Data)
 
     if (period === 'day') {
       return (
@@ -168,22 +141,7 @@ function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {
     const userId = record.fields['ID Usuari']
     const userName = record.fields['Nom Usuari']
     const points = record.fields['Puntuació']
-
-    // Convert UTC date to Spain date for proper deduplication
-    const recordDate = new Date(record.fields.Data)
-    const now = new Date()
-    const spainOffset = now.getTimezoneOffset() * 60000 // Convert to milliseconds
-    const recordInSpain = new Date(
-      recordDate.getTime() + spainOffset + 2 * 60 * 60 * 1000
-    ) // Add 2 hours for Spain
-
-    // Format as YYYY-MM-DD in Spain timezone
-    const spainDateString =
-      recordInSpain.getFullYear() +
-      '-' +
-      String(recordInSpain.getMonth() + 1).padStart(2, '0') +
-      '-' +
-      String(recordInSpain.getDate()).padStart(2, '0')
+    const recordInSpain = getSpainDateFromUTC(record.fields.Data)
 
     // Initialize user entry if it doesn't exist
     if (!userPoints[userId]) {
@@ -194,6 +152,8 @@ function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {
       }
       processedUserDates[userId] = new Set()
     }
+
+    const spainDateString = recordInSpain.toISOString().split('T')[0]
 
     // Only count this record if we haven't seen this Spain date for this user yet
     if (!processedUserDates[userId].has(spainDateString)) {

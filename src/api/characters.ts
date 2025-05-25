@@ -3,12 +3,7 @@ const airtableChatCharactersUrl = `https://api.airtable.com/v0/${Deno.env.get(
 )}/${Deno.env.get('TABLE_CHARS_CHATS')}`
 
 import { CHARACTERS } from '../conf.ts'
-
-interface Character {
-  fields: {
-    'ID Personatge': number
-  }
-}
+import { AirtableCharacter } from '../interfaces.ts'
 
 export async function addCharacterToChat(
   chatId: number,
@@ -66,7 +61,7 @@ export async function getChatCharacters(chatId: number) {
 
   const data = await res.json()
 
-  return data.records.map((record: Character) => {
+  return data.records.map((record: AirtableCharacter) => {
     const character = CHARACTERS.find(
       (c) => c.id === record.fields['ID Personatge']
     )

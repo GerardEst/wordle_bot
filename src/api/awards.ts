@@ -2,26 +2,7 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
 )}/${Deno.env.get('TABLE_AWARDS_CHATS')}`
 import { AWARDS } from '../conf.ts'
-
-export interface AirtableAward {
-  fields: {
-    'ID Premi': number
-    'ID Xat': number
-    'ID Usuari': number
-    'Nom Usuari': string
-    Data: string
-  }
-}
-
-export interface Award {
-  id: number
-  userId: number
-  userName: string
-  chatId: number
-  name: string
-  emoji: string
-  date: string
-}
+import { AirtableAward, Award } from '../interfaces.ts'
 
 export async function getAwardsOf(
   chatId: number,

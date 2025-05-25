@@ -8,6 +8,7 @@ import {
 import { getChatCharacters } from '../api/characters.ts'
 import { getPointsForHability, getCurrentMonth } from '../bot/utils.ts'
 import { giveAwardTo } from '../api/awards.ts'
+import { Result } from '../interfaces.ts'
 
 export function setupCronjobs(bot: Bot) {
   Deno.cron(
@@ -68,7 +69,7 @@ export async function handleEndOfMonth(bot: Bot, chatId?: number) {
   }
 }
 
-async function saveAwardsToDb(chat: number, results: any[]) {
+async function saveAwardsToDb(chat: number, results: Result[]) {
   for (let i = 1; i <= 3; i++) {
     await giveAwardTo(
       chat,
@@ -79,7 +80,7 @@ async function saveAwardsToDb(chat: number, results: any[]) {
   }
 }
 
-async function sendResultsToChats(bot: Bot, chat: number, results: any) {
+async function sendResultsToChats(bot: Bot, chat: number, results: Result[]) {
   const message = buildNewAwardsMessage(results)
 
   await bot.api.sendMessage(chat, message.text, {
