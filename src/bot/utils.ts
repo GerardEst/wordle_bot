@@ -28,11 +28,9 @@ export function isSummerTime() {
 export function getSpainDateFromUTC(date: string) {
   // Convert UTC date to Spain date
   const recordDate = new Date(date)
-  const now = new Date()
-  const spainOffset = now.getTimezoneOffset() * 60000
-  const hoursToAdd = isSummerTime() ? 2 : 1
+  const hoursToAdd = isSummerTime() ? 2 : 1 // 2 hours in summer (UTC+2), 1 hour in winter (UTC+1)
   const recordInSpain = new Date(
-    recordDate.getTime() + spainOffset + hoursToAdd * 60 * 60 * 1000
+    recordDate.getTime() + hoursToAdd * 60 * 60 * 1000
   )
 
   return recordInSpain
