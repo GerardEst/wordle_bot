@@ -128,27 +128,27 @@ function filterRecordsByPeriod(
 ): AirtableRecord<PuntuacioFields>[] {
   const now = new Date()
 
-  // For Spain timezone (UTC+1 or UTC+2 depending on DST)
-  const todayInSpain = new Date(
-    now.toLocaleString('en-US', { timeZone: 'Europe/Madrid' })
-  )
+  // Get current date in Spain timezone using proper offset calculation
+  const spainOffset = now.getTimezoneOffset() * 60000 // Convert to milliseconds
+  const spainTime = new Date(now.getTime() + spainOffset + 2 * 60 * 60 * 1000) // Add 2 hours for Spain (UTC+2 in summer)
 
   return records.filter((record) => {
     const recordDate = new Date(record.fields.Data)
-    const recordDateInSpain = new Date(
-      recordDate.toLocaleString('en-US', { timeZone: 'Europe/Madrid' })
+    // Convert record date to Spain timezone using the same method
+    const recordInSpain = new Date(
+      recordDate.getTime() + spainOffset + 2 * 60 * 60 * 1000
     )
 
     if (period === 'day') {
       return (
-        recordDateInSpain.getFullYear() === todayInSpain.getFullYear() &&
-        recordDateInSpain.getMonth() === todayInSpain.getMonth() &&
-        recordDateInSpain.getDate() === todayInSpain.getDate()
+        recordInSpain.getFullYear() === spainTime.getFullYear() &&
+        recordInSpain.getMonth() === spainTime.getMonth() &&
+        recordInSpain.getDate() === spainTime.getDate()
       )
     } else if (period === 'month') {
       return (
-        recordDateInSpain.getFullYear() === todayInSpain.getFullYear() &&
-        recordDateInSpain.getMonth() === todayInSpain.getMonth()
+        recordInSpain.getFullYear() === spainTime.getFullYear() &&
+        recordInSpain.getMonth() === spainTime.getMonth()
       )
     }
 
@@ -168,7 +168,22 @@ function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {
     const userId = record.fields['ID Usuari']
     const userName = record.fields['Nom Usuari']
     const points = record.fields['Puntuació']
-    const date = record.fields['Data'].split('T')[0]
+
+    // Convert UTC date to Spain date for proper deduplication
+    const recordDate = new Date(record.fields.Data)
+    const now = new Date()
+    const spainOffset = now.getTimezoneOffset() * 60000 // Convert to milliseconds
+    const recordInSpain = new Date(
+      recordDate.getTime() + spainOffset + 2 * 60 * 60 * 1000
+    ) // Add 2 hours for Spain
+
+    // Format as YYYY-MM-DD in Spain timezone
+    const spainDateString =
+      recordInSpain.getFullYear() +
+      '-' +
+      String(recordInSpain.getMonth() + 1).padStart(2, '0') +
+      '-' +
+      String(recordInSpain.getDate()).padStart(2, '0')
 
     // Initialize user entry if it doesn't exist
     if (!userPoints[userId]) {
@@ -180,10 +195,10 @@ function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {
       processedUserDates[userId] = new Set()
     }
 
-    // Only count this record if we haven't seen this date for this user yet
-    if (!processedUserDates[userId].has(date)) {
+    // Only count this record if we haven't seen this Spain date for this user yet
+    if (!processedUserDates[userId].has(spainDateString)) {
       userPoints[userId].total += points
-      processedUserDates[userId].add(date)
+      processedUserDates[userId].add(spainDateString)
     }
   }
 
