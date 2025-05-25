@@ -17,23 +17,23 @@ export function getCurrentMonth(): number {
 
 export function isSummerTime() {
   const now = new Date()
-  const difference = now.getTimezoneOffset()
+  // Get the timezone offset for Spain at the current time
+  const formatter = new Intl.DateTimeFormat('en', {
+    timeZone: 'Europe/Madrid',
+    timeZoneName: 'longOffset',
+  })
+  const parts = formatter.formatToParts(now)
+  const offset = parts.find((part) => part.type === 'timeZoneName')?.value
 
-  // Spain:
-  // - Winter → UTC+1 → offset = -60
-  // - Summer → UTC+2 → offset = -120
-  return difference === -120
+  // Summer time: GMT+02:00, Winter time: GMT+01:00
+  return offset === 'GMT+02:00'
 }
 
 export function getSpainDateFromUTC(date: string) {
   // Convert UTC date to Spain date
-  const recordDate = new Date(date)
-  const hoursToAdd = isSummerTime() ? 2 : 1 // 2 hours in summer (UTC+2), 1 hour in winter (UTC+1)
-  const recordInSpain = new Date(
-    recordDate.getTime() + hoursToAdd * 60 * 60 * 1000
-  )
-
-  return recordInSpain
+  const utcDate = new Date(date)
+  const hoursToAdd = isSummerTime() ? 2 : 1
+  return new Date(utcDate.getTime() + hoursToAdd * 60 * 60 * 1000)
 }
 
 export function getPoints(message: string) {
