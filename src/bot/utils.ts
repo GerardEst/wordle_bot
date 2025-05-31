@@ -53,21 +53,11 @@ export function getPointsForHability(hability: number) {
   // Generate a random number between 0 and 1
   const rand = Math.random()
 
-  // Higher hability means much better punctuations
-  // and low hability much worst punctuations
-  if (rand < 0.15 - normalizedHability * 0.12) {
+  if (rand < 0.2) {
     return 0
-  } else if (rand < 0.35 - normalizedHability * 0.2) {
+  } else if (rand < 0.8) {
     return 1
-  } else if (rand < 0.55 - normalizedHability * 0.2) {
-    return 2
-  } else if (rand < 0.7) {
-    return 3
-  } else if (rand < 0.8 + normalizedHability * 0.1) {
-    return 4
-  } else if (rand < 0.9 + normalizedHability * 0.07) {
-    return 5
   } else {
-    return 6
+    return 2
   }
 }
