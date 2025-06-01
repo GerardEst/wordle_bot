@@ -70,7 +70,7 @@ export async function handleEndOfMonth(bot: Bot, chatId?: number) {
 }
 
 async function saveAwardsToDb(chat: number, results: Result[]) {
-  for (let i = 1; i <= 3; i++) {
+  for (let i = 0; i < 3; i++) {
     await giveAwardTo(
       chat,
       results[i].id,
@@ -82,10 +82,6 @@ async function saveAwardsToDb(chat: number, results: Result[]) {
 
 async function sendResultsToChats(bot: Bot, chat: number, results: Result[]) {
   const message = buildNewAwardsMessage(results)
-
-  await bot.api.sendMessage(chat, message.text, {
-    parse_mode: message.parse_mode,
-  })
 
   await bot.api.sendMessage(chat, message.text, {
     parse_mode: message.parse_mode,
