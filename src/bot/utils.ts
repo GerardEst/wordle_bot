@@ -1,5 +1,3 @@
-import { isDeno } from "https://deno.land/x/grammy@v1.36.1/platform.deno.ts";
-
 export function getDaysRemainingInMonth() {
   const avui = new Date()
   const ultimDiaMes = new Date(
