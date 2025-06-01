@@ -1,3 +1,5 @@
+import { isDeno } from "https://deno.land/x/grammy@v1.36.1/platform.deno.ts";
+
 export function getDaysRemainingInMonth() {
   const avui = new Date()
   const ultimDiaMes = new Date(
@@ -47,17 +49,23 @@ export function getPoints(message: string) {
 }
 
 export function getPointsForHability(hability: number) {
-  // Normalized hability between 0 and 1
-  const normalizedHability = Math.min(Math.max(hability, 0), 10) / 10
-
-  // Generate a random number between 0 and 1
+  const normalizedHability = hability / 10
   const rand = Math.random()
+  const normalizedAction = (normalizedHability * 0.7 + rand * 0.3)
 
-  if (rand < 0.2) {
+  if (normalizedAction < 0.1) {
     return 0
-  } else if (rand < 0.8) {
+  } else if (normalizedAction < 0.3) {
     return 1
-  } else {
+  } else if (normalizedAction < 0.5) {
     return 2
+  } else if (normalizedAction < 0.7) {
+    return 3
+  } else if (normalizedAction < 0.9) {
+    return 4
+  } else if (normalizedAction < 0.98) {
+    return 5
+  } else {
+    return 6
   }
 }
