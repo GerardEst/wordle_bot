@@ -4,7 +4,6 @@ import { sendCharactersActions, handleEndOfMonth } from './cronjobs/cronjobs.ts'
 import { startUp } from './bot/startup.ts'
 import {
   buildFinalAdviseMessage,
-  buildNewAwardsMessage,
   buildPunctuationTableMessage,
   buildRankingMessageFrom,
   buildAwardsMessage,
@@ -21,10 +20,12 @@ if (import.meta.main) {
   const bot = startUp(Deno.env.get('TELEGRAM_TOKEN')!)
 
   if (command === 'send-classificacio') {
-    console.log(`Sending ranking to dev chat: ${DEV_CHAT_ID}`)
+    const chatIdResponse = prompt('Chat ID (press Enter for Test chat)')
+    const cleanedChatIdResponse = chatIdResponse?.trim()
 
-    const sendRanking = async () => {
-      const records = await api.getChatRanking(parseInt(DEV_CHAT_ID), 'month')
+    const sendRanking = async (chatId: number) => {
+      console.log(`Sending ranking of chat: ${chatId}`)
+      const records = await api.getChatRanking(chatId, 'month')
 
       const message = buildRankingMessageFrom(records)
 
@@ -33,7 +34,17 @@ if (import.meta.main) {
       })
     }
 
-    await sendRanking()
+    if (cleanedChatIdResponse) {
+      if (isNaN(parseInt(cleanedChatIdResponse))) {
+        console.log('Invalid chat ID, getting dev chat')
+        await sendRanking(parseInt(DEV_CHAT_ID))
+      } else {
+        await sendRanking(parseInt(cleanedChatIdResponse))
+      }
+    } else {
+      console.log('No chat ID provided, getting dev chat')
+      await sendRanking(parseInt(DEV_CHAT_ID))
+    }
   }
 
   if (command === 'send-puntatge') {
@@ -62,25 +73,6 @@ if (import.meta.main) {
     }
 
     await sendFinalAdvise()
-  }
-
-  if (command === 'send-final-results') {
-    console.log(`Sending final results to dev chat: ${DEV_CHAT_ID}`)
-
-    const sendFinalResults = async () => {
-      const results = await api.getChatPunctuations(
-        parseInt(DEV_CHAT_ID),
-        'month'
-      )
-
-      const message = buildNewAwardsMessage(results)
-
-      await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
-        parse_mode: message.parse_mode,
-      })
-    }
-
-    await sendFinalResults()
   }
 
   if (command === 'send-characters-actions') {

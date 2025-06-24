@@ -6,7 +6,6 @@
     "dev:send-classificacio": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-classificacio",
     "dev:send-puntatge": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-puntatge",
     "dev:send-final-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-advise",
-    "dev:send-final-results": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-results",
     "dev:send-characters-actions": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions",
     "dev:give-award": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts give-award",
     "dev:check-group-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts check-group-awards",

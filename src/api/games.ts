@@ -16,26 +16,36 @@ export async function getChatPunctuations(
   period: 'all' | 'month' | 'day',
   userId: number | null = null
 ): Promise<AirtableRecord<PuntuacioFields>[]> {
-  const params = new URLSearchParams({
-    filterByFormula: userId
-      ? `AND({ID Xat} = ${chatId}, {ID Usuari} = ${userId})`
-      : `{ID Xat} = ${chatId}`,
-    view: Deno.env.get('TABLE_GAMES')!,
-  })
+  const allRecords: AirtableRecord<PuntuacioFields>[] = []
+  let offset: string | null = null
 
-  const res = await fetch(`${airtableUrl}?${params.toString()}`, {
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-  })
+  do {
+    const params = new URLSearchParams({
+      filterByFormula: userId
+        ? `AND({ID Xat} = ${chatId}, {ID Usuari} = ${userId})`
+        : `{ID Xat} = ${chatId}`,
+      view: Deno.env.get('TABLE_GAMES')!,
+    })
 
-  const data = (await res.json()) as AirtableResponse<PuntuacioFields>
+    if (offset) params.set('offset', offset)
+
+    const res = await fetch(`${airtableUrl}?${params.toString()}`, {
+      headers: {
+        Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await res.json()
+
+    allRecords.push(...data.records)
+    offset = data.offset
+  } while (offset)
 
   // Filter records by period
-  let filteredRecords = data.records
+  let filteredRecords = allRecords
   if (period !== 'all') {
-    filteredRecords = filterRecordsByPeriod(data.records, period)
+    filteredRecords = filterRecordsByPeriod(allRecords, period)
   }
 
   // Sort results by score (descending)
