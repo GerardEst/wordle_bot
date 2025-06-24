@@ -7,7 +7,7 @@ export const LEAGUE_NAMES: Record<number, string> = {
   4: 'Lliga del Drac',
   5: 'Lliga del Raig',
   6: 'Lliga del Meló',
-  7: 'Lliga del Ventilador',
+  7: 'Lliga Seca',
   8: 'Lliga Major',
   9: 'Lliga Escolar',
   10: 'Lliga Castanyera',
@@ -84,12 +84,44 @@ export const AWARDS = [
   },
   {
     id: 62,
-    name: 'Llavor de plata',
-    emoji: '🍈🌱',
+    name: 'Meló de plata',
+    emoji: '🍈',
   },
   {
     id: 63,
     name: 'Coco de bronze',
     emoji: '🥥',
+  },
+  // Lliga Seca
+  {
+    id: 71,
+    name: "Desert d'or",
+    emoji: '☀️🐫',
+  },
+  {
+    id: 72,
+    name: 'Solana de plata',
+    emoji: '🌅',
+  },
+  {
+    id: 73,
+    name: 'Pantà sec de bronze',
+    emoji: '☀️💧',
+  },
+  // Lliga Major
+  {
+    id: 81,
+    name: "Ratafia d'or",
+    emoji: '🥃',
+  },
+  {
+    id: 82,
+    name: 'Birra de plata',
+    emoji: '🍺',
+  },
+  {
+    id: 83,
+    name: 'Cubata de bronze',
+    emoji: '🍹',
   },
 ]
