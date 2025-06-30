@@ -19,4 +19,4 @@ Motbot és un bot de Telegram dissenyat per seguir i registrar les partides del 
 - `/extres` - Opcions per afegir personatges a la partida
 - `/premis` - Consulta els trofeus virtuals guanyats i els que estan en joc
 
-El MotBot està construït amb Deno i la biblioteca Grammy per a bots de Telegram.
+MotBot està construït amb Deno i la biblioteca Grammy
