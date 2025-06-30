@@ -127,14 +127,14 @@ export function buildCurrentAwardsMessage(): FormattedMessage {
     )
 
   let message = `_Premis en joc a la ${LEAGUE_NAMES[getCurrentMonth()]}_\n\n`
-  message += `1r premi:*${getAwardByPosition(1)?.emoji} ${
+  message += `1r premi:*${getAwardByPosition(0)?.emoji} ${
+    getAwardByPosition(0)?.name
+  } *\n\n`
+  message += `2n premi:*${getAwardByPosition(1)?.emoji} ${
     getAwardByPosition(1)?.name
   } *\n\n`
-  message += `2n premi:*${getAwardByPosition(2)?.emoji} ${
+  message += `3r premi:*${getAwardByPosition(2)?.emoji} ${
     getAwardByPosition(2)?.name
-  } *\n\n`
-  message += `3r premi:*${getAwardByPosition(3)?.emoji} ${
-    getAwardByPosition(3)?.name
   } *\n\n`
 
   return {
