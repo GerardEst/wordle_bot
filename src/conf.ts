@@ -62,66 +62,66 @@ export const CHARACTERS = [
 export const AWARDS = [
   // Lliga del Raig
   {
-    id: 51,
+    id: 50,
     name: "Zeus d'or",
-    emoji: '⚡🧔🏼',
+    emoji: '🥇🧔🏼',
+  },
+  {
+    id: 51,
+    name: 'Tro de plata',
+    emoji: '🥈⛈️',
   },
   {
     id: 52,
-    name: 'Tro de plata',
-    emoji: '⚡⛈️',
-  },
-  {
-    id: 53,
     name: 'Patac de bronze',
-    emoji: '⚡☂️',
+    emoji: '🥉☂️',
   },
   // Lliga del meló
   {
+    id: 60,
+    name: 'Meló amb pernil',
+    emoji: '🥇🍈',
+  },
+  {
     id: 61,
-    name: "Meló d'or amb pernil",
-    emoji: '🍈🍗',
+    name: 'Meló groc de plata',
+    emoji: '🥈🍈',
   },
   {
     id: 62,
-    name: 'Meló de plata',
-    emoji: '🍈',
-  },
-  {
-    id: 63,
     name: 'Coco de bronze',
-    emoji: '🥥',
+    emoji: '🥉🥥',
   },
   // Lliga Seca
   {
+    id: 70,
+    name: "Camell d'or",
+    emoji: '🥇🐫',
+  },
+  {
     id: 71,
-    name: "Desert d'or",
-    emoji: '☀️🐫',
+    name: 'Cactus de plata',
+    emoji: '🥈🌵',
   },
   {
     id: 72,
-    name: 'Solana de plata',
-    emoji: '🌅',
-  },
-  {
-    id: 73,
-    name: 'Pantà sec de bronze',
-    emoji: '☀️💧',
+    name: 'Grill de bronze',
+    emoji: '🥉🦗',
   },
   // Lliga Major
   {
-    id: 81,
+    id: 80,
     name: "Ratafia d'or",
-    emoji: '🥃',
+    emoji: '🥇🥃',
+  },
+  {
+    id: 81,
+    name: 'Birra de plata',
+    emoji: '🥈🍺',
   },
   {
     id: 82,
-    name: 'Birra de plata',
-    emoji: '🍺',
-  },
-  {
-    id: 83,
     name: 'Cubata de bronze',
-    emoji: '🍹',
+    emoji: '🥉🍹',
   },
 ]

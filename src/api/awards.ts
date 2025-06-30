@@ -10,12 +10,16 @@ export async function getAwardsOf(
   const { data, error } = userId
     ? await supabase
         .from('trophies_chats')
-        .select('trophy_id, users(id, name), chat_id, created_at')
+        .select(
+          'trophy_id, users(id, name), characters(id, name) chat_id, created_at'
+        )
         .eq('user_id', userId)
         .eq('chat_id', chatId)
     : await supabase
         .from('trophies_chats')
-        .select('trophy_id, users(id, name), chat_id, created_at')
+        .select(
+          'trophy_id, users(id, name), characters(id, name), chat_id, created_at'
+        )
         .eq('chat_id', chatId)
 
   if (error) throw 'Error'
@@ -32,8 +36,8 @@ export async function getAwardsOf(
       return {
         id: trophy.id,
         chatId: record.chat_id,
-        userId: record.users.id,
-        userName: record.users.name || record.users.id,
+        userId: record.users?.id || record.characters.id,
+        userName: record.users?.name || record.characters.name,
         name: trophy.name,
         emoji: trophy.emoji,
         date: record.created_at,
