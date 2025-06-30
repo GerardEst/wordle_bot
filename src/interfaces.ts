@@ -61,7 +61,7 @@ export interface User {
 
 export interface SBAward {
   trophy_id: number
-  user_id: number
+  users: { id: number; name: string }
   chat_id: number
   created_at: string
 }

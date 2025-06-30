@@ -10,18 +10,18 @@ export async function getAwardsOf(
   const { data, error } = userId
     ? await supabase
         .from('trophies_chats')
-        .select('trophy_id, user_id, chat_id, created_at')
+        .select('trophy_id, users(id, name), chat_id, created_at')
         .eq('user_id', userId)
         .eq('chat_id', chatId)
     : await supabase
         .from('trophies_chats')
-        .select('trophy_id, user_id, chat_id, created_at')
+        .select('trophy_id, users(id, name), chat_id, created_at')
         .eq('chat_id', chatId)
 
   if (error) throw 'Error'
 
   console.log(data)
-  return data
+  return (data as unknown as SBAward[])
     .map((record: SBAward) => {
       const trophy = AWARDS.find((trophy) => trophy.id === record.trophy_id)
 
@@ -33,8 +33,8 @@ export async function getAwardsOf(
       return {
         id: trophy.id,
         chatId: record.chat_id,
-        userId: record.user_id,
-        userName: record.user_id.toString(),
+        userId: record.users.id,
+        userName: record.users.name || record.users.id,
         name: trophy.name,
         emoji: trophy.emoji,
         date: record.created_at,
