@@ -9,7 +9,8 @@ import {
   buildCurrentAwardsMessage,
 } from './messages.ts'
 import { getPoints } from './utils.ts'
-import { CHARACTERS, EMOJI_REACTIONS } from '../conf.ts'
+import { EMOJI_REACTIONS } from '../conf.ts'
+import { getAllCharacters } from '../api/characters.ts'
 
 export function setupCommands(bot: Bot) {
   bot.command('classificacio', async (ctx: Context) => {
@@ -28,11 +29,13 @@ export function setupCommands(bot: Bot) {
     ctx.reply(message.text, { parse_mode: message.parse_mode })
   })
 
-  bot.command('extres', (ctx: Context) => {
+  bot.command('extres', async (ctx: Context) => {
     if (!ctx.chat) return
 
+    const allCharacters = await getAllCharacters()
+
     const keyboard = new Keyboard()
-    for (const character of CHARACTERS) {
+    for (const character of allCharacters) {
       keyboard.text('Afegir a ' + character.name)
       keyboard.row()
     }

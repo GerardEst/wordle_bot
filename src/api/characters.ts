@@ -1,80 +1,62 @@
-const airtableChatCharactersUrl = `https://api.airtable.com/v0/${Deno.env.get(
-  'AIRTABLE_DB_ID'
-)}/${Deno.env.get('TABLE_CHARS_CHATS')}`
-
-import { CHARACTERS } from '../conf.ts'
-import { AirtableCharacter } from '../interfaces.ts'
+import { SBCharacter } from '../interfaces.ts'
+import { supabase } from '../lib/supabase.ts'
 
 export async function addCharacterToChat(
   chatId: number,
   characterName: string
 ) {
-  const character = CHARACTERS.find((c) => c.name === characterName)
+  const characterId = await getCharacterIdByName(characterName)
+  console.log(characterId)
 
-  if (!character) {
-    console.error('Character not found')
-    return
+  const { data, error } = await supabase
+    .from('characters_chats')
+    .insert([{ chat_id: chatId, character_id: characterId }])
+    .select()
+
+  if (error) {
+    console.error(error)
+    throw 'Error adding character to chat'
   }
 
-  const res = await fetch(airtableChatCharactersUrl, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      records: [
-        {
-          fields: {
-            'ID Xat': chatId,
-            'ID Personatge': character.id,
-            Nom: character.name,
-            Habilitat: character.hability,
-          },
-        },
-      ],
-    }),
-  })
-
-  if (!res.ok) {
-    console.error('Error creant el registre:', await res.text())
-    return
-  }
-
-  const data = await res.json()
-
-  return data.records
+  return data[0]
 }
 
 export async function getChatCharacters(chatId: number) {
-  const params = new URLSearchParams({
-    filterByFormula: `{ID Xat} = ${chatId}`,
-    view: Deno.env.get('TABLE_CHARS_CHATS')!,
-  })
+  const { data, error } = await supabase
+    .from('characters_chats')
+    .select('characters(id, name, hability)')
+    .eq('chat_id', chatId)
 
-  const res = await fetch(`${airtableChatCharactersUrl}?${params.toString()}`, {
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-  })
+  if (error) {
+    throw 'Error getting chat characters'
+  }
 
-  const data = await res.json()
-
-  return data.records.map((record: AirtableCharacter) => {
-    const character = CHARACTERS.find(
-      (c) => c.id === record.fields['ID Personatge']
-    )
-
-    if (!character) {
-      console.error('Character not found')
-      return null
-    }
-
+  return (data as unknown as { characters: SBCharacter }[]).map((record) => {
     return {
-      id: character.id,
-      name: character.name,
-      hability: character.hability,
+      id: record.characters.id,
+      name: record.characters.name,
+      hability: record.characters.hability,
     }
   })
+}
+
+export async function getAllCharacters() {
+  const { data, error } = await supabase
+    .from('characters')
+    .select('id, name, hability')
+  if (error) {
+    throw 'Error getting character id by name'
+  }
+  return data
+}
+
+async function getCharacterIdByName(name: string) {
+  const { data, error } = await supabase
+    .from('characters')
+    .select('id')
+    .eq('name', name)
+  if (error) {
+    throw 'Error getting character id by name'
+  }
+  return data[0].id
 }

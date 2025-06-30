@@ -9,12 +9,6 @@ export interface Puntuacio {
   total: number
 }
 
-export interface Character {
-  id: number
-  name: string
-  hability: number
-}
-
 export interface Award {
   id: number
   name: string
@@ -28,10 +22,10 @@ export interface Result {
   total: number
 }
 
-export interface AirtableCharacter {
-  fields: {
-    'ID Personatge': number
-  }
+export interface SBCharacter {
+  id: number
+  name: string
+  hability: number
 }
 
 export interface AirtableRecord<T> {

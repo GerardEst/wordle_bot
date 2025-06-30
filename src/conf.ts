@@ -40,24 +40,6 @@ export const EMOJI_REACTIONS: Record<number, AllowedEmojiReaction> = {
   6: '🤨',
 }
 
-export const CHARACTERS = [
-  {
-    id: 1,
-    name: 'Jacint Verdaguer',
-    hability: 8,
-  },
-  {
-    id: 2,
-    name: 'Josep Lopez',
-    hability: 6,
-  },
-  {
-    id: 3,
-    name: 'Rovelló',
-    hability: 2,
-  },
-]
-
 // ID is the month and the position
 export const AWARDS = [
   // Lliga del Raig

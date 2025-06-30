@@ -5,8 +5,8 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
 import {
   AirtableRecord,
   AirtableResponse,
-  Character,
   PuntuacioFields,
+  SBCharacter,
   User,
 } from '../interfaces.ts'
 import { getSpainDateFromUTC } from '../bot/utils.ts'
@@ -67,7 +67,7 @@ export async function getChatRanking(
 
 export async function createRecord(
   chatId: number,
-  character: Character | User,
+  character: SBCharacter | User,
   points: number
 ) {
   const fields = {
