@@ -10,17 +10,18 @@ import {
   buildCurrentAwardsMessage,
 } from './bot/messages.ts'
 
-const DEV_CHAT_ID = Deno.env.get('DEV_CHAT_ID')!
-const DEV_USER_ID = Deno.env.get('DEV_USER_ID')!
+const DEV_CHAT_ID = parseInt(Deno.env.get('DEV_CHAT_ID')!)
+const DEV_USER_ID = parseInt(Deno.env.get('DEV_USER_ID')!)
 
 // CLI for sending specific messages to dev chat
+// Specify the target chat ID in the first arg, if not specified, falls to DEV_CHAT_ID. This is which chat to take data from, it always will be sent to DEV_CHAT_ID.
 if (import.meta.main) {
   const args = Deno.args
   const command = args[0]
   const bot = startUp(Deno.env.get('TELEGRAM_TOKEN')!)
 
   if (command === 'send-classificacio') {
-    const toChatId = askForChatId()
+    const toChatId = parseInt(args[1]) || DEV_CHAT_ID
 
     const sendRanking = async (chatId: number) => {
       console.log(`Sending ranking of chat: ${chatId}`)
@@ -67,24 +68,29 @@ if (import.meta.main) {
   if (command === 'send-characters-actions') {
     console.log(`Sending characters actions to dev chat: ${DEV_CHAT_ID}`)
 
-    await sendCharactersActions(bot, parseInt(DEV_CHAT_ID))
+    await sendCharactersActions(bot, DEV_CHAT_ID)
   }
 
   if (command === 'give-award') {
-    console.log(
-      `Giving award ${args[1]} to user ${DEV_USER_ID} in dev chat: ${DEV_CHAT_ID}`
-    )
+    const toChatId = parseInt(args[1]) || DEV_CHAT_ID
 
-    await awardsApi.giveAwardTo(
-      parseInt(DEV_CHAT_ID),
-      parseInt(DEV_USER_ID),
-      'Dev User',
-      parseInt(args[1])
-    )
+    let trophyId = prompt('Trophy ID')
+    if (!trophyId) trophyId = '1'
+
+    trophyId = trophyId.trim()
+
+    const giveAward = async (chatId: number) => {
+      console.log(
+        `Giving award ${trophyId} to user ${DEV_USER_ID} in dev chat: ${chatId}`
+      )
+      await awardsApi.giveAwardTo(chatId, DEV_USER_ID, parseInt(trophyId))
+    }
+
+    await takeAction(giveAward, toChatId)
   }
 
   if (command === 'check-group-awards') {
-    const toChatId = askForChatId()
+    const toChatId = parseInt(args[1]) || DEV_CHAT_ID
 
     const sendAwards = async (chatId: number) => {
       console.log(`Checking group awards of chat: ${chatId}`)
@@ -104,14 +110,14 @@ if (import.meta.main) {
     console.log(`Simulating end of month for dev chat: ${DEV_CHAT_ID}`)
 
     const simulateEndOfMonth = async () => {
-      await handleEndOfMonth(bot, parseInt(DEV_CHAT_ID))
+      await handleEndOfMonth(bot, DEV_CHAT_ID)
     }
 
     await simulateEndOfMonth()
   }
 
   if (command === 'send-current-awards') {
-    const toChatId = askForChatId()
+    const toChatId = parseInt(args[1]) || DEV_CHAT_ID
 
     const sendCurrentAwards = async (chatId: number) => {
       console.log(`Sending current awards to chat: ${chatId}`)
@@ -127,18 +133,11 @@ if (import.meta.main) {
   bot.stop()
 }
 
-function askForChatId() {
-  const chatIdResponse = prompt('Chat ID (press Enter for Test chat)')
-  const cleanedChatIdResponse = chatIdResponse?.trim()
-
-  return cleanedChatIdResponse ? parseInt(cleanedChatIdResponse) : undefined
-}
-
 function takeAction(action: any, chatId: number | undefined) {
   if (chatId) {
     return action(chatId)
   } else {
     console.log('Wrong chat ID, getting dev chat')
-    return action(parseInt(DEV_CHAT_ID))
+    return action(DEV_CHAT_ID)
   }
 }

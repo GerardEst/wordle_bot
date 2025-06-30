@@ -71,12 +71,7 @@ export async function handleEndOfMonth(bot: Bot, chatId?: number) {
 
 async function saveAwardsToDb(chat: number, results: Result[]) {
   for (let i = 0; i < 3; i++) {
-    await giveAwardTo(
-      chat,
-      results[i].id,
-      results[i].name,
-      parseInt(`${getCurrentMonth()}${i}`)
-    )
+    await giveAwardTo(chat, results[i].id, parseInt(`${getCurrentMonth()}${i}`))
   }
 }
 

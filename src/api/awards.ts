@@ -1,6 +1,3 @@
-const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
-  'AIRTABLE_DB_ID'
-)}/${Deno.env.get('TABLE_AWARDS_CHATS')}`
 import { AWARDS } from '../conf.ts'
 import { Award, SBAward } from '../interfaces.ts'
 
@@ -49,31 +46,14 @@ export async function getAwardsOf(
 export async function giveAwardTo(
   chatId: number,
   userId: number,
-  userName: string,
-  awardId: number
+  trophyId: number
 ) {
-  const res = await fetch(airtableUrl, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      records: [
-        {
-          fields: {
-            'ID Xat': chatId,
-            'ID Usuari': userId,
-            'Nom Usuari': userName,
-            'ID Premi': awardId,
-          },
-        },
-      ],
-    }),
-  })
+  const { error } = await supabase
+    .from('trophies_chats')
+    .insert([{ chat_id: chatId, user_id: userId, trophy_id: trophyId }])
 
-  if (!res.ok) {
-    console.error('Error giving award', await res.text())
+  if (error) {
+    console.error('Error giving award', error)
     return
   }
 }
