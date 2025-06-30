@@ -2,46 +2,48 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
 )}/${Deno.env.get('TABLE_AWARDS_CHATS')}`
 import { AWARDS } from '../conf.ts'
-import { AirtableAward, Award } from '../interfaces.ts'
+import { Award, SBAward } from '../interfaces.ts'
+
+import { supabase } from '../lib/supabase.ts'
 
 export async function getAwardsOf(
   chatId: number,
   userId?: number
 ): Promise<Award[]> {
-  const params = new URLSearchParams({
-    filterByFormula: userId
-      ? `{ID Xat} = ${chatId} AND {ID Usuari} = ${userId}`
-      : `{ID Xat} = ${chatId}`,
-    view: Deno.env.get('TABLE_AWARDS_CHATS')!,
-  })
+  const { data, error } = userId
+    ? await supabase
+        .from('trophies_chats')
+        .select('trophy_id, user_id, chat_id, created_at')
+        .eq('user_id', userId)
+        .eq('chat_id', chatId)
+    : await supabase
+        .from('trophies_chats')
+        .select('trophy_id, user_id, chat_id, created_at')
+        .eq('chat_id', chatId)
 
-  const res = await fetch(`${airtableUrl}?${params.toString()}`, {
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-  })
+  if (error) throw 'Error'
 
-  const data = await res.json()
+  console.log(data)
+  return data
+    .map((record: SBAward) => {
+      const trophy = AWARDS.find((trophy) => trophy.id === record.trophy_id)
 
-  return data.records.map((record: AirtableAward) => {
-    const award = AWARDS.find((award) => award.id === record.fields['ID Premi'])
+      if (!trophy) {
+        console.error('Award not found', record.trophy_id)
+        return null
+      }
 
-    if (!award) {
-      console.error('Award not found', record.fields['ID Premi'])
-      return null
-    }
-
-    return {
-      id: award.id,
-      chatId: record.fields['ID Xat'],
-      userId: record.fields['ID Usuari'],
-      userName: record.fields['Nom Usuari'],
-      name: award.name,
-      emoji: award.emoji,
-      date: record.fields['Data'],
-    }
-  })
+      return {
+        id: trophy.id,
+        chatId: record.chat_id,
+        userId: record.user_id,
+        userName: record.user_id.toString(),
+        name: trophy.name,
+        emoji: trophy.emoji,
+        date: record.created_at,
+      }
+    })
+    .filter((award): award is Award => award !== null)
 }
 
 export async function giveAwardTo(

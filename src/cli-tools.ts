@@ -20,8 +20,7 @@ if (import.meta.main) {
   const bot = startUp(Deno.env.get('TELEGRAM_TOKEN')!)
 
   if (command === 'send-classificacio') {
-    const chatIdResponse = prompt('Chat ID (press Enter for Test chat)')
-    const cleanedChatIdResponse = chatIdResponse?.trim()
+    const toChatId = askForChatId()
 
     const sendRanking = async (chatId: number) => {
       console.log(`Sending ranking of chat: ${chatId}`)
@@ -34,17 +33,7 @@ if (import.meta.main) {
       })
     }
 
-    if (cleanedChatIdResponse) {
-      if (isNaN(parseInt(cleanedChatIdResponse))) {
-        console.log('Invalid chat ID, getting dev chat')
-        await sendRanking(parseInt(DEV_CHAT_ID))
-      } else {
-        await sendRanking(parseInt(cleanedChatIdResponse))
-      }
-    } else {
-      console.log('No chat ID provided, getting dev chat')
-      await sendRanking(parseInt(DEV_CHAT_ID))
-    }
+    takeAction(sendRanking, toChatId)
   }
 
   if (command === 'send-puntatge') {
@@ -95,10 +84,11 @@ if (import.meta.main) {
   }
 
   if (command === 'check-group-awards') {
-    console.log(`Checking group awards for dev chat: ${DEV_CHAT_ID}`)
+    const toChatId = askForChatId()
 
-    const sendAwards = async () => {
-      const awards = await awardsApi.getAwardsOf(parseInt(DEV_CHAT_ID))
+    const sendAwards = async (chatId: number) => {
+      console.log(`Checking group awards of chat: ${chatId}`)
+      const awards = await awardsApi.getAwardsOf(chatId)
 
       const message = buildAwardsMessage(awards)
 
@@ -107,7 +97,7 @@ if (import.meta.main) {
       })
     }
 
-    await sendAwards()
+    await takeAction(sendAwards, toChatId)
   }
 
   if (command === 'simulate-end-of-month') {
@@ -121,17 +111,34 @@ if (import.meta.main) {
   }
 
   if (command === 'send-current-awards') {
-    console.log(`Sending current awards to dev chat: ${DEV_CHAT_ID}`)
+    const toChatId = askForChatId()
 
-    const sendCurrentAwards = async () => {
+    const sendCurrentAwards = async (chatId: number) => {
+      console.log(`Sending current awards to chat: ${chatId}`)
       const message = buildCurrentAwardsMessage()
       await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
         parse_mode: message.parse_mode,
       })
     }
 
-    await sendCurrentAwards()
+    await takeAction(sendCurrentAwards, toChatId)
   }
 
   bot.stop()
+}
+
+function askForChatId() {
+  const chatIdResponse = prompt('Chat ID (press Enter for Test chat)')
+  const cleanedChatIdResponse = chatIdResponse?.trim()
+
+  return cleanedChatIdResponse ? parseInt(cleanedChatIdResponse) : undefined
+}
+
+function takeAction(action: any, chatId: number | undefined) {
+  if (chatId) {
+    return action(chatId)
+  } else {
+    console.log('Wrong chat ID, getting dev chat')
+    return action(parseInt(DEV_CHAT_ID))
+  }
 }

@@ -59,21 +59,18 @@ export interface User {
   name: string
 }
 
-export interface AirtableAward {
-  fields: {
-    'ID Premi': number
-    'ID Xat': number
-    'ID Usuari': number
-    'Nom Usuari': string
-    Data: string
-  }
+export interface SBAward {
+  trophy_id: number
+  user_id: number
+  chat_id: number
+  created_at: string
 }
 
 export interface Award {
   id: number
+  chatId: number
   userId: number
   userName: string
-  chatId: number
   name: string
   emoji: string
   date: string
