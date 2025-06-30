@@ -2,6 +2,7 @@ const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
   'AIRTABLE_DB_ID'
 )}/${Deno.env.get('TABLE_GAMES')}`
 
+import { supabase } from '../lib/supabase.ts'
 import {
   AirtableRecord,
   AirtableResponse,
@@ -67,13 +68,29 @@ export async function getChatRanking(
 
 export async function createRecord(
   chatId: number,
-  character: SBCharacter | User,
+  user: SBCharacter | User,
   points: number
 ) {
+  try {
+    const { error } = await supabase.from('games_chats').insert([
+      {
+        chat_id: chatId,
+        user_id: user.id,
+        punctuation: points,
+        game: 'elmot',
+      },
+    ])
+
+    if (error) throw error
+  } catch (error) {
+    console.error('Error inserting new game', error)
+  }
+
+  // TODO - Borrar quan estigui tot a supabase
   const fields = {
     'ID Xat': chatId,
-    'ID Usuari': character.id,
-    'Nom Usuari': character.name,
+    'ID Usuari': user.id,
+    'Nom Usuari': user.name,
     Puntuació: points,
     Joc: 'elmot',
     Data: new Date().toISOString(),
