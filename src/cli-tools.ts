@@ -133,7 +133,10 @@ if (import.meta.main) {
   bot.stop()
 }
 
-function takeAction(action: any, chatId: number | undefined) {
+function takeAction(
+  action: (chatId: number) => Promise<void>,
+  chatId: number | undefined
+) {
   if (chatId) {
     return action(chatId)
   } else {

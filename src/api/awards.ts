@@ -20,7 +20,6 @@ export async function getAwardsOf(
 
   if (error) throw 'Error'
 
-  console.log(data)
   return (data as unknown as SBAward[])
     .map((record: SBAward) => {
       const trophy = AWARDS.find((trophy) => trophy.id === record.trophy_id)
