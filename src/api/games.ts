@@ -36,8 +36,6 @@ export async function getChatPunctuations(
 
     if (error) throw error
 
-    console.log(data)
-
     // Sort results by score (descending)
     const sortedResults = [...(data || [])].sort(
       (a, b) => b.punctuation - a.punctuation
