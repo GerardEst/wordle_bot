@@ -37,6 +37,24 @@ if (import.meta.main) {
     takeAction(sendRanking, toChatId)
   }
 
+  if (command === 'create-game-record') {
+    const toChatId = parseInt(args[1]) || DEV_CHAT_ID
+
+    let pointsPrompt = prompt('Points')
+    if (!pointsPrompt) pointsPrompt = '1'
+    const points = parseInt(pointsPrompt.trim())
+
+    const createGameRecord = async (chatId: number) => {
+      console.log(
+        `Giving ${points} points to user ${DEV_USER_ID} in chat: ${chatId}`
+      )
+
+      await api.createRecord(chatId, DEV_USER_ID, points)
+    }
+
+    await takeAction(createGameRecord, toChatId)
+  }
+
   if (command === 'send-puntatge') {
     console.log(`Sending punctuation table to dev chat: ${DEV_CHAT_ID}`)
 
@@ -76,7 +94,6 @@ if (import.meta.main) {
 
     let trophyId = prompt('Trophy ID')
     if (!trophyId) trophyId = '1'
-
     trophyId = trophyId.trim()
 
     const giveAward = async (chatId: number) => {

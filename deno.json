@@ -8,6 +8,7 @@
     "dev:send-final-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-advise",
     "dev:send-characters-actions": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions",
     "dev:give-award": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts give-award",
+    "dev:create-game-record": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts create-game-record",
     "dev:check-group-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts check-group-awards",
     "dev:simulate-end-of-month": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts simulate-end-of-month",
     "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards"

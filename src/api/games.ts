@@ -7,54 +7,47 @@ import {
   AirtableRecord,
   AirtableResponse,
   PuntuacioFields,
-  SBCharacter,
-  User,
 } from '../interfaces.ts'
 import { getSpainDateFromUTC } from '../bot/utils.ts'
+import { getDateRangeForPeriod } from '../lib/timezones.ts'
 
 export async function getChatPunctuations(
   chatId: number,
   period: 'all' | 'month' | 'day',
   userId: number | null = null
-): Promise<AirtableRecord<PuntuacioFields>[]> {
-  const allRecords: AirtableRecord<PuntuacioFields>[] = []
-  let offset: string | null = null
+): Promise<any[]> {
+  const dateRange = getDateRangeForPeriod(period)
 
-  do {
-    const params = new URLSearchParams({
-      filterByFormula: userId
-        ? `AND({ID Xat} = ${chatId}, {ID Usuari} = ${userId})`
-        : `{ID Xat} = ${chatId}`,
-      view: Deno.env.get('TABLE_GAMES')!,
-    })
+  try {
+    const { data, error } = userId
+      ? await supabase
+          .from('games_chats')
+          .select('user_id, character_id, punctuation, created_at')
+          .eq('chat_id', chatId)
+          .eq('user_id', userId)
+          .gte('created_at', dateRange.from)
+          .lte('created_at', dateRange.to)
+      : await supabase
+          .from('games_chats')
+          .select('user_id, character_id, punctuation, created_at')
+          .eq('chat_id', chatId)
+          .gte('created_at', dateRange.from)
+          .lte('created_at', dateRange.to)
 
-    if (offset) params.set('offset', offset)
+    if (error) throw error
 
-    const res = await fetch(`${airtableUrl}?${params.toString()}`, {
-      headers: {
-        Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-        'Content-Type': 'application/json',
-      },
-    })
+    console.log(data)
 
-    const data = await res.json()
+    // Sort results by score (descending)
+    const sortedResults = [...(data || [])].sort(
+      (a, b) => b.punctuation - a.punctuation
+    )
 
-    allRecords.push(...data.records)
-    offset = data.offset
-  } while (offset)
-
-  // Filter records by period
-  let filteredRecords = allRecords
-  if (period !== 'all') {
-    filteredRecords = filterRecordsByPeriod(allRecords, period)
+    return sortedResults
+  } catch (error) {
+    console.error('Error getting chat punctuations', error)
+    return []
   }
-
-  // Sort results by score (descending)
-  const sortedResults = [...filteredRecords].sort(
-    (a, b) => b.fields['Puntuació'] - a.fields['Puntuació']
-  )
-
-  return sortedResults
 }
 
 export async function getChatRanking(
@@ -68,14 +61,14 @@ export async function getChatRanking(
 
 export async function createRecord(
   chatId: number,
-  user: SBCharacter | User,
+  userId: number,
   points: number
 ) {
   try {
     const { error } = await supabase.from('games_chats').insert([
       {
         chat_id: chatId,
-        user_id: user.id,
+        user_id: userId,
         punctuation: points,
         game: 'elmot',
       },
@@ -84,36 +77,6 @@ export async function createRecord(
     if (error) throw error
   } catch (error) {
     console.error('Error inserting new game', error)
-  }
-
-  // TODO - Borrar quan estigui tot a supabase
-  const fields = {
-    'ID Xat': chatId,
-    'ID Usuari': user.id,
-    'Nom Usuari': user.name,
-    Puntuació: points,
-    Joc: 'elmot',
-    Data: new Date().toISOString(),
-  }
-
-  const res = await fetch(airtableUrl, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      records: [
-        {
-          fields,
-        },
-      ],
-    }),
-  })
-
-  if (!res.ok) {
-    console.error('Error creant el registre:', await res.text())
-    return
   }
 }
 
@@ -128,32 +91,6 @@ export async function getChats(): Promise<number[]> {
   const data = (await res.json()) as AirtableResponse<PuntuacioFields>
 
   return [...new Set(data.records.map((record) => record.fields['ID Xat']))]
-}
-
-function filterRecordsByPeriod(
-  records: AirtableRecord<PuntuacioFields>[],
-  period: 'month' | 'day'
-): AirtableRecord<PuntuacioFields>[] {
-  const spainTime = getSpainDateFromUTC(new Date().toISOString())
-
-  return records.filter((record) => {
-    const recordInSpain = getSpainDateFromUTC(record.fields.Data)
-
-    if (period === 'day') {
-      return (
-        recordInSpain.getFullYear() === spainTime.getFullYear() &&
-        recordInSpain.getMonth() === spainTime.getMonth() &&
-        recordInSpain.getDate() === spainTime.getDate()
-      )
-    } else if (period === 'month') {
-      return (
-        recordInSpain.getFullYear() === spainTime.getFullYear() &&
-        recordInSpain.getMonth() === spainTime.getMonth()
-      )
-    }
-
-    return false
-  })
 }
 
 function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {

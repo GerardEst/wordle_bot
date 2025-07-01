@@ -49,7 +49,7 @@ export function getPoints(message: string) {
 export function getPointsForHability(hability: number) {
   const normalizedHability = hability / 10
   const rand = Math.random()
-  const normalizedAction = (normalizedHability * 0.7 + rand * 0.3)
+  const normalizedAction = normalizedHability * 0.7 + rand * 0.3
 
   if (normalizedAction < 0.1) {
     return 0

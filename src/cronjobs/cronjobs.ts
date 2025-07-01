@@ -92,7 +92,7 @@ export async function sendCharactersActions(bot: Bot, chatId?: number) {
     for (const character of characters) {
       const points = getPointsForHability(character.hability)
 
-      await api.createRecord(chat, character, points)
+      await api.createRecord(chat, character.id, points)
       const message = buildCharactersActionsMessage(character.name, points)
 
       await bot.api.sendMessage(chat, message.text, {

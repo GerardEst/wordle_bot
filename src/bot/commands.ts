@@ -116,12 +116,5 @@ async function reactToGame(ctx: Context) {
   if (isGameToday) return
 
   // Save player game
-  await api.createRecord(
-    ctx.message.chat.id,
-    {
-      id: ctx.message.from.id,
-      name: ctx.message.from.first_name,
-    },
-    points
-  )
+  await api.createRecord(ctx.message.chat.id, ctx.message.from.id, points)
 }
