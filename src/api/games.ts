@@ -1,13 +1,4 @@
-const airtableUrl = `https://api.airtable.com/v0/${Deno.env.get(
-  'AIRTABLE_DB_ID'
-)}/${Deno.env.get('TABLE_GAMES')}`
-
 import { supabase } from '../lib/supabase.ts'
-import {
-  AirtableRecord,
-  AirtableResponse,
-  PuntuacioFields,
-} from '../interfaces.ts'
 import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
 
@@ -22,14 +13,18 @@ export async function getChatPunctuations(
     const { data, error } = userId
       ? await supabase
           .from('games_chats')
-          .select('user_id, character_id, punctuation, created_at')
+          .select(
+            'user_id, users(name), character_id, characters(name), punctuation, created_at'
+          )
           .eq('chat_id', chatId)
           .eq('user_id', userId)
           .gte('created_at', dateRange.from)
           .lte('created_at', dateRange.to)
       : await supabase
           .from('games_chats')
-          .select('user_id, character_id, punctuation, created_at')
+          .select(
+            'user_id, users(name), character_id, characters(name), punctuation, created_at'
+          )
           .eq('chat_id', chatId)
           .gte('created_at', dateRange.from)
           .lte('created_at', dateRange.to)
@@ -79,19 +74,19 @@ export async function createRecord(
 }
 
 export async function getChats(): Promise<number[]> {
-  const res = await fetch(airtableUrl, {
-    headers: {
-      Authorization: `Bearer ${Deno.env.get('AIRTABLE_API_KEY')}`,
-      'Content-Type': 'application/json',
-    },
-  })
+  try {
+    const { data, error } = await supabase.rpc('get_unique_chats')
 
-  const data = (await res.json()) as AirtableResponse<PuntuacioFields>
+    if (error) throw error
 
-  return [...new Set(data.records.map((record) => record.fields['ID Xat']))]
+    return data
+  } catch (error) {
+    console.error('Error getting unique chats', error)
+    return []
+  }
 }
 
-function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {
+function getCleanedRanking(records: any) {
   const userPoints: Record<
     string,
     { id: number; name: string; total: number }
@@ -100,10 +95,10 @@ function getCleanedRanking(records: AirtableRecord<PuntuacioFields>[]) {
   const processedUserDates: Record<string, Set<string>> = {}
 
   for (const record of records) {
-    const userId = record.fields['ID Usuari']
-    const userName = record.fields['Nom Usuari']
-    const points = record.fields['Puntuació']
-    const recordInSpain = getSpainDateFromUTC(record.fields.Data)
+    const userId = record.user_id || record.character_id
+    const userName = record.users.name || record.characters.name
+    const points = record.punctuation
+    const recordInSpain = getSpainDateFromUTC(record.created_at)
 
     // Initialize user entry if it doesn't exist
     if (!userPoints[userId]) {

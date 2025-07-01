@@ -148,8 +148,10 @@ export function buildNewAwardsMessage(results: Result[]): FormattedMessage {
     LEAGUE_NAMES[getCurrentMonth()]
   } ${LEAGUE_EMOJI[getCurrentMonth()]}*\n\n`
   for (let i = 0; i < 3; i++) {
+    if (!results[i]) continue
+
     const award = AWARDS.find(
-      (award) => award.id === parseInt(`${getCurrentMonth()}${i + 1}`)
+      (award) => award.id === parseInt(`${getCurrentMonth()}${i}`)
     )
     message += `*${results[i].name}*, amb *${results[i].total} punts*, rep el trofeu *${award?.name} ${award?.emoji}*\n\n`
   }

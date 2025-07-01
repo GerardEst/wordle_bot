@@ -28,17 +28,6 @@ export interface SBCharacter {
   hability: number
 }
 
-export interface AirtableRecord<T> {
-  id: string
-  fields: T
-  createdTime: string
-}
-
-export interface AirtableResponse<T> {
-  records: AirtableRecord<T>[]
-  offset?: string
-}
-
 export interface PuntuacioFields {
   'ID Xat': number
   'ID Usuari': number
