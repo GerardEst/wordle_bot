@@ -61,6 +61,27 @@ export function setupCommands(bot: Bot) {
     ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
   })
 
+  bot.command('top', async (ctx: Context) => {
+    if (!ctx.chat) return
+
+    const topPlayers = await api.getTopPlayersGlobal()
+
+    // TODO - Treure això a messages i tot a una funcio exportada per ferla servir a cli-tools
+    let message = '🏆 *Top 3 mundial:*\n\n'
+
+    if (topPlayers.length === 0) {
+      message = 'Encara no hi ha jugadors aquest mes'
+    } else {
+      const medals = ['🥇', '🥈', '🥉']
+      topPlayers.forEach((player, index) => {
+        const medal = medals[index] || '🏅'
+        message += `${medal} ${player.name}: ${player.total} punts\n`
+      })
+    }
+
+    ctx.reply(message, { parse_mode: 'Markdown' })
+  })
+
   bot.on('message', async (ctx: Context) => {
     if (!ctx.message || !ctx.message.text) return
 

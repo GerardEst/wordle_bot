@@ -90,9 +90,7 @@ if (import.meta.main) {
   }
 
   if (command === 'send-characters-actions-prod') {
-    console.log('ola')
     const toChatId = parseInt(args[1])
-    console.log(toChatId)
 
     if (toChatId) {
       await sendCharactersActions(bot, toChatId)
@@ -161,6 +159,10 @@ if (import.meta.main) {
     }
 
     await takeAction(sendCurrentAwards, toChatId)
+  }
+
+  if (command === 'send-top') {
+    //const api.getTopPlayersGlobal()
   }
 }
 

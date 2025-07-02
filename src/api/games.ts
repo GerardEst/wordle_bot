@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabase.ts'
 import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
+import { Result } from '../interfaces.ts'
 
 export async function getChatPunctuations(
   chatId: number,
@@ -89,6 +90,28 @@ export async function getChats(): Promise<number[]> {
     return data
   } catch (error) {
     console.error('Error getting unique chats', error)
+    return []
+  }
+}
+
+export async function getTopPlayersGlobal(): Promise<Result[]> {
+  const dateRange = getDateRangeForPeriod('month')
+
+  try {
+    const { data, error } = await supabase
+      .from('games_chats')
+      .select(
+        'user_id, users(name), character_id, characters(name), punctuation, created_at'
+      )
+      .gte('created_at', dateRange.from)
+      .lte('created_at', dateRange.to)
+
+    if (error) throw error
+
+    const ranking = getCleanedRanking(data || [])
+    return ranking.slice(0, 3)
+  } catch (error) {
+    console.error('Error getting top players globally', error)
     return []
   }
 }
