@@ -37,7 +37,7 @@ export function getSpainDateFromUTC(date: string) {
 }
 
 export function getPoints(message: string) {
-  const tries = message.split(' ')[2].split('/')[0]
+  const tries = message.split(' ')[2]?.split('/')[0]
 
   if (tries === 'X') return 0
 
