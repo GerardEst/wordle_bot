@@ -52,16 +52,23 @@ export async function getChatRanking(
   return getCleanedRanking(records)
 }
 
-export async function createRecord(
-  chatId: number,
-  userId: number,
+export async function createRecord({
+  chatId,
+  userId,
+  characterId,
+  points,
+}: {
+  chatId: number
+  userId?: number
+  characterId?: number
   points: number
-) {
+}) {
   try {
     const { error } = await supabase.from('games_chats').insert([
       {
         chat_id: chatId,
-        user_id: userId,
+        user_id: userId || null,
+        character_id: characterId || null,
         punctuation: points,
         game: 'elmot',
       },

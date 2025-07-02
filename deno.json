@@ -11,7 +11,8 @@
     "dev:create-game-record": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts create-game-record",
     "dev:check-group-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts check-group-awards",
     "dev:simulate-end-of-month": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts simulate-end-of-month",
-    "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards"
+    "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards",
+    "prod:send-characters-actions-prod": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions-prod"
   },
   "imports": {
     "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.5.1",

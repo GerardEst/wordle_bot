@@ -49,7 +49,7 @@ if (import.meta.main) {
         `Giving ${points} points to user ${DEV_USER_ID} in chat: ${chatId}`
       )
 
-      await api.createRecord(chatId, DEV_USER_ID, points)
+      await api.createRecord({ chatId, userId: DEV_USER_ID, points })
     }
 
     await takeAction(createGameRecord, toChatId)
@@ -87,6 +87,22 @@ if (import.meta.main) {
     console.log(`Sending characters actions to dev chat: ${DEV_CHAT_ID}`)
 
     await sendCharactersActions(bot, DEV_CHAT_ID)
+  }
+
+  if (command === 'send-characters-actions-prod') {
+    console.log('ola')
+    const toChatId = parseInt(args[1])
+    console.log(toChatId)
+
+    if (toChatId) {
+      await sendCharactersActions(bot, toChatId)
+    } else {
+      console.log(`CAUTION: Sending characters actions to all chats`)
+
+      //let continue = prompt('Are you sure?')
+
+      await sendCharactersActions(bot)
+    }
   }
 
   if (command === 'give-award') {
