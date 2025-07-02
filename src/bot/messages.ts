@@ -27,10 +27,10 @@ export function buildRankingMessageFrom(
 
   records.forEach((user, index) => {
     let rank = `${index + 1}`.padEnd(4)
-    if (index === 0) rank = '1 🥇'
-    else if (index === 1) rank = '2 🥈'
-    else if (index === 2) rank = '3 🥉'
-    else rank = `${index + 1}  `
+    if (index === 0) rank = '🥇'
+    else if (index === 1) rank = '🥈'
+    else if (index === 2) rank = '🥉'
+    else rank = ` ${index + 1} `
     const namePadded = `${user.name}`.padEnd(15)
 
     answer += `${rank} ${namePadded} ${user.total}\n`
@@ -77,7 +77,7 @@ export function buildFinalAdviseMessage(): FormattedMessage {
 export function buildAwardsMessage(awards: Award[]): FormattedMessage {
   if (!awards || awards.length === 0) {
     return {
-      text: "_Vitrina virtual amb tots els premis que han guanyat els membres d'aquest xat_\n\nNingú ha guanyat cap trofeu encara",
+      text: '_Vitrina virtual amb tots els premis que heu guanyat_\n\nNingú ha guanyat cap trofeu encara',
       parse_mode: 'Markdown',
     }
   }
@@ -91,8 +91,7 @@ export function buildAwardsMessage(awards: Award[]): FormattedMessage {
     awardsByUser[award.userName].push(award)
   }
 
-  let message =
-    "_Vitrina virtual amb tots els premis que han guanyat els membres d'aquest xat_\n"
+  let message = '_Vitrina virtual amb tots els premis que heu guanyat_\n'
 
   const userEntries = Object.entries(awardsByUser)
 
@@ -100,16 +99,16 @@ export function buildAwardsMessage(awards: Award[]): FormattedMessage {
     const [userName, userAwards] = entry
 
     message += `\n*${userName}*\n`
-    message += '╔─────────────────────╗\n'
+    message += '╔\n'
 
     userAwards.forEach((award, awardIndex) => {
       const isLastAward = awardIndex === userAwards.length - 1
-      message += `░  ${award.emoji} ${award.name} \n`
+      message += `  ${award.emoji} ${award.name} \n`
 
       if (isLastAward) {
-        message += '╚─────────────────────╝\n'
+        message += '╚\n'
       } else {
-        message += '╠─────────────────────╣\n'
+        message += '╠\n'
       }
     })
   })

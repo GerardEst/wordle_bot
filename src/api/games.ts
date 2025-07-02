@@ -96,7 +96,7 @@ function getCleanedRanking(records: any) {
 
   for (const record of records) {
     const userId = record.user_id || record.character_id
-    const userName = record.users.name || record.characters.name
+    const userName = record.users?.name || record.characters.name
     const points = record.punctuation
     const recordInSpain = getSpainDateFromUTC(record.created_at)
 

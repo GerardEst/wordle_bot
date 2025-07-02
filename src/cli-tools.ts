@@ -1,7 +1,7 @@
 import * as api from './api/games.ts'
 import * as awardsApi from './api/awards.ts'
 import { sendCharactersActions, handleEndOfMonth } from './cronjobs/cronjobs.ts'
-import { startUp } from './bot/startup.ts'
+import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import {
   buildFinalAdviseMessage,
   buildPunctuationTableMessage,
@@ -18,7 +18,7 @@ const DEV_USER_ID = parseInt(Deno.env.get('DEV_USER_ID')!)
 if (import.meta.main) {
   const args = Deno.args
   const command = args[0]
-  const bot = startUp(Deno.env.get('TELEGRAM_TOKEN')!)
+  const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN')!)
 
   if (command === 'send-classificacio') {
     const toChatId = parseInt(args[1]) || DEV_CHAT_ID
@@ -34,7 +34,7 @@ if (import.meta.main) {
       })
     }
 
-    takeAction(sendRanking, toChatId)
+    await takeAction(sendRanking, toChatId)
   }
 
   if (command === 'create-game-record') {
@@ -146,8 +146,6 @@ if (import.meta.main) {
 
     await takeAction(sendCurrentAwards, toChatId)
   }
-
-  bot.stop()
 }
 
 function takeAction(
