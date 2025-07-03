@@ -4,19 +4,11 @@ import {
   isSummerTime,
 } from './utils.ts'
 import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS, AWARDS } from '../conf.ts'
-import {
-  FormattedMessage,
-  Puntuacio,
-  Award,
-  Result,
-  Player,
-} from '../interfaces.ts'
+import { FormattedMessage, Award, Result, Player } from '../interfaces.ts'
 
 // Define an interface for formatted messages
 
-export function buildRankingMessageFrom(
-  records: Puntuacio[]
-): FormattedMessage {
+export function buildRankingMessageFrom(records: Result[]): FormattedMessage {
   if (!records || records.length === 0) {
     return {
       text: 'Encara no hi ha puntuacions en aquest xat',

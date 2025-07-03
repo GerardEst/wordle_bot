@@ -31,6 +31,7 @@ export async function getChatCharacters(chatId: number) {
     throw 'Error getting chat characters'
   }
 
+  // SUPABASE BUG #01
   return (data as unknown as { characters: SBCharacter }[]).map((record) => {
     return {
       id: record.characters.id,

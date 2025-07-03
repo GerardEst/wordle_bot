@@ -1,13 +1,13 @@
 import { supabase } from '../lib/supabase.ts'
 import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
-import { Result } from '../interfaces.ts'
+import { Result, SBGameRecord, RankingEntry } from '../interfaces.ts'
 
 export async function getChatPunctuations(
   chatId: number,
   period: 'all' | 'month' | 'day',
   userId: number | null = null
-): Promise<any[]> {
+): Promise<SBGameRecord[]> {
   const dateRange = getDateRangeForPeriod(period)
 
   try {
@@ -37,7 +37,8 @@ export async function getChatPunctuations(
       (a, b) => b.punctuation - a.punctuation
     )
 
-    return sortedResults
+    // SUPABASE BUG #01 - Selecting foreign keys expect an array of objects, but it is really returning a simple object
+    return sortedResults as unknown as SBGameRecord[]
   } catch (error) {
     console.error('Error getting chat punctuations', error)
     return []
@@ -107,7 +108,8 @@ export async function getTopPlayersGlobal(): Promise<Result[]> {
 
     if (error) throw error
 
-    const ranking = getCleanedRanking(data || [])
+    // SUPABASE BUG #01
+    const ranking = getCleanedRanking((data as unknown as SBGameRecord[]) || [])
     return ranking.slice(0, 3)
   } catch (error) {
     console.error('Error getting top players globally', error)
@@ -115,19 +117,20 @@ export async function getTopPlayersGlobal(): Promise<Result[]> {
   }
 }
 
-function getCleanedRanking(records: any) {
+function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
   const userPoints: Record<
     string,
     { id: number; name: string; total: number }
   > = {}
-  // Keep track of dates already processed for each user
   const processedUserDates: Record<string, Set<string>> = {}
 
   for (const record of records) {
     const userId = record.user_id || record.character_id
-    const userName = record.users?.name || record.characters.name
+    const userName = record.users?.name || record.characters?.name
     const points = record.punctuation
     const recordInSpain = getSpainDateFromUTC(record.created_at)
+
+    if (!userId || !userName) return []
 
     // Initialize user entry if it doesn't exist
     if (!userPoints[userId]) {

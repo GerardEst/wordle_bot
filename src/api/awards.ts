@@ -24,6 +24,7 @@ export async function getAwardsOf(
 
   if (error) throw 'Error'
 
+  // SUPABASE BUG #01
   return (data as unknown as SBAward[])
     .map((record: SBAward) => {
       const trophy = AWARDS.find((trophy) => trophy.id === record.trophy_id)

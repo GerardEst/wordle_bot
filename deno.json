@@ -1,8 +1,9 @@
 {
   "tasks": {
     "dev": "deno run --watch --env --allow-env --allow-read --allow-net --allow-import --unstable-cron main.ts",
-    "set-webhook": "deno run --env --allow-net --allow-env --allow-read manage-webhook/setup-webhook.ts",
-    "check-webhook": "deno run --env --allow-net --allow-env --allow-read manage-webhook/check-webhook.ts",
+    "bot:set-webhook": "deno run --env --allow-net --allow-env --allow-read manage-bot/setup-webhook.ts",
+    "bot:check-webhook": "deno run --env --allow-net --allow-env --allow-read manage-bot/check-webhook.ts",
+    "bot:set-commands": "deno run --env --allow-net --allow-env --allow-read --allow-import manage-bot/set-commands.ts",
     "dev:send-classificacio": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-classificacio",
     "dev:send-puntatge": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-puntatge",
     "dev:send-final-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-advise",
