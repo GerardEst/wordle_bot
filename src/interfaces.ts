@@ -28,18 +28,14 @@ export interface SBCharacter {
   hability: number
 }
 
-export interface PuntuacioFields {
-  'ID Xat': number
-  'ID Usuari': number
-  'Nom Usuari': string
-  Puntuació: number
-  Joc: string
-  Data: string
-}
-
 export interface User {
   id: number
   name: string
+}
+
+export interface Player {
+  name: string
+  total: number
 }
 
 export interface SBAward {

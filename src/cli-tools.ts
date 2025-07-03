@@ -8,6 +8,7 @@ import {
   buildRankingMessageFrom,
   buildAwardsMessage,
   buildCurrentAwardsMessage,
+  buildTopMessage,
 } from './bot/messages.ts'
 
 const DEV_CHAT_ID = parseInt(Deno.env.get('DEV_CHAT_ID')!)
@@ -162,7 +163,11 @@ if (import.meta.main) {
   }
 
   if (command === 'send-top') {
-    //const api.getTopPlayersGlobal()
+    const topPlayers = await api.getTopPlayersGlobal()
+    const message = buildTopMessage(topPlayers)
+    await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
+      parse_mode: message.parse_mode,
+    })
   }
 }
 

@@ -4,7 +4,13 @@ import {
   isSummerTime,
 } from './utils.ts'
 import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS, AWARDS } from '../conf.ts'
-import { FormattedMessage, Puntuacio, Award, Result } from '../interfaces.ts'
+import {
+  FormattedMessage,
+  Puntuacio,
+  Award,
+  Result,
+  Player,
+} from '../interfaces.ts'
 
 // Define an interface for formatted messages
 
@@ -175,4 +181,20 @@ export function buildCharactersActionsMessage(
     }*.`,
     parse_mode: 'Markdown',
   }
+}
+
+export function buildTopMessage(topPlayers: Player[]): FormattedMessage {
+  let message = '⭐️ *Top 3 mundial*\n\n'
+
+  if (topPlayers.length === 0) {
+    message = 'Encara no hi ha jugadors aquest mes'
+  } else {
+    const medals = ['1️⃣', '2️⃣', '3️⃣']
+    topPlayers.forEach((player, index) => {
+      const medal = medals[index] || '🏅'
+      message += `${medal} ${player.name}: ${player.total} punts\n`
+    })
+  }
+
+  return { text: message, parse_mode: 'Markdown' }
 }
