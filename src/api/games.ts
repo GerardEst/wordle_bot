@@ -100,9 +100,8 @@ export async function getTopPlayersGlobal(): Promise<Result[]> {
   try {
     const { data, error } = await supabase
       .from('games_chats')
-      .select(
-        'user_id, users(name), character_id, characters(name), punctuation, created_at'
-      )
+      .select('user_id, users(name), punctuation, created_at')
+      .is('character_id', null)
       .gte('created_at', dateRange.from)
       .lte('created_at', dateRange.to)
 
