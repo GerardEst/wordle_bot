@@ -49,8 +49,8 @@ export function setupCronjobs(bot: Bot) {
   )
 
   Deno.cron(
-    'Send difficulty info at 21 30 or 22 30 of every day',
-    '30 20 * * *',
+    'Send difficulty info at 7 30 or 8 30 of every day',
+    '30 6 * * *',
     () => {
       sendWordDifficulty(bot)
     }

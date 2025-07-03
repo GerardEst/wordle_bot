@@ -6,7 +6,7 @@ import { Result, SBGameRecord, RankingEntry } from '../interfaces.ts'
 export async function getAllUniqueGamesOfToday() {
   try {
     const { data, error } = await supabase.rpc(
-      'get_all_punctuations_from_today'
+      'get_all_punctuations_from_yesterday'
     )
 
     if (error) throw error

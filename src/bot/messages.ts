@@ -205,9 +205,8 @@ export function buildWordDifficultyMessage(
       ? '🔴 Difícil'
       : '⚫️ Impossible'
 
-  console.log(difficulty)
   return {
-    text: `Dificultat estimada de la paraula d'avui\n *${difficultyWord}*`,
+    text: `Dificultat de la paraula d'ahir\n *${difficultyWord}*`,
     parse_mode: 'Markdown',
   }
 }
