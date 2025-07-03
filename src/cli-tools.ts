@@ -159,6 +159,16 @@ if (import.meta.main) {
     await simulateEndOfMonth()
   }
 
+  if (command === 'send-characters-actions') {
+    console.log(`Sending characters actions to dev chat: ${DEV_CHAT_ID}`)
+
+    await sendCharactersActions(bot, DEV_CHAT_ID)
+  }
+
+  if (command === 'send-difficulty') {
+    await sendWordDifficulty(bot, DEV_CHAT_ID)
+  }
+
   if (command === 'send-characters-actions-prod') {
     const toChatId = parseInt(args[1])
 
@@ -173,14 +183,8 @@ if (import.meta.main) {
     }
   }
 
-  if (command === 'send-characters-actions') {
-    console.log(`Sending characters actions to dev chat: ${DEV_CHAT_ID}`)
-
-    await sendCharactersActions(bot, DEV_CHAT_ID)
-  }
-
-  if (command === 'send-difficulty') {
-    await sendWordDifficulty(bot, DEV_CHAT_ID)
+  if (command === 'send-difficulty-prod') {
+    await sendWordDifficulty(bot)
   }
 }
 

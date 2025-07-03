@@ -128,13 +128,12 @@ export async function sendWordDifficulty(bot: Bot, chatId?: number) {
       0
     ) / todayGames.length
 
-  const inversedAverage = 6 - averagePoints
-  const normalizedDifficulty = Math.round((inversedAverage * 5) / 6) // Converts it to 0 to 5
-
-  const message = buildWordDifficultyMessage(
-    averagePoints,
-    normalizedDifficulty
+  const inversedAverage = 5 - averagePoints
+  const normalizedDifficulty = parseFloat(
+    ((inversedAverage * 10) / 5).toFixed(1) // We use 5 instead of 6 because solve it in the first try is to hard
   )
+
+  const message = buildWordDifficultyMessage(normalizedDifficulty)
 
   for (const chat of chats) {
     await bot.api.sendMessage(chat, message.text, {

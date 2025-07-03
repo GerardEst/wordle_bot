@@ -192,19 +192,22 @@ export function buildTopMessage(topPlayers: Player[]): FormattedMessage {
 }
 
 export function buildWordDifficultyMessage(
-  averagePoints: number,
   difficulty: number
 ): FormattedMessage {
-  const difficultyWord = [
-    '⚪️ Impensablement fàcil',
-    '🟢 Xupada',
-    '🟡 Normaleta',
-    '🔴 Difícil',
-    '⚫️ Impossible',
-  ]
+  const difficultyWord =
+    difficulty < 2.5
+      ? '⚪️ Impensablement fàcil'
+      : difficulty <= 3
+      ? '🟢 Xupada'
+      : difficulty <= 5
+      ? '🟡 Normaleta'
+      : difficulty < 8
+      ? '🔴 Difícil'
+      : '⚫️ Impossible'
 
+  console.log(difficulty)
   return {
-    text: `Dificultat estimada de la paraula d'avui \n\n *${difficultyWord[difficulty]}*`,
+    text: `Dificultat estimada de la paraula d'avui\n *${difficultyWord}*`,
     parse_mode: 'Markdown',
   }
 }
