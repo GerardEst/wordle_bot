@@ -4,6 +4,7 @@ import {
   buildFinalAdviseMessage,
   buildCharactersActionsMessage,
   buildNewAwardsMessage,
+  buildWordDifficultyMessage,
 } from '../bot/messages.ts'
 import { getChatCharacters } from '../api/characters.ts'
 import { getPointsForHability, getCurrentMonth } from '../bot/utils.ts'
@@ -44,6 +45,14 @@ export function setupCronjobs(bot: Bot) {
     '0 11 * * *',
     () => {
       sendCharactersActions(bot)
+    }
+  )
+
+  Deno.cron(
+    'Send difficulty info at 21:30 or 23:30 of every day',
+    '0 20:30 * * *',
+    () => {
+      sendWordDifficulty(bot)
     }
   )
 }
@@ -105,5 +114,31 @@ export async function sendCharactersActions(bot: Bot, chatId?: number) {
         parse_mode: message.parse_mode,
       })
     }
+  }
+}
+
+export async function sendWordDifficulty(bot: Bot, chatId?: number) {
+  const chats = chatId ? [chatId] : await api.getChats()
+
+  const todayGames = await api.getAllUniqueGamesOfToday()
+
+  const averagePoints =
+    todayGames.reduce(
+      (sum: number, game: { punctuation: number }) => sum + game.punctuation,
+      0
+    ) / todayGames.length
+
+  const inversedAverage = 6 - averagePoints
+  const normalizedDifficulty = Math.round((inversedAverage * 5) / 6) // Converts it to 0 to 5
+
+  const message = buildWordDifficultyMessage(
+    averagePoints,
+    normalizedDifficulty
+  )
+
+  for (const chat of chats) {
+    await bot.api.sendMessage(chat, message.text, {
+      parse_mode: message.parse_mode,
+    })
   }
 }

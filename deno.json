@@ -14,6 +14,7 @@
     "dev:simulate-end-of-month": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts simulate-end-of-month",
     "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards",
     "dev:send-top": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-top",
+    "dev:send-difficulty": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-difficulty",
     "prod:send-characters-actions-prod": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions-prod"
   },
   "imports": {

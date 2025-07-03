@@ -190,3 +190,21 @@ export function buildTopMessage(topPlayers: Player[]): FormattedMessage {
 
   return { text: message, parse_mode: 'Markdown' }
 }
+
+export function buildWordDifficultyMessage(
+  averagePoints: number,
+  difficulty: number
+): FormattedMessage {
+  const difficultyWord = [
+    '⚪️ Impensablement fàcil',
+    '🟢 Xupada',
+    '🟡 Normaleta',
+    '🔴 Difícil',
+    '⚫️ Impossible',
+  ]
+
+  return {
+    text: `Dificultat estimada de la paraula d'avui \n\n *${difficultyWord[difficulty]}*`,
+    parse_mode: 'Markdown',
+  }
+}

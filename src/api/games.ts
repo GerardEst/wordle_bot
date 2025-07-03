@@ -3,10 +3,25 @@ import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
 import { Result, SBGameRecord, RankingEntry } from '../interfaces.ts'
 
+export async function getAllUniqueGamesOfToday() {
+  try {
+    const { data, error } = await supabase.rpc(
+      'get_all_punctuations_from_today'
+    )
+
+    if (error) throw error
+
+    return data
+  } catch (error) {
+    console.error('Error getting games', error)
+    return []
+  }
+}
+
 export async function getChatPunctuations(
   chatId: number,
   period: 'all' | 'month' | 'day',
-  userId: number | null = null
+  userId?: number
 ): Promise<SBGameRecord[]> {
   const dateRange = getDateRangeForPeriod(period)
 
@@ -48,7 +63,7 @@ export async function getChatPunctuations(
 export async function getChatRanking(
   chatId: number,
   period: 'all' | 'month' | 'day',
-  userId: number | null = null
+  userId?: number
 ) {
   const records = await getChatPunctuations(chatId, period, userId)
   return getCleanedRanking(records)

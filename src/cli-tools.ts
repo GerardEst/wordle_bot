@@ -1,6 +1,10 @@
 import * as api from './api/games.ts'
 import * as awardsApi from './api/awards.ts'
-import { sendCharactersActions, handleEndOfMonth } from './cronjobs/cronjobs.ts'
+import {
+  sendCharactersActions,
+  handleEndOfMonth,
+  sendWordDifficulty,
+} from './cronjobs/cronjobs.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import {
   buildFinalAdviseMessage,
@@ -84,26 +88,6 @@ if (import.meta.main) {
     await sendFinalAdvise()
   }
 
-  if (command === 'send-characters-actions') {
-    console.log(`Sending characters actions to dev chat: ${DEV_CHAT_ID}`)
-
-    await sendCharactersActions(bot, DEV_CHAT_ID)
-  }
-
-  if (command === 'send-characters-actions-prod') {
-    const toChatId = parseInt(args[1])
-
-    if (toChatId) {
-      await sendCharactersActions(bot, toChatId)
-    } else {
-      console.log(`CAUTION: Sending characters actions to all chats`)
-
-      //let continue = prompt('Are you sure?')
-
-      await sendCharactersActions(bot)
-    }
-  }
-
   if (command === 'give-award') {
     const toChatId = parseInt(args[1]) || DEV_CHAT_ID
 
@@ -138,16 +122,6 @@ if (import.meta.main) {
     await takeAction(sendAwards, toChatId)
   }
 
-  if (command === 'simulate-end-of-month') {
-    console.log(`Simulating end of month for dev chat: ${DEV_CHAT_ID}`)
-
-    const simulateEndOfMonth = async () => {
-      await handleEndOfMonth(bot, DEV_CHAT_ID)
-    }
-
-    await simulateEndOfMonth()
-  }
-
   if (command === 'send-current-awards') {
     const toChatId = parseInt(args[1]) || DEV_CHAT_ID
 
@@ -168,6 +142,45 @@ if (import.meta.main) {
     await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
       parse_mode: message.parse_mode,
     })
+  }
+
+  /*
+   * CLI to simulate cronjobs
+   *
+   */
+
+  if (command === 'simulate-end-of-month') {
+    console.log(`Simulating end of month for dev chat: ${DEV_CHAT_ID}`)
+
+    const simulateEndOfMonth = async () => {
+      await handleEndOfMonth(bot, DEV_CHAT_ID)
+    }
+
+    await simulateEndOfMonth()
+  }
+
+  if (command === 'send-characters-actions-prod') {
+    const toChatId = parseInt(args[1])
+
+    if (toChatId) {
+      await sendCharactersActions(bot, toChatId)
+    } else {
+      console.log(`CAUTION: Sending characters actions to all chats`)
+
+      //let continue = prompt('Are you sure?')
+
+      await sendCharactersActions(bot)
+    }
+  }
+
+  if (command === 'send-characters-actions') {
+    console.log(`Sending characters actions to dev chat: ${DEV_CHAT_ID}`)
+
+    await sendCharactersActions(bot, DEV_CHAT_ID)
+  }
+
+  if (command === 'send-difficulty') {
+    await sendWordDifficulty(bot, DEV_CHAT_ID)
   }
 }
 
