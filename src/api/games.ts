@@ -99,7 +99,7 @@ export async function createRecord({
 
 export async function getChats(): Promise<number[]> {
   try {
-    const { data, error } = await supabase.rpc('get_unique_chats_ids')
+    const { data, error } = await supabase.rpc('get_unique_chat_ids')
 
     if (error) throw error
 
