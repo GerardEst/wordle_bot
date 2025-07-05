@@ -2,6 +2,7 @@ import { supabase } from '../lib/supabase.ts'
 import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
 import { Result, SBGameRecord, RankingEntry } from '../interfaces.ts'
+import { createPlayerIfNotExist } from './players.ts'
 
 export async function getAllUniqueGamesOfToday() {
   try {
@@ -72,14 +73,23 @@ export async function getChatRanking(
 export async function createRecord({
   chatId,
   userId,
+  userName,
   characterId,
   points,
 }: {
   chatId: number
   userId?: number
+  userName?: string
   characterId?: number
   points: number
 }) {
+  if (userId)
+    console.log(
+      `Player ${userId}, ${userName} played on chat ${chatId} for +${points} points`
+    )
+
+  if (userId && userName) await createPlayerIfNotExist(userId, userName)
+
   try {
     const { error } = await supabase.from('games_chats').insert([
       {

@@ -191,9 +191,7 @@ export function buildTopMessage(topPlayers: Player[]): FormattedMessage {
   return { text: message, parse_mode: 'Markdown' }
 }
 
-export function buildWordDifficultyMessage(
-  difficulty: number
-): FormattedMessage {
+export function buildLastWordInfoMessage(difficulty: number): FormattedMessage {
   const difficultyWord =
     difficulty < 2.5
       ? '⚪️ Impensablement fàcil'
@@ -205,6 +203,8 @@ export function buildWordDifficultyMessage(
       ? '🔴 Difícil'
       : '⚫️ Impossible'
 
+  // TODO - Aqui, posar info de la paraula d'ahir: la paraula en si, la definició, la dificultat que ja
+  // la tinc, i pude ja està
   return {
     text: `Dificultat de la paraula d'ahir\n *${difficultyWord}*`,
     parse_mode: 'Markdown',

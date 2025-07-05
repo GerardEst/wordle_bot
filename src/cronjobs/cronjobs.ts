@@ -4,7 +4,7 @@ import {
   buildFinalAdviseMessage,
   buildCharactersActionsMessage,
   buildNewAwardsMessage,
-  buildWordDifficultyMessage,
+  buildLastWordInfoMessage,
 } from '../bot/messages.ts'
 import { getChatCharacters } from '../api/characters.ts'
 import { getPointsForHability, getCurrentMonth } from '../bot/utils.ts'
@@ -52,7 +52,7 @@ export function setupCronjobs(bot: Bot) {
     'Send difficulty info at 7 30 or 8 30 of every day',
     '30 6 * * *',
     () => {
-      sendWordDifficulty(bot)
+      sendLastWordInfo(bot)
     }
   )
 }
@@ -117,7 +117,7 @@ export async function sendCharactersActions(bot: Bot, chatId?: number) {
   }
 }
 
-export async function sendWordDifficulty(bot: Bot, chatId?: number) {
+export async function sendLastWordInfo(bot: Bot, chatId?: number) {
   const chats = chatId ? [chatId] : await api.getChats()
 
   const todayGames = await api.getAllUniqueGamesOfToday()
@@ -133,7 +133,7 @@ export async function sendWordDifficulty(bot: Bot, chatId?: number) {
     ((inversedAverage * 10) / 5).toFixed(1) // We use 5 instead of 6 because solve it in the first try is to hard
   )
 
-  const message = buildWordDifficultyMessage(normalizedDifficulty)
+  const message = buildLastWordInfoMessage(normalizedDifficulty)
 
   for (const chat of chats) {
     await bot.api.sendMessage(chat, message.text, {

@@ -3,7 +3,7 @@ import * as awardsApi from './api/awards.ts'
 import {
   sendCharactersActions,
   handleEndOfMonth,
-  sendWordDifficulty,
+  sendLastWordInfo,
 } from './cronjobs/cronjobs.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import {
@@ -165,8 +165,8 @@ if (import.meta.main) {
     await sendCharactersActions(bot, DEV_CHAT_ID)
   }
 
-  if (command === 'send-difficulty') {
-    await sendWordDifficulty(bot, DEV_CHAT_ID)
+  if (command === 'send-last-word-info') {
+    await sendLastWordInfo(bot, DEV_CHAT_ID)
   }
 
   if (command === 'send-characters-actions-prod') {
@@ -183,8 +183,8 @@ if (import.meta.main) {
     }
   }
 
-  if (command === 'send-difficulty-prod') {
-    await sendWordDifficulty(bot)
+  if (command === 'send-last-word-info-prod') {
+    await sendLastWordInfo(bot)
   }
 }
 
