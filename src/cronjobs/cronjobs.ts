@@ -47,14 +47,6 @@ export function setupCronjobs(bot: Bot) {
       sendCharactersActions(bot)
     }
   )
-
-  Deno.cron(
-    'Send difficulty info at 7 30 or 8 30 of every day',
-    '30 6 * * *',
-    () => {
-      sendLastWordInfo(bot)
-    }
-  )
 }
 
 async function sendEndAdviseToChats(bot: Bot) {
@@ -114,30 +106,5 @@ export async function sendCharactersActions(bot: Bot, chatId?: number) {
         parse_mode: message.parse_mode,
       })
     }
-  }
-}
-
-export async function sendLastWordInfo(bot: Bot, chatId?: number) {
-  const chats = chatId ? [chatId] : await api.getChats()
-
-  const todayGames = await api.getAllUniqueGamesOfToday()
-
-  const averagePoints =
-    todayGames.reduce(
-      (sum: number, game: { punctuation: number }) => sum + game.punctuation,
-      0
-    ) / todayGames.length
-
-  const inversedAverage = 5 - averagePoints
-  const normalizedDifficulty = parseFloat(
-    ((inversedAverage * 10) / 5).toFixed(1) // We use 5 instead of 6 because solve it in the first try is to hard
-  )
-
-  const message = buildLastWordInfoMessage(normalizedDifficulty)
-
-  for (const chat of chats) {
-    await bot.api.sendMessage(chat, message.text, {
-      parse_mode: message.parse_mode,
-    })
   }
 }

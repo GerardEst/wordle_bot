@@ -1,10 +1,6 @@
 import * as api from './api/games.ts'
 import * as awardsApi from './api/awards.ts'
-import {
-  sendCharactersActions,
-  handleEndOfMonth,
-  sendLastWordInfo,
-} from './cronjobs/cronjobs.ts'
+import { sendCharactersActions, handleEndOfMonth } from './cronjobs/cronjobs.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import {
   buildFinalAdviseMessage,
@@ -14,6 +10,7 @@ import {
   buildCurrentAwardsMessage,
   buildTopMessage,
 } from './bot/messages.ts'
+import { sendWordInfo } from './scrapping/send-word-info.ts'
 
 const DEV_CHAT_ID = parseInt(Deno.env.get('DEV_CHAT_ID')!)
 const DEV_USER_ID = parseInt(Deno.env.get('DEV_USER_ID')!)
@@ -144,6 +141,27 @@ if (import.meta.main) {
     })
   }
 
+  if (command === 'send-word-info') {
+    const word = args[1]
+    const toChatId = parseInt(args[2]) || DEV_CHAT_ID
+
+    if (!word) {
+      console.error("You must specify yesterday's word")
+    } else {
+      sendWordInfo(word, toChatId)
+    }
+  }
+
+  if (command === 'send-word-info-prod') {
+    const word = args[1]
+
+    if (!word) {
+      console.error("You must specify yesterday's word")
+    } else {
+      sendWordInfo(word)
+    }
+  }
+
   /*
    * CLI to simulate cronjobs
    *
@@ -165,10 +183,6 @@ if (import.meta.main) {
     await sendCharactersActions(bot, DEV_CHAT_ID)
   }
 
-  if (command === 'send-last-word-info') {
-    await sendLastWordInfo(bot, DEV_CHAT_ID)
-  }
-
   if (command === 'send-characters-actions-prod') {
     const toChatId = parseInt(args[1])
 
@@ -181,10 +195,6 @@ if (import.meta.main) {
 
       await sendCharactersActions(bot)
     }
-  }
-
-  if (command === 'send-last-word-info-prod') {
-    await sendLastWordInfo(bot)
   }
 }
 
