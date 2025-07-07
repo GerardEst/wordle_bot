@@ -1,9 +1,6 @@
-const platform = Deno.env.get('PLATFORM')
-
-console.log('PLATFORM', platform)
-
 import { WordInfo } from './interfaces.ts'
 
+const platform = Deno.env.get('PLATFORM')
 let puppeteer: any = null
 if (platform !== 'deno-deploy') puppeteer = await import('puppeteer')
 
