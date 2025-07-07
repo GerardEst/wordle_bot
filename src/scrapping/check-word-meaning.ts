@@ -1,5 +1,11 @@
-import puppeteer from 'puppeteer'
+const platform = Deno.env.get('PLATFORM')
+
+let puppeteer: any = null
 import { WordInfo } from './interfaces.ts'
+
+if (platform !== 'deno-deploy') {
+  puppeteer = await import('puppeteer')
+}
 
 export function getWordInfoFake(word: string): Promise<WordInfo> {
   return new Promise((resolve) => {
@@ -21,11 +27,11 @@ export async function getWordInfo(word: string): Promise<WordInfo> {
 
   // Get the etymology
   const etymSelector = await page.waitForSelector('.etym')
-  const etymology = await etymSelector?.evaluate((el) => el.textContent)
+  const etymology = await etymSelector?.evaluate((el: any) => el.textContent)
 
   // Get the meaning
   const meaningSelector = await page.waitForSelector('.div1')
-  const meaning = await meaningSelector?.evaluate((el) => el.textContent)
+  const meaning = await meaningSelector?.evaluate((el: any) => el.textContent)
 
   await browser.close()
 
