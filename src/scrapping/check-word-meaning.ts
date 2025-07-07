@@ -1,11 +1,11 @@
 const platform = Deno.env.get('PLATFORM')
 
-let puppeteer: any = null
+console.log('PLATFORM', platform)
+
 import { WordInfo } from './interfaces.ts'
 
-if (platform !== 'deno-deploy') {
-  puppeteer = await import('puppeteer')
-}
+let puppeteer: any = null
+if (platform !== 'deno-deploy') puppeteer = await import('puppeteer')
 
 export function getWordInfoFake(word: string): Promise<WordInfo> {
   return new Promise((resolve) => {
