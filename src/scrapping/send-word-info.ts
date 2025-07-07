@@ -1,4 +1,4 @@
-import { getWordInfo, getWordInfoFake } from './check-word-meaning.ts'
+import { getWordInfo } from './check-word-meaning.ts'
 import { getChats, getAllUniqueGamesOfToday } from '../api/games.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import { FormattedMessage } from '../interfaces.ts'
@@ -16,7 +16,7 @@ export async function sendWordInfo(word: string, chatId?: number) {
   await sendInfo(bot, message, chatId)
 }
 
-async function sendInfo(bot: any, message: FormattedMessage, chatId?: number) {
+async function sendInfo(bot: Bot, message: FormattedMessage, chatId?: number) {
   const chats = chatId ? [chatId] : await getChats()
 
   for (const chat of chats) {
