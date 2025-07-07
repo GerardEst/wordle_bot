@@ -4,7 +4,6 @@ import {
   buildFinalAdviseMessage,
   buildCharactersActionsMessage,
   buildNewAwardsMessage,
-  buildLastWordInfoMessage,
 } from '../bot/messages.ts'
 import { getChatCharacters } from '../api/characters.ts'
 import { getPointsForHability, getCurrentMonth } from '../bot/utils.ts'
