@@ -9,8 +9,8 @@ export function getWordInfoFake(word: string): Promise<WordInfo> {
     setTimeout(() => {
       resolve({
         word,
-        etymology: `${word} etymology`,
-        meaning: `${word} meaning`,
+        etymology: [`${word} etymology`],
+        meaning: [`${word} meaning`],
       })
     }, 1000)
   })
@@ -20,21 +20,40 @@ export async function getWordInfo(word: string): Promise<WordInfo> {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 
-  await page.goto(`https://www.diccionari.cat/GDLC/${word}`)
+  await page.goto(
+    `https://www.diccionari.cat/cerca/gran-diccionari-de-la-llengua-catalana?search_api_fulltext_cust=${word}&search_api_fulltext_cust_1=&field_faceta_cerca_1=5065&show=title`
+  )
 
-  // Get the etymology
-  const etymSelector = await page.waitForSelector('.etym')
-  const etymology = await etymSelector?.evaluate((el: any) => el.textContent)
+  // Get all etymologies
+  const etymSelectors = await page.$$('.etym')
+  const etymologies = await Promise.all(
+    etymSelectors.map(async (selector: any) => {
+      const text = await selector.evaluate((el: any) => el.textContent)
+      return text?.trim() || ''
+    })
+  )
 
-  // Get the meaning
-  const meaningSelector = await page.waitForSelector('.div1')
-  const meaning = await meaningSelector?.evaluate((el: any) => el.textContent)
+  // Get all meanings
+  const meaningSelectors = await page.$$('.div1')
+  const meanings = await Promise.all(
+    meaningSelectors.map(async (selector: any) => {
+      const text = await selector.evaluate((el: any) => el.textContent)
+      if (!text) return ''
+
+      const cleanText = text
+        .replace(/Vegeu\s+també:.*$/gim, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+
+      return cleanText
+    })
+  )
 
   await browser.close()
 
   return {
     word: word.toUpperCase(),
-    etymology: etymology.trim(),
-    meaning: meaning.trim(),
+    etymology: etymologies.filter((etym) => etym.length > 0),
+    meaning: meanings.filter((meaning) => meaning.length > 0),
   }
 }

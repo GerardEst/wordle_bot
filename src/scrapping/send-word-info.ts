@@ -9,10 +9,7 @@ export async function sendWordInfo(word: string, chatId?: number) {
 
   const wordDifficulty = await getWordDifficulty()
   const wordInfo = await getWordInfo(word)
-  const message = buildLastWordInfoMessage(
-    { word, etymology: wordInfo.etymology, meaning: wordInfo.meaning },
-    wordDifficulty
-  )
+  const message = buildLastWordInfoMessage(wordInfo, wordDifficulty)
   await sendInfo(bot, message, chatId)
 }
 
@@ -59,17 +56,29 @@ function buildLastWordInfoMessage(
       ? '🔴 Difícil'
       : '⚫️ Impossible'
 
+  const etymologySection =
+    info.etymology.length > 1
+      ? `*Etimologíes*\n${info.etymology
+          .map((etym, index) => `${index + 1}. \`${etym}\``)
+          .join('\n')}`
+      : `*Etimologia*\n\`${info.etymology[0] || 'No disponible'}\``
+
+  const meaningSection =
+    info.meaning.length > 1
+      ? `*Definicions*\n${info.meaning
+          .map((meaning, index) => `${index + 1}. ${meaning}`)
+          .join('\n\n')}`
+      : `*Definició*\n${info.meaning[0] || 'No disponible'}`
+
   return {
     text: `
 La paraula d'ahir va ser:
 
 *${info.word.toUpperCase()}*
 
-*Etimologia*
-\`${info.etymology}\`
+${meaningSection}
 
-*Definició*
-${info.meaning}
+${etymologySection}
 
 *Dificultat*
 ${difficultyText}
