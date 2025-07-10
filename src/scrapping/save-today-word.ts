@@ -1,10 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
+import { adminSupabase } from '../lib/supabase.ts'
 import { getWordSolution } from './check-correct-word.ts'
 import { getAllUniqueGamesOfToday } from '../api/games.ts'
-
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-const supabaseServiceRole = Deno.env.get('SUPABASE_SERVICE_ROLE')!
-const supabase = createClient(supabaseUrl, supabaseServiceRole)
 
 async function getWordAverageTries() {
   const todayGames = await getAllUniqueGamesOfToday()
@@ -25,7 +21,7 @@ export async function saveTodayWord(): Promise<void> {
     const word = await getWordSolution()
     const average_tries = await getWordAverageTries()
 
-    const { error } = await supabase
+    const { error } = await adminSupabase
       .from('words')
       .insert({ word, average_tries: average_tries })
 

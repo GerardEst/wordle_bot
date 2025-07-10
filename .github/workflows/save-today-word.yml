@@ -1,0 +1,30 @@
+name: Save Today Word
+
+on:
+  schedule:
+    # Runs at 22:45 UTC (23:45 CET/CEST)
+    - cron: '45 22 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  save-today-word:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install Puppeteer (with Chrome)
+        run: deno install
+
+      - name: Run save-today-word
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: deno task prod-cron:save-today-word
