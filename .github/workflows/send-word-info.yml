@@ -19,6 +19,25 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ca-certificates \
+            fonts-liberation \
+            libasound2 \
+            libatk-bridge2.0-0 \
+            libdrm2 \
+            libgtk-3-0 \
+            libnspr4 \
+            libnss3 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxrandr2 \
+            xdg-utils \
+            libxss1 \
+            libgbm1
+            
       - name: Install Puppeteer (with Chrome)
         run: deno install --allow-scripts=npm:puppeteer@24.11.2
 
