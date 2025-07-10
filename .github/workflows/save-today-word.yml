@@ -9,7 +9,7 @@ on:
 jobs:
   save-today-word:
     runs-on: ubuntu-latest
-
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
           deno-version: v2.x
 
       - name: Install Puppeteer (with Chrome)
-        run: deno install
+        run: deno install --allow-scripts=npm:puppeteer@24.11.2
 
       - name: Run save-today-word
         env:
