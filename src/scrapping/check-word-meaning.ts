@@ -16,7 +16,11 @@ export function getWordInfoFake(word: string): Promise<WordInfo> {
   })
 }
 
-export async function getWordInfo(word: string): Promise<WordInfo> {
+export async function getWordInfo(word?: string): Promise<WordInfo | null> {
+  if (!word) return null
+
+  console.log('Scrapping word info from diccionari.cat')
+
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 

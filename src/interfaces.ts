@@ -23,6 +23,11 @@ export interface SBAward {
   created_at: string
 }
 
+export interface SBWord {
+  word: string
+  average_tries: number
+}
+
 // APP INTERFACES
 
 export interface RankingEntry {

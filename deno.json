@@ -5,6 +5,9 @@
     "bot:set-webhook": "deno run --env --allow-net --allow-env --allow-read manage-bot/setup-webhook.ts",
     "bot:check-webhook": "deno run --env --allow-net --allow-env --allow-read manage-bot/check-webhook.ts",
     "bot:set-commands": "deno run --env --allow-net --allow-env --allow-read --allow-import manage-bot/set-commands.ts",
+    "prod-cron:save-today-word": "deno run --env --allow-env --allow-read --allow-net --allow-write --allow-run --allow-sys src/scrapping/save-today-word.ts",
+    "prod-cron:send-word-info": "deno run --env --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys --allow-import src/cli-tools.ts send-word-info-prod",
+    "dev:scrap-correct-word": "deno run --env --allow-env --allow-read --allow-net --allow-write --allow-run --allow-sys src/scrapping/check-correct-word.ts",
     "dev:send-word-info": "deno run --env --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys --allow-import src/cli-tools.ts send-word-info",
     "dev:send-classificacio": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-classificacio",
     "dev:send-puntatge": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-puntatge",
@@ -16,8 +19,7 @@
     "dev:simulate-end-of-month": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts simulate-end-of-month",
     "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards",
     "dev:send-top": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-top",
-    "prod:send-characters-actions-prod": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions-prod",
-    "prod:send-word-info": "deno run --env --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys --allow-import src/cli-tools.ts send-word-info-prod"
+    "prod-cron:send-characters-actions-prod": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions-prod"
   },
   "imports": {
     "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.5.1",

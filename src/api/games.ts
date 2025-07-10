@@ -7,7 +7,7 @@ import { createPlayerIfNotExist } from './players.ts'
 export async function getAllUniqueGamesOfToday() {
   try {
     const { data, error } = await supabase.rpc(
-      'get_all_punctuations_from_yesterday'
+      'get_all_user_punctuations_from_today'
     )
 
     if (error) throw error

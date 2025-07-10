@@ -145,21 +145,17 @@ if (import.meta.main) {
     const word = args[1]
     const toChatId = parseInt(args[2]) || DEV_CHAT_ID
 
-    if (!word) {
-      console.error("You must specify yesterday's word")
-    } else {
-      sendWordInfo(word, toChatId)
-    }
+    // If a word is specified, it will send info for that
+    // If not, it will search for the last word
+    sendWordInfo(word, toChatId)
   }
 
   if (command === 'send-word-info-prod') {
     const word = args[1]
 
-    if (!word) {
-      console.error("You must specify yesterday's word")
-    } else {
-      sendWordInfo(word)
-    }
+    // If a word is specified, it will send info for that
+    // If not, it will search for the last word
+    sendWordInfo(word)
   }
 
   /*
