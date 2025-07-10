@@ -26,5 +26,6 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+          SUPABASE_ANON_KEY: ${{secrets.SUPABASE_ANON_KEY}}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         run: deno task prod-cron:send-word-info
