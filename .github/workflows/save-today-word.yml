@@ -3,7 +3,7 @@ name: Save Today Word
 on:
   schedule:
     # Runs at 22:45 UTC (23:45 CET/CEST)
-    - cron: '45 22 * * *'
+    - cron: '45 21 * * *'
   workflow_dispatch: # Allow manual trigger
 
 jobs:

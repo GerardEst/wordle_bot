@@ -10,6 +10,8 @@ export async function getWordSolution(): Promise<string> {
 
   await page.goto(`https://gelozp.com/games/elmot/`)
 
+  console.log('Found elmot site')
+
   for (let i = 0; i < 7; i++) {
     await page
       .locator('game-app >>> game-keyboard >>> button[data-key="b"]')
@@ -30,17 +32,21 @@ export async function getWordSolution(): Promise<string> {
       .locator('game-app >>> game-keyboard >>> button[data-key="↵"]')
       .click()
 
+    console.log(`Try ${i} simulated`)
+
     await new Promise((resolve) => setTimeout(resolve, 3000))
   }
 
-  await page.screenshot({
-    path: `src/scrapping/ready-to-get-word.png`,
-    fullPage: true,
-  })
+  // await page.screenshot({
+  //   path: `src/scrapping/ready-to-get-word.png`,
+  //   fullPage: true,
+  // })
   const word = await page
     .locator('game-app >>> game-toast >>> .toast')
     .map((button: any) => button.textContent)
     .wait()
+
+  console.log('Got the word: ' + word.split(' ')[1])
 
   await browser.close()
   return word.split(' ')[1]
