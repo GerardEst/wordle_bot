@@ -5,48 +5,132 @@ if (platform !== 'deno-deploy') puppeteer = await import('puppeteer')
 export async function getWordSolution(): Promise<string> {
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: true,
+    timeout: 60000,
   })
   const page = await browser.newPage()
-
-  await page.goto(`https://gelozp.com/games/elmot/`)
+  
+  // Set longer timeout for CI environments
+  page.setDefaultTimeout(30000)
+  
+  await page.goto(`https://gelozp.com/games/elmot/`, {
+    waitUntil: 'networkidle2',
+    timeout: 30000
+  })
 
   console.log('Found elmot site')
+  
+  // Wait for the game to fully load
+  await page.waitForFunction(
+    () => {
+      const gameApp = document.querySelector('game-app')
+      if (!gameApp || !gameApp.shadowRoot) return false
+      const keyboard = gameApp.shadowRoot.querySelector('game-keyboard')
+      if (!keyboard || !keyboard.shadowRoot) return false
+      const button = keyboard.shadowRoot.querySelector('button[data-key="b"]')
+      return button !== null
+    },
+    { timeout: 30000 }
+  )
+  
+  console.log('Game components loaded')
 
-  for (let i = 0; i < 7; i++) {
-    await page
-      .locator('game-app >>> game-keyboard >>> button[data-key="b"]')
-      .click()
-    await page
-      .locator('game-app >>> game-keyboard >>> button[data-key="o"]')
-      .click()
-    await page
-      .locator('game-app >>> game-keyboard >>> button[data-key="n"]')
-      .click()
-    await page
-      .locator('game-app >>> game-keyboard >>> button[data-key="e"]')
-      .click()
-    await page
-      .locator('game-app >>> game-keyboard >>> button[data-key="s"]')
-      .click()
-    await page
-      .locator('game-app >>> game-keyboard >>> button[data-key="↵"]')
-      .click()
-
-    console.log(`Try ${i} simulated`)
-
-    await new Promise((resolve) => setTimeout(resolve, 3000))
+  // Helper function to safely click a button with retry logic
+  async function safeClick(selector: string, keyName: string, retries = 3) {
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        await page.locator(selector).click()
+        console.log(`Successfully clicked ${keyName}`)
+        return
+      } catch (error) {
+        console.log(`Attempt ${attempt + 1} failed for ${keyName}:`, error.message)
+        if (attempt === retries - 1) throw error
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      }
+    }
   }
 
-  // await page.screenshot({
-  //   path: `src/scrapping/ready-to-get-word.png`,
-  //   fullPage: true,
-  // })
-  const word = await page
-    .locator('game-app >>> game-toast >>> .toast')
-    .map((button: any) => button.textContent)
-    .wait()
+  for (let i = 0; i < 7; i++) {
+    console.log(`Starting attempt ${i + 1}`)
+    
+    try {
+      await safeClick('game-app >>> game-keyboard >>> button[data-key="b"]', 'b')
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      
+      await safeClick('game-app >>> game-keyboard >>> button[data-key="o"]', 'o')
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      
+      await safeClick('game-app >>> game-keyboard >>> button[data-key="n"]', 'n')
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      
+      await safeClick('game-app >>> game-keyboard >>> button[data-key="e"]', 'e')
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      
+      await safeClick('game-app >>> game-keyboard >>> button[data-key="s"]', 's')
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      
+      await safeClick('game-app >>> game-keyboard >>> button[data-key="↵"]', 'enter')
+      
+      console.log(`Try ${i + 1} completed`)
+      
+      // Wait longer for game processing, especially in CI
+      await new Promise((resolve) => setTimeout(resolve, 5000))
+      
+    } catch (error) {
+      console.error(`Failed on attempt ${i + 1}:`, error)
+      
+      // Take screenshot for debugging
+      await page.screenshot({
+        path: `debug-attempt-${i + 1}.png`,
+        fullPage: true,
+      })
+      
+      // Continue with next attempt instead of failing completely
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+    }
+  }
 
-  console.log('Got the word: ' + word.split(' ')[1])
+  // Take final screenshot before extracting the word
+  await page.screenshot({
+    path: `final-state.png`,
+    fullPage: true,
+  })
+  
+  // Wait for the toast to appear with retry logic
+  let word: string
+  try {
+    // Wait for toast to appear
+    await page.waitForFunction(
+      () => {
+        const gameApp = document.querySelector('game-app')
+        if (!gameApp || !gameApp.shadowRoot) return false
+        const toast = gameApp.shadowRoot.querySelector('game-toast')
+        if (!toast || !toast.shadowRoot) return false
+        const toastElement = toast.shadowRoot.querySelector('.toast')
+        return toastElement && toastElement.textContent && toastElement.textContent.trim().length > 0
+      },
+      { timeout: 30000 }
+    )
+    
+    word = await page
+      .locator('game-app >>> game-toast >>> .toast')
+      .map((element: any) => element.textContent)
+      .wait()
+      
+    console.log('Got the word: ' + word.split(' ')[1])
+    
+  } catch (error) {
+    console.error('Failed to get word from toast:', error)
+    
+    // Take debug screenshot
+    await page.screenshot({
+      path: `error-final-state.png`,
+      fullPage: true,
+    })
+    
+    await browser.close()
+    throw new Error('Failed to extract word from game')
+  }
 
   await browser.close()
   return word.split(' ')[1]
