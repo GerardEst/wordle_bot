@@ -31,9 +31,8 @@ jobs:
             libxcomposite1 \
             libxdamage1 \
             libxrandr2 \
-            libgbm1 \
             libxss1 \
-            libasound2
+            libasound2t64
 
       - name: Install Puppeteer (with Chrome)
         run: |
