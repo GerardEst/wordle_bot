@@ -37,7 +37,6 @@ jobs:
       - name: Install Puppeteer (with Chrome)
         run: |
           deno install --allow-scripts=npm:puppeteer@latest
-          # Download Chrome for Testing
           npx puppeteer browsers install chrome
 
       - name: Run send-word-info
