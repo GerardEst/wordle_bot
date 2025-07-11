@@ -22,10 +22,24 @@ jobs:
       - name: Install Chrome dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgbm1
+          sudo apt-get install -y \
+            libgbm1 \
+            libnss3 \
+            libatk-bridge2.0-0 \
+            libdrm2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxrandr2 \
+            libgbm1 \
+            libxss1 \
+            libasound2
 
       - name: Install Puppeteer (with Chrome)
-        run: deno install --allow-scripts=npm:puppeteer@latest
+        run: |
+          deno install --allow-scripts=npm:puppeteer@latest
+          # Download Chrome for Testing
+          npx puppeteer browsers install chrome
 
       - name: Run send-word-info
         env:
