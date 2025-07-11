@@ -47,7 +47,6 @@ export async function getWordSolution(): Promise<string> {
           `Attempt ${attempt + 1} failed for ${keyName}:`,
           error.message
         )
-        if (attempt === retries - 1) throw error
         await new Promise((resolve) => setTimeout(resolve, 1000))
       }
     }
@@ -167,5 +166,3 @@ export async function getWordSolution(): Promise<string> {
   await browser.close()
   return word.split(' ')[1]
 }
-
-getWordSolution()
