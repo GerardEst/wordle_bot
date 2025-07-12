@@ -1,4 +1,4 @@
-[CAT](README.md) | **ENG** | [ESP](docs/es/README.md)
+[CAT](/README.md) | **ENG** | [ESP](/docs/es/README.md)
 
 ---
 
