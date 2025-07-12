@@ -1,4 +1,4 @@
-**CAT** | [ESP](docs/es/README.md) | [ENG](docs/en/README.md)
+**CAT** | [ENG](docs/en/README.md) | [ESP](docs/es/README.md)
 
 <br>
 

@@ -1,6 +1,6 @@
-**CAT** | [ESP](docs/es/README.md) | [ENG](docs/en/README.md)
+[CAT](README.md) | **ENG** | [ESP](docs/es/README.md)
 
-<br>
+---
 
 # motbot
 
