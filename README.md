@@ -1,3 +1,4 @@
+<a id="translations"></a>
 **CAT** | [ENG](/docs/en/README.md) | [ESP](/docs/es/README.md)
 
 ---
