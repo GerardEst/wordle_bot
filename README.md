@@ -5,12 +5,20 @@
 Motbot transforma qualsevol grup de Telegram en una competició d'[ElMot](https://gelozp.com/games/elmot/), amb una classificació mensual actualitzada diariament, premis pels millors jugadors, personatges
 convidats de la cultura catalana, dades interessants sobre la paraula...
 
+[Afegeix motbot a un xat](https://t.me/motbot?startgroup=true), però abans, convé que veieu l'[ús de dades](#ús-de-dades).
+
 <br>
 
 ## Funcionament
+Afegeix motbot a un xat existent clicant el link: [Afegeix motbot a un xat](https://t.me/motbot?startgroup=true)
+
+o bé:
 1. Crea un grup de Telegram amb la gent amb la que vols compartir les partides
 2. Afegeix el bot "motbot" _(Afegir un membre -> buscar "motbot")_
-El bot començarà a treballar a la sombra, convertint el grup en una lliga i afegint les següents característiques al xat:
+
+<br>
+
+**_El bot començarà a treballar a la sombra, convertint el grup en una lliga i afegint les següents funcionalitats:_**
 
 <br>
 
@@ -59,4 +67,11 @@ Quan es comparteix una partida, el bot reacciona amb un emoji al missatge que va
 - `/extres` - Opcions per afegir personatges a la partida
 - `/premis` - Consulta els trofeus virtuals guanyats i els que estan en joc
 - `/top` - Mostra el top 3 de jugadors de totes les lligues
+
+<br>
+
+## Ús de dades
+Al afegir motbot a un grup, se li dona accés a tots els missatges que es comparteixin a partir d'aquell moment. **Si no fos així, no podria reaccionar ni guardar les partides que se li comparteixen.**
+
+En qualsevol cas, tot i tenir accés teòric, **no es consulta ni es guarda cap missatge que no sigui una partida compartida o una comanda del bot**, com podeu veure al codi font.
 
