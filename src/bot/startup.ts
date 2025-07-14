@@ -11,10 +11,10 @@ export function startUp(token: string) {
       'Remember to set the webhook again after your local development with "deno task set-webhook" or rebuilding in production'
     )
   } else {
-    const domain = Deno.env.get('DOMAIN')
-    if (!domain) throw new Error('DOMAIN is not set')
+    // const domain = Deno.env.get('DOMAIN')
+    // if (!domain) throw new Error('DOMAIN is not set')
+    // bot.api.setWebhook(domain)
 
-    bot.api.setWebhook(domain)
     console.log('Starting bot in production mode (webhook)')
 
     const handleUpdate = webhookCallback(bot, 'std/http')
