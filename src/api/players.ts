@@ -6,11 +6,11 @@ export async function createPlayerIfNotExist(userId: number, userName: string) {
       .from('users')
       .select('id, name')
       .eq('id', userId)
-      .single()
+      .select()
 
     if (error) throw error
 
-    if (!existingUser) {
+    if (!existingUser[0]) {
       const { data, error } = await supabase
         .from('users')
         .insert({ id: userId, name: userName })
