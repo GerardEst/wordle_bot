@@ -132,7 +132,9 @@ async function reactToGame(ctx: Context) {
   await api.createRecord({
     chatId: ctx.message.chat.id,
     userId: ctx.message.from.id,
-    userName: ctx.message.from.first_name + ' ' + ctx.message.from.last_name,
+    userName: `${ctx.message.from.first_name} ${
+      ctx.message.from.last_name || ''
+    }`.trim(),
     points,
   })
 }
