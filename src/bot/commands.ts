@@ -77,9 +77,9 @@ export function setupCommands(bot: Bot) {
   bot.on('message', async (ctx: Context) => {
     if (!ctx.message || !ctx.message.text) return
 
-    const isFromElmot = ctx.message.text.includes('#ElMot')
+    const isFromMooot = ctx.message.text.includes('#mooot')
 
-    if (isFromElmot) {
+    if (isFromMooot) {
       await reactToGame(ctx)
     } else if (ctx.message.text.includes('Afegir a ')) {
       const characterName = ctx.message.text.split('Afegir a ')[1]
