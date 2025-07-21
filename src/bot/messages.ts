@@ -150,8 +150,12 @@ export function buildNewAwardsMessage(results: Result[]): FormattedMessage {
     const award = AWARDS.find(
       (award) => award.id === parseInt(`${getCurrentMonth()}${i}`)
     )
-    message += `*${results[i].name}*, amb *${results[i].total} punts*, rep el trofeu *${award?.name} ${award?.emoji}*\n\n`
+    message += `*${results[i].name}*, amb *${results[i].total} punts*, rep el trofeu *${award?.name} ${award?.emoji}*\n`
   }
+  const award = AWARDS.find(
+    (award) => award.id === parseInt(`${getCurrentMonth()}${3}`)
+  )
+  message += `La resta us emporteu el premi de consolació, ${award?.name} ${award?.emoji}!\n\n`
   message += `\nEnhorabona a tots! 🥳 I recordeu que demà comença la *${
     LEAGUE_NAMES[getCurrentMonth() + 1]
   }*!`

@@ -90,6 +90,11 @@ export const AWARDS = [
     name: 'Grill de bronze',
     emoji: '🥉🦗',
   },
+  {
+    id: 73,
+    name: 'una formiga',
+    emoji: '🐜',
+  },
   // Lliga Major
   {
     id: 80,

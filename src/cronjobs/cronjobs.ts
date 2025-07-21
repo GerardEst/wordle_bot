@@ -70,10 +70,19 @@ export async function handleEndOfMonth(bot: Bot, chatId?: number) {
 }
 
 async function saveAwardsToDb(chat: number, results: Result[]) {
+  // Award top 3 positions
   for (let i = 0; i < 3; i++) {
     if (!results[i]) continue
 
     await giveAwardTo(chat, results[i].id, parseInt(`${getCurrentMonth()}${i}`))
+  }
+
+  // Award 4th trophy to all players not in top 3
+  const fourthTrophyId = parseInt(`${getCurrentMonth()}3`)
+  for (let i = 3; i < results.length; i++) {
+    if (!results[i]) continue
+    
+    await giveAwardTo(chat, results[i].id, fourthTrophyId)
   }
 }
 
