@@ -1,27 +1,28 @@
 <a id="translations"></a>
 **CAT** | [ENG](/docs/en/README.md) | [ESP](/docs/es/README.md)
 
----
+<div align="center">
+  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_profile.png" alt="Foto de perfil de moootbot">
+</div>
 
-# motbot
+# moootbot
 
-**_Competeix en lligues mensuals d'[ElMot](https://gelozp.com/games/elmot/) entre amics._**
+**_Competeix en lligues mensuals del [Mooot](https://mooot.cat) entre amics._**
 
-Motbot transforma qualsevol grup de Telegram en una competició d'[ElMot](https://gelozp.com/games/elmot/), amb una classificació mensual actualitzada diariament, premis pels millors jugadors, personatges
-convidats de la cultura catalana, dades interessants sobre la paraula...
+Aquest bot transforma qualsevol grup de Telegram en una competició del [Mooot](https://moooot.cat), amb una classificació mensual actualitzada diariament, premis pels millors jugadors, personatges convidats de la cultura catalana, dades interessants sobre la paraula...
 
-[Afegeix motbot a un xat](https://t.me/motbot?startgroup=true), però abans, convé que veieu l'[ús de dades](#ús-de-dades).
+[Afegeix el bot a un xat](https://t.me/moootbot?startgroup=true), però abans, convé que veieu l'[ús de dades](#ús-de-dades).
 
 <br>
 
 ## Funcionament
 
-Afegeix motbot a un xat existent clicant el link: [Afegeix motbot a un xat](https://t.me/motbot?startgroup=true)
+Afegeix el bot a un xat existent clicant el link: [Afegeix moootbot a un xat](https://t.me/mooootbot?startgroup=true)
 
 o bé:
 
 1. Crea un grup de Telegram amb la gent amb la que vols compartir les partides
-2. Afegeix el bot "motbot" _(Afegir un membre -> buscar "motbot")_
+2. Afegeix el bot "moootbot" _(Afegir un membre -> buscar "moootbot")_
 
 <br>
 
@@ -85,6 +86,6 @@ Quan es comparteix una partida, el bot reacciona amb un emoji al missatge que va
 
 ## Ús de dades
 
-Al afegir motbot a un grup, se li dona accés a tots els missatges que es comparteixin a partir d'aquell moment. **Si no fos així, no podria reaccionar ni guardar les partides que se li comparteixen.**
+Al afegir moootbot a un grup, se li dona accés a tots els missatges que es comparteixin a partir d'aquell moment. **Si no fos així, no podria reaccionar ni guardar les partides que se li comparteixen.**
 
 En qualsevol cas, tot i tenir accés teòric, **no es consulta ni es guarda cap missatge que no sigui una partida compartida o una comanda del bot**, com podeu veure al codi font.

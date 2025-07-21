@@ -1,26 +1,28 @@
 <a id="translations"></a>
 [CAT](/README.md) | [ENG](/docs/en/README.md) | **ESP**
 
----
+<div align="center">
+  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_profile.png" alt="Foto de perfil de moootbot">
+</div>
 
-# motbot
+# moootbot
 
-**_Compite en ligas mensuales de [ElMot](https://gelozp.com/games/elmot/) entre amigos._**
+**_Compite en ligas mensuales de [Mooot](https://mooot.cat) entre amigos._**
 
-Motbot transforma cualquier grupo de Telegram en una competición de [ElMot](https://gelozp.com/games/elmot/), con una clasificación mensual actualizada diariamente, premios para los mejores jugadores, personajes invitados de la cultura catalana, datos interesantes sobre la palabra...
+Este bot transforma cualquier grupo de Telegram en una competición de [Mooot](https://mooot.cat), con una clasificación mensual actualizada diariamente, premios para los mejores jugadores, personajes invitados de la cultura catalana, datos interesantes sobre la palabra...
 
-[Añade motbot a un chat](https://t.me/motbot?startgroup=true), pero antes, conviene que veas el [uso de datos](#uso-de-datos).
+[Añade moootbot a un chat](https://t.me/moootbot?startgroup=true), pero antes, conviene que veas el [uso de datos](#uso-de-datos).
 
 <br>
 
 ## Funcionamiento
 
-Añade motbot a un chat existente haciendo clic en el enlace: [Añade motbot a un chat](https://t.me/motbot?startgroup=true)
+Añade moootbot a un chat existente haciendo clic en el enlace: [Añade moootbot a un chat](https://t.me/moootbot?startgroup=true)
 
 o bien:
 
 1. Crea un grupo de Telegram con la gente con la que quieres compartir las partidas
-2. Añade el bot "motbot" _(Añadir miembro -> buscar "motbot")_
+2. Añade el bot "moootbot" _(Añadir miembro -> buscar "moootbot")_
 
 <br>
 
@@ -84,6 +86,6 @@ Cuando se comparte una partida, el bot reacciona con un emoji al mensaje que var
 
 ## Uso de datos
 
-Al añadir motbot a un grupo, se le da acceso a todos los mensajes que se compartan a partir de ese momento. **Si no fuera así, no podría reaccionar ni guardar las partidas que se le comparten.**
+Al añadir este bot a un grupo, se le da acceso a todos los mensajes que se compartan a partir de ese momento. **Si no fuera así, no podría reaccionar ni guardar las partidas que se le comparten.**
 
 En cualquier caso, a pesar de tener acceso teórico, **no se consulta ni se guarda ningún mensaje que no sea una partida compartida o un comando del bot**, como puedes ver en el código fuente.

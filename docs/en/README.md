@@ -1,26 +1,28 @@
 <a id="translations"></a>
 [CAT](/README.md) | **ENG** | [ESP](/docs/es/README.md)
 
----
+<div align="center">
+  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_profile.png" alt="Foto de perfil de moootbot">
+</div>
 
-# motbot
+# moootbot
 
-**_Compete in monthly [ElMot](https://gelozp.com/games/elmot/) leagues with friends._**
+**_Compete in monthly [Mooot](https://mooot.cat) leagues with friends._**
 
-Motbot transforms any Telegram group into an [ElMot](https://gelozp.com/games/elmot/) competition, with a monthly leaderboard updated daily, awards for the best players, guest characters from Catalan culture, interesting data about the word...
+This bot transforms any Telegram group into an [Mooot](https://mooot.cat) competition, with a monthly leaderboard updated daily, awards for the best players, guest characters from Catalan culture, interesting data about the word...
 
-[Add motbot to a chat](https://t.me/motbot?startgroup=true), but first, it's advisable to check the [data usage](#data-usage).
+[Add moootbot to a chat](https://t.me/moootbot?startgroup=true), but first, it's advisable to check the [data usage](#data-usage).
 
 <br>
 
 ## How it works
 
-Add motbot to an existing chat by clicking the link: [Add motbot to a chat](https://t.me/motbot?startgroup=true)
+Add moootbot to an existing chat by clicking the link: [Add moootbot to a chat](https://t.me/moootbot?startgroup=true)
 
 or:
 
 1. Create a Telegram group with the people you want to share games with
-2. Add the "motbot" bot _(Add member -> search "motbot")_
+2. Add the "moootbot" bot _(Add member -> search "moootbot")_
 
 <br>
 
@@ -84,6 +86,6 @@ When a game is shared, the bot reacts with an emoji to the message that varies d
 
 ## Data usage
 
-When adding motbot to a group, it is given access to all messages shared from that moment on. **If this weren't the case, it couldn't react or save the games shared with it.**
+When adding the bot to a group, it is given access to all messages shared from that moment on. **If this weren't the case, it couldn't react or save the games shared with it.**
 
 In any case, despite having theoretical access, **no message that is not a shared game or a bot command is consulted or saved**, as you can see in the source code.
