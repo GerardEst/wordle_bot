@@ -3,6 +3,8 @@
 
 ---
 
+![Foto de perfil de moootbot](https://github.com/GerardEst/moootbot/edit/main/docs/moootbot_profile.jpg "Moootbot profile")
+
 # moootbot
 
 **_Competeix en lligues mensuals del [Mooot](https://mooot.cat) entre amics._**
