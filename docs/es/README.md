@@ -1,7 +1,9 @@
 <a id="translations"></a>
 [CAT](/README.md) | [ENG](/docs/en/README.md) | **ESP**
 
----
+<div align="center">
+  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_profile.png" alt="Foto de perfil de moootbot">
+</div>
 
 # moootbot
 
