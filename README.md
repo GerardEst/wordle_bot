@@ -3,7 +3,7 @@
 
 ---
 
-![Foto de perfil de moootbot](https://github.com/GerardEst/moootbot/edit/main/docs/moootbot_profile.png "Moootbot profile")
+![Foto de perfil de moootbot](https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_profile.png "Moootbot profile")
 
 # moootbot
 
