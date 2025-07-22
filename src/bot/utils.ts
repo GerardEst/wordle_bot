@@ -41,8 +41,6 @@ export function getPoints(message: string) {
 
   const tries = message.split('  ')[2]?.split('/')[0]
 
-  console.log(tries)
-
   if (tries === 'X') return 0
 
   const points = 6 - parseInt(tries)
