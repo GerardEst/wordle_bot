@@ -39,7 +39,7 @@ export function getSpainDateFromUTC(date: string) {
 export function getPoints(message: string) {
   console.log('Get points from message: ' + message)
 
-  const tries = message.split(' ')[2]?.split('/')[0]
+  const tries = message.split('  ')[2]?.split('/')[0]
 
   console.log(tries)
 
