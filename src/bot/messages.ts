@@ -133,7 +133,7 @@ export function buildCurrentAwardsMessage(): FormattedMessage {
   message += `3r premi:*${getAwardByPosition(2)?.emoji} ${
     getAwardByPosition(2)?.name
   } *\n\n`
-  message += `_Es contempla un premi de consolació per la resta de participants._\n\n`
+  message += `_Hi haurà premi de consolació per la resta de participants._\n\n`
   // message += `Premis de consolació:*${getAwardByPosition(3)?.emoji} ${
   //   getAwardByPosition(3)?.name
   // } *\n\n`
