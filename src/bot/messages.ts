@@ -134,7 +134,7 @@ export function buildCurrentAwardsMessage(): FormattedMessage {
     getAwardByPosition(2)?.name
   } *\n\n`
   message += `Premis de consolació:*${getAwardByPosition(3)?.emoji} ${
-    getAwardByPosition(2)?.name
+    getAwardByPosition(3)?.name
   } *\n\n`
 
   return {
