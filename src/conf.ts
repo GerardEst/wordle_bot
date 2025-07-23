@@ -9,7 +9,7 @@ export const LEAGUE_NAMES: Record<number, string> = {
   6: 'Lliga del Meló',
   7: 'Lliga Seca',
   8: 'Lliga Major',
-  9: 'Lliga Escolar',
+  9: 'Lliga de 1714',
   10: 'Lliga Castanyera',
   11: 'Lliga de la Mosca',
   12: 'Lliga de Nadal',
@@ -23,8 +23,8 @@ export const LEAGUE_EMOJI: Record<number, string> = {
   5: '⚡',
   6: '🍈',
   7: '💨',
-  8: '🍾',
-  9: '🏫',
+  8: '💃🏻',
+  9: '🤕',
   10: '🌰',
   11: '🪰',
   12: '🐫🐫🐫',
@@ -42,6 +42,12 @@ export const EMOJI_REACTIONS: Record<number, AllowedEmojiReaction> = {
 
 // ID is the month and the position
 export const AWARDS = [
+  // Premis especials
+  {
+    id: 200,
+    name: 'Ram de disculpes',
+    emoji: '💐',
+  },
   // Lliga del Raig
   {
     id: 50,
@@ -92,7 +98,7 @@ export const AWARDS = [
   },
   {
     id: 73,
-    name: 'una formiga',
+    name: 'Una formiga',
     emoji: '🐜',
   },
   // Lliga Major
@@ -110,5 +116,31 @@ export const AWARDS = [
     id: 82,
     name: 'Cubata de bronze',
     emoji: '🥉🍹',
+  },
+  {
+    id: 83,
+    name: 'Un glaçó',
+    emoji: '🧊',
+  },
+  // Lliga de 1714
+  {
+    id: 90,
+    name: "Segador d'or",
+    emoji: '🥇🌾',
+  },
+  {
+    id: 91,
+    name: '',
+    emoji: '',
+  },
+  {
+    id: 92,
+    name: '',
+    emoji: '',
+  },
+  {
+    id: 93,
+    name: 'Un butifler',
+    emoji: '',
   },
 ]
