@@ -31,7 +31,7 @@ export const LEAGUE_EMOJI: Record<number, string> = {
 }
 
 export const EMOJI_REACTIONS: Record<number, AllowedEmojiReaction> = {
-  0: '🤡',
+  0: '☠️',
   1: '😭',
   2: '😐',
   3: '😎',
