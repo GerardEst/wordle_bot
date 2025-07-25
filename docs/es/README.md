@@ -2,7 +2,7 @@
 [CAT](/README.md) | [ENG](/docs/en/README.md) | **ESP**
 
 <div align="center">
-  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_profile.png" alt="Foto de perfil de moootbot">
+  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_L.png" alt="Foto de perfil de moootbot">
 </div>
 
 # moootbot
@@ -43,12 +43,6 @@ Siempre que un miembro del chat comparta su partida, _se le da una puntuación q
 El último día del mes se reparten trofeos a los tres mejores jugadores. Los trofeos varían dependiendo de la liga actual, con referencias a la cultura catalana, y son independientes entre las diferentes ligas - es decir, en caso de participar en varias ligas, los trofeos solo los tienes dentro del chat de la liga donde los hayas ganado.
 
 > Los trofeos del chat se pueden consultar en cualquier momento con el comando /premis
-
-<br>
-
-### 📖 Significado y etimología de la palabra
-
-Cada día a las 09:00 se envía automáticamente el resultado del día anterior, junto con el significado de la palabra, su etimología, y la media de intentos que fueron necesarios para resolverla.
 
 <br>
 

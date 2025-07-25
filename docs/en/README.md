@@ -2,7 +2,7 @@
 [CAT](/README.md) | **ENG** | [ESP](/docs/es/README.md)
 
 <div align="center">
-  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_profile.png" alt="Foto de perfil de moootbot">
+  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_L.png" alt="Foto de perfil de moootbot">
 </div>
 
 # moootbot
@@ -43,12 +43,6 @@ Whenever a chat member shares their game, _they are given a score ranging from 0
 On the last day of the month, trophies are awarded to the three best players. Trophies vary depending on the current league, with references to Catalan culture, and are independent between different leagues - that is, if you participate in several leagues, you only have the trophies within the chat of the league where you won them.
 
 > Chat trophies can be checked at any time with the /premis command
-
-<br>
-
-### 📖 Word meaning and etymology
-
-Every day at 09:00, the previous day's result is automatically sent, along with the word's meaning, its etymology, and the average number of attempts needed to solve it.
 
 <br>
 

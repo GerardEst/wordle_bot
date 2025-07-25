@@ -2,7 +2,7 @@
 **CAT** | [ENG](/docs/en/README.md) | [ESP](/docs/es/README.md)
 
 <div align="center">
-  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_profile.png" alt="Foto de perfil de moootbot">
+  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_L.png" alt="Foto de perfil de moootbot">
 </div>
 
 # moootbot
@@ -43,12 +43,6 @@ Sempre que un membre del xat hi comparteixi la seva partida, _se li dona una pun
 L'últim dia del mes es reparteixen trofeus als tres millors jugadors. Els trofeus varien depenent de la lliga actual, amb referencies a la cultura catalana, i son independents entre les diferents lligues - és a dir, en cas de participar en varies lligues, els trofeus només els tens dins el xat de la lliga on els hagis guanyat.
 
 > Els trofeus del xat es poden consultar en qualsevol moment amb la comanda /premis
-
-<br>
-
-### 📖 Significat i etimologia de la paraula
-
-Cada dia a les 09:00 s'envia automàticament el resultat del dia anterior, juntament amb el significat de la paraula, la seva etimologia, i la mitjana d'intents que van caldre per resoldre-la.
 
 <br>
 
