@@ -111,6 +111,8 @@ export function setupCommands(bot: Bot) {
 }
 
 async function reactToGame(ctx: Context) {
+  console.log(ctx.message)
+
   if (!ctx.message || !ctx.message.text) return
 
   const points = getPoints(ctx.message.text)
