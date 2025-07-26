@@ -2,7 +2,7 @@
 [CAT](/README.md) | **ENG** | [ESP](/docs/es/README.md)
 
 <div align="center">
-  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/5f67d158453d6adbf42446fc138680f4f1f431c6/docs/moootbot_L.png" alt="Foto de perfil de moootbot">
+  <img width="200" src="https://raw.githubusercontent.com/GerardEst/moootbot/b863bd9adb3d922261166f54b45fcfa9aa218757/docs/moootbot_L.png" alt="Foto de perfil de moootbot">
 </div>
 
 # moootbot
