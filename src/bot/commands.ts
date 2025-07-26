@@ -125,7 +125,11 @@ async function reactToGame(ctx: Context) {
 
   const isGameToday = userTodayGames.length > 0
 
-  isGameToday ? ctx.react('🌚') : ctx.react(EMOJI_REACTIONS[points])
+  try {
+    await (isGameToday ? ctx.react('🌚') : ctx.react(EMOJI_REACTIONS[points]))
+  } catch (error) {
+    console.error('Failed to react to message:', error.message)
+  }
 
   // We don't save the game if user already have a game today
   if (isGameToday) return
