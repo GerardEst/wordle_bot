@@ -11,18 +11,18 @@
 
 Este bot transforma cualquier grupo de Telegram en una competición de [Mooot](https://mooot.cat), con una clasificación mensual actualizada diariamente, premios para los mejores jugadores, personajes invitados de la cultura catalana, datos interesantes sobre la palabra...
 
-[Añade moootbot a un chat](https://t.me/moootbot?startgroup=true), pero antes, conviene que veas el [uso de datos](#uso-de-datos).
+[Añade el bot a un chat](https://t.me/mooot_cat_bot?startgroup=true), pero antes, conviene que veas el [uso de datos](#uso-de-datos).
 
 <br>
 
 ## Funcionamiento
 
-Añade moootbot a un chat existente haciendo clic en el enlace: [Añade moootbot a un chat](https://t.me/moootbot?startgroup=true)
+Añade el bot a un chat existente haciendo clic en el enlace: [Añade moootbot a un chat](https://t.me/mooot_cat_bot?startgroup=true)
 
 o bien:
 
 1. Crea un grupo de Telegram con la gente con la que quieres compartir las partidas
-2. Añade el bot "moootbot" _(Añadir miembro -> buscar "moootbot")_
+2. Añade el bot "mooot*cat_bot" *(Añadir miembro -> buscar "mooot*cat_bot")*
 
 <br>
 
