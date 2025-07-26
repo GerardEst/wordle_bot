@@ -9,7 +9,7 @@
 
 **_Competeix en lligues mensuals del [Mooot](https://mooot.cat) entre amics._**
 
-Aquest bot transforma qualsevol grup de Telegram en una competició del [Mooot](https://moooot.cat), amb una classificació mensual actualitzada diariament, premis pels millors jugadors, personatges convidats de la cultura catalana, dades interessants sobre la paraula...
+Aquest bot transforma qualsevol grup de Telegram en una competició del [Mooot](https://mooot.cat), amb una classificació mensual actualitzada diariament, premis pels millors jugadors, personatges convidats de la cultura catalana, dades interessants sobre la paraula...
 
 [Afegeix el bot a un xat](https://t.me/mooot_cat_bot?startgroup=true), però abans, convé que veieu l'[ús de dades](#ús-de-dades).
 
@@ -22,7 +22,7 @@ Afegeix el bot a un xat existent clicant el link: [Afegeix moootbot a un xat](ht
 o bé:
 
 1. Crea un grup de Telegram amb la gent amb la que vols compartir les partides
-2. Afegeix el bot "mooot_cat_bot" _(Afegir un membre -> buscar "mooot_cat_bot")_
+2. Afegeix el bot "mooot*cat_bot" *(Afegir un membre -> buscar "mooot*cat_bot")*
 
 <br>
 
