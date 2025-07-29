@@ -1,6 +1,21 @@
 import { SBCharacter } from '../interfaces.ts'
 import { supabase } from '../lib/supabase.ts'
 
+export function transformChatCharacters(data: { characters: SBCharacter }[]): SBCharacter[] {
+  return data.map((record) => {
+    return {
+      id: record.characters.id,
+      name: record.characters.name,
+      hability: record.characters.hability,
+    }
+  })
+}
+
+export function findCharacterIdByName(characters: SBCharacter[], name: string): number | null {
+  const character = characters.find(char => char.name === name)
+  return character ? character.id : null
+}
+
 export async function addCharacterToChat(
   chatId: number,
   characterName: string
@@ -32,13 +47,7 @@ export async function getChatCharacters(chatId: number) {
   }
 
   // SUPABASE BUG #01
-  return (data as unknown as { characters: SBCharacter }[]).map((record) => {
-    return {
-      id: record.characters.id,
-      name: record.characters.name,
-      hability: record.characters.hability,
-    }
-  })
+  return transformChatCharacters(data as unknown as { characters: SBCharacter }[])
 }
 
 export async function getAllCharacters() {

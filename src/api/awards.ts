@@ -1,7 +1,29 @@
 import { AWARDS } from '../conf.ts'
 import { Award, SBAward } from '../interfaces.ts'
-
 import { supabase } from '../lib/supabase.ts'
+
+export function processAwards(data: SBAward[]): Award[] {
+  return data
+    .map((record: SBAward) => {
+      const trophy = AWARDS.find((trophy) => trophy.id === record.trophy_id)
+
+      if (!trophy) {
+        console.error('Award not found', record.trophy_id)
+        return null
+      }
+
+      return {
+        id: trophy.id,
+        chatId: record.chat_id,
+        userId: record.users?.id || record.characters.id,
+        userName: record.users?.name || record.characters.name,
+        name: trophy.name,
+        emoji: trophy.emoji,
+        date: record.created_at,
+      }
+    })
+    .filter((award): award is Award => award !== null)
+}
 
 export async function getAwardsOf(
   chatId: number,
@@ -25,26 +47,7 @@ export async function getAwardsOf(
   if (error) throw 'Error'
 
   // SUPABASE BUG #01
-  return (data as unknown as SBAward[])
-    .map((record: SBAward) => {
-      const trophy = AWARDS.find((trophy) => trophy.id === record.trophy_id)
-
-      if (!trophy) {
-        console.error('Award not found', record.trophy_id)
-        return null
-      }
-
-      return {
-        id: trophy.id,
-        chatId: record.chat_id,
-        userId: record.users?.id || record.characters.id,
-        userName: record.users?.name || record.characters.name,
-        name: trophy.name,
-        emoji: trophy.emoji,
-        date: record.created_at,
-      }
-    })
-    .filter((award): award is Award => award !== null)
+  return processAwards(data as unknown as SBAward[])
 }
 
 export async function giveAwardTo(

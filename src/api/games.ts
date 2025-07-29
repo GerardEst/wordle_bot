@@ -142,7 +142,7 @@ export async function getTopPlayersGlobal(): Promise<Result[]> {
   }
 }
 
-function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
+export function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
   const userPoints: Record<
     string,
     { id: number; name: string; total: number }

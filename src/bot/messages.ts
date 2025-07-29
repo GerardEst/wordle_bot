@@ -6,8 +6,6 @@ import {
 import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS, AWARDS } from '../conf.ts'
 import { FormattedMessage, Award, Result, Player } from '../interfaces.ts'
 
-// Define an interface for formatted messages
-
 export function buildRankingMessageFrom(records: Result[]): FormattedMessage {
   if (!records || records.length === 0) {
     return {

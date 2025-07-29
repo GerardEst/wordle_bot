@@ -1,5 +1,17 @@
 import { supabase } from '../lib/supabase.ts'
 
+export function validateUserId(userId: number): boolean {
+  return typeof userId === 'number' && userId > 0
+}
+
+export function validateUserName(userName: string): boolean {
+  return typeof userName === 'string' && userName.trim().length > 0
+}
+
+export function sanitizeUserName(userName: string): string {
+  return userName.trim().substring(0, 100)
+}
+
 export async function createPlayerIfNotExist(userId: number, userName: string) {
   try {
     const { data: existingUser, error } = await supabase
