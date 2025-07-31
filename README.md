@@ -22,7 +22,7 @@ Afegeix el bot a un xat existent clicant el link: [Afegeix moootbot a un xat](ht
 o bé:
 
 1. Crea un grup de Telegram amb la gent amb la que vols compartir les partides
-2. Afegeix el bot "mooot*cat_bot" *(Afegir un membre -> buscar "mooot*cat_bot")*
+2. Afegeix el bot "mooot_cat_bot" *(Afegir un membre -> buscar "mooot_cat_bot")*
 
 <br>
 

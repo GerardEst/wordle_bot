@@ -22,7 +22,7 @@ Add the bot to an existing chat by clicking the link: [Add moootbot to a chat](h
 or:
 
 1. Create a Telegram group with the people you want to share games with
-2. Add the "mooot*cat_bot" bot *(Add member -> search "mooot*cat_bot")*
+2. Add the "mooot_cat_bot" bot *(Add member -> search "mooot_cat_bot")*
 
 <br>
 
