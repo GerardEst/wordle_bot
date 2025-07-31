@@ -57,7 +57,7 @@ if (import.meta.main) {
     await takeAction(createGameRecord, toChatId)
   }
 
-  if (command === 'send-puntatge') {
+  if (command === 'send-llegenda') {
     console.log(`Sending punctuation table to dev chat: ${DEV_CHAT_ID}`)
 
     const sendPunctuationTable = async () => {

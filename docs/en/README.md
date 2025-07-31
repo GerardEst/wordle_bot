@@ -71,7 +71,7 @@ When a game is shared, the bot reacts with an emoji to the message that varies d
 ## Available commands
 
 - `/classificacio` - Shows the current league leaderboard
-- `/puntatge` - Shows the points table
+- `/llegenda` - Shows the points table
 - `/extres` - Options to add characters to the game
 - `/premis` - Check virtual trophies won and those at stake
 - `/top` - Shows the top 3 players from all leagues

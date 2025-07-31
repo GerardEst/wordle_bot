@@ -4,7 +4,7 @@ const bot = new Bot(Deno.env.get('TELEGRAM_TOKEN')!)
 
 const commands = [
   {
-    command: '/puntatge',
+    command: '/llegenda',
     description: "Mostra la taula d'equivalències de punts",
   },
   {

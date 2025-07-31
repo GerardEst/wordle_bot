@@ -23,7 +23,7 @@ export function setupCommands(bot: Bot) {
     ctx.reply(message.text, { parse_mode: message.parse_mode })
   })
 
-  bot.command('puntatge', (ctx: Context) => {
+  bot.command('llegenda', (ctx: Context) => {
     if (!ctx.chat) return
 
     const message = buildPunctuationTableMessage()

@@ -71,7 +71,7 @@ Cuando se comparte una partida, el bot reacciona con un emoji al mensaje que var
 ## Comandos disponibles
 
 - `/classificacio` - Muestra la clasificación de la liga actual
-- `/puntatge` - Muestra la tabla de puntos
+- `/llegenda` - Muestra la tabla de puntos
 - `/extres` - Opciones para añadir personajes a la partida
 - `/premis` - Consulta los trofeos virtuales ganados y los que están en juego
 - `/top` - Muestra el top 3 de jugadores de todas las ligas
