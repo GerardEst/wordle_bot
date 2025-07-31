@@ -11,7 +11,7 @@ import {
 } from './messages.ts'
 import { getPoints } from './utils.ts'
 import { EMOJI_REACTIONS } from '../conf.ts'
-import { getAllCharacters } from '../api/characters.ts'
+import { getAllCharacters, getChatCharacters } from '../api/characters.ts'
 
 export function setupCommands(bot: Bot) {
   bot.command('classificacio', async (ctx: Context) => {
@@ -28,23 +28,6 @@ export function setupCommands(bot: Bot) {
 
     const message = buildPunctuationTableMessage()
     ctx.reply(message.text, { parse_mode: message.parse_mode })
-  })
-
-  bot.command('extres', async (ctx: Context) => {
-    if (!ctx.chat) return
-
-    const allCharacters = await getAllCharacters()
-
-    const keyboard = new Keyboard()
-    for (const character of allCharacters) {
-      keyboard.text('Afegir a ' + character.name)
-      keyboard.row()
-    }
-    keyboard.text('🔙 Tancar opcions')
-    keyboard.resized()
-    keyboard.oneTime()
-
-    ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
   })
 
   bot.command('premis', (ctx: Context) => {
@@ -74,6 +57,45 @@ export function setupCommands(bot: Bot) {
     ctx.reply(message.text, { parse_mode: 'Markdown' })
   })
 
+  bot.command('afegir-personatge', async (ctx: Context) => {
+    if (!ctx.chat) return
+
+    const allCharacters = await getAllCharacters()
+
+    const keyboard = new Keyboard()
+    for (const character of allCharacters) {
+      keyboard.text('Afegir a ' + character.name)
+      keyboard.row()
+    }
+    keyboard.text('🔙 Tancar opcions')
+    keyboard.resized()
+    keyboard.oneTime()
+
+    ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
+  })
+
+  bot.command('eliminar-personatge', async (ctx: Context) => {
+    if (!ctx.chat) return
+
+    const chatCharacters = await getChatCharacters(ctx.chat.id)
+
+    if (chatCharacters.length === 0) {
+      ctx.reply('No hi ha personatges a la lliga.')
+      return
+    }
+
+    const keyboard = new Keyboard()
+    for (const character of chatCharacters) {
+      keyboard.text('Eliminar a ' + character.name)
+      keyboard.row()
+    }
+    keyboard.text('🔙 Tancar opcions')
+    keyboard.resized()
+    keyboard.oneTime()
+
+    ctx.reply('Quin personatge vols eliminar?', { reply_markup: keyboard })
+  })
+
   bot.on('message', async (ctx: Context) => {
     if (!ctx.message || !ctx.message.text) return
 
@@ -85,6 +107,15 @@ export function setupCommands(bot: Bot) {
       const characterName = ctx.message.text.split('Afegir a ')[1]
       await charactersApi.addCharacterToChat(ctx.message.chat.id, characterName)
       ctx.reply(`${characterName} s'ha afegit a la partida!`, {
+        reply_markup: { remove_keyboard: true },
+      })
+    } else if (ctx.message.text.includes('Eliminar a ')) {
+      const characterName = ctx.message.text.split('Eliminar a ')[1]
+      await charactersApi.removeCharacterFromChat(
+        ctx.message.chat.id,
+        characterName
+      )
+      ctx.reply(`${characterName} s'ha tret de la partida!`, {
         reply_markup: { remove_keyboard: true },
       })
     } else if (ctx.message.text === 'Vitrina virtual') {

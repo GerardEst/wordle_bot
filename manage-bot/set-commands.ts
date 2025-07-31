@@ -12,16 +12,20 @@ const commands = [
     description: 'Mostra la classificació actual',
   },
   {
-    command: '/extres',
-    description: 'Afegeix un jugador especial',
-  },
-  {
     command: '/premis',
     description: 'Obre les opcions de premis',
   },
   {
     command: '/top',
     description: 'Mostra el top 3 mundial',
+  },
+  {
+    command: '/afegir-personatge',
+    description: 'Afegeix un personatge a la lliga',
+  },
+  {
+    command: '/eliminar-personatge',
+    description: 'Elimina un personatge de la lliga',
   },
 ]
 

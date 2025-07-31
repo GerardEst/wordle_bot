@@ -36,6 +36,27 @@ export async function addCharacterToChat(
   return data[0]
 }
 
+export async function removeCharacterFromChat(
+  chatId: number,
+  characterName: string
+) {
+  const characterId = await getCharacterIdByName(characterName)
+
+  const { data, error } = await supabase
+    .from('characters_chats')
+    .delete()
+    .eq('chat_id', chatId)
+    .eq('character_id', characterId)
+    .select()
+
+  if (error) {
+    console.error(error)
+    throw 'Error removing character from chat'
+  }
+
+  return data[0]
+}
+
 export async function getChatCharacters(chatId: number) {
   const { data, error } = await supabase
     .from('characters_chats')
