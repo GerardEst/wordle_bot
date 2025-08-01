@@ -20,11 +20,11 @@ const commands = [
     description: 'Mostra el top 3 mundial',
   },
   {
-    command: '/afegir-personatge',
+    command: '/afegirpersonatge',
     description: 'Afegeix un personatge a la lliga',
   },
   {
-    command: '/eliminar-personatge',
+    command: '/eliminarpersonatge',
     description: 'Elimina un personatge de la lliga',
   },
 ]

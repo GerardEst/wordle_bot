@@ -57,7 +57,7 @@ export function setupCommands(bot: Bot) {
     ctx.reply(message.text, { parse_mode: 'Markdown' })
   })
 
-  bot.command('afegir-personatge', async (ctx: Context) => {
+  bot.command('afegirpersonatge', async (ctx: Context) => {
     if (!ctx.chat) return
 
     const allCharacters = await getAllCharacters()
@@ -74,7 +74,7 @@ export function setupCommands(bot: Bot) {
     ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
   })
 
-  bot.command('eliminar-personatge', async (ctx: Context) => {
+  bot.command('eliminarpersonatge', async (ctx: Context) => {
     if (!ctx.chat) return
 
     const chatCharacters = await getChatCharacters(ctx.chat.id)
