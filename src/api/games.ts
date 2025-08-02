@@ -31,30 +31,29 @@ export async function getChatPunctuations(
       ? await supabase
           .from('games_chats')
           .select(
-            'user_id, users(name), character_id, characters(name), punctuation, created_at'
+            'user_id, users(name), character_id, characters(name), punctuation, time, created_at'
           )
           .eq('chat_id', chatId)
           .eq('user_id', userId)
           .gte('created_at', dateRange.from)
           .lte('created_at', dateRange.to)
+          .order('punctuation', { ascending: false })
+          .order('time', { ascending: true })
       : await supabase
           .from('games_chats')
           .select(
-            'user_id, users(name), character_id, characters(name), punctuation, created_at'
+            'user_id, users(name), character_id, characters(name), punctuation, time, created_at'
           )
           .eq('chat_id', chatId)
           .gte('created_at', dateRange.from)
           .lte('created_at', dateRange.to)
+          .order('punctuation', { ascending: false })
+          .order('time', { ascending: true })
 
     if (error) throw error
 
-    // Sort results by score (descending)
-    const sortedResults = [...(data || [])].sort(
-      (a, b) => b.punctuation - a.punctuation
-    )
-
     // SUPABASE BUG #01 - Selecting foreign keys expect an array of objects, but it is really returning a simple object
-    return sortedResults as unknown as SBGameRecord[]
+    return data as unknown as SBGameRecord[]
   } catch (error) {
     console.error('Error getting chat punctuations', error)
     return []
@@ -129,7 +128,7 @@ export async function getTopPlayersGlobal(): Promise<Result[]> {
   try {
     const { data, error } = await supabase
       .from('games_chats')
-      .select('user_id, users(name), punctuation, created_at')
+      .select('user_id, users(name), punctuation, time, created_at')
       .is('character_id', null)
       .gte('created_at', dateRange.from)
       .lte('created_at', dateRange.to)
@@ -148,7 +147,7 @@ export async function getTopPlayersGlobal(): Promise<Result[]> {
 export function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
   const userPoints: Record<
     string,
-    { id: number; name: string; total: number }
+    { id: number; name: string; total: number; totalTime: number }
   > = {}
   const processedUserDates: Record<string, Set<string>> = {}
 
@@ -156,6 +155,7 @@ export function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
     const userId = record.user_id || record.character_id
     const userName = record.users?.name || record.characters?.name
     const points = record.punctuation
+    const time = record.time
     const recordInSpain = getSpainDateFromUTC(record.created_at)
 
     if (!userId || !userName) return []
@@ -166,6 +166,7 @@ export function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
         id: userId,
         name: userName,
         total: 0,
+        totalTime: 0,
       }
       processedUserDates[userId] = new Set()
     }
@@ -175,12 +176,19 @@ export function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
     // Only count this record if we haven't seen this Spain date for this user yet
     if (!processedUserDates[userId].has(spainDateString)) {
       userPoints[userId].total += points
+      userPoints[userId].totalTime += time
       processedUserDates[userId].add(spainDateString)
     }
   }
 
-  // Sort points descending
-  const ranking = Object.values(userPoints).sort((a, b) => b.total - a.total)
+  // Sort by points descending, then by total time ascending for tie-breaking
+  const ranking = Object.values(userPoints).sort((a, b) => {
+    if (b.total !== a.total) {
+      return b.total - a.total
+    }
+    return a.totalTime - b.totalTime
+  })
 
-  return ranking
+  // Remove totalTime from the final result to match RankingEntry interface
+  return ranking.map(({ totalTime, ...entry }) => entry)
 }

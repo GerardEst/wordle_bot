@@ -6,6 +6,7 @@ export interface SBGameRecord {
   character_id?: number
   characters?: { name: string }
   punctuation: number
+  time: number
   created_at: string
 }
 
