@@ -37,11 +37,8 @@ export function getSpainDateFromUTC(date: string) {
 }
 
 export function getPoints(message: string) {
-  console.log('Get points from message: ' + message)
-
-  const tries = message.split(' ')[2]?.split('/')[0]
-
-  console.log('Tries: ' + tries)
+  // Message format is "mooot 123\n🎯3/6\n⏱00:00:00\n"
+  const tries = message.split('\n')[1]?.replace('🎯', '').split('/')[0].trim()
 
   if (tries === 'X') return 0
 
@@ -51,9 +48,8 @@ export function getPoints(message: string) {
 }
 
 export function getTime(message: string) {
-  // Message format is "mooot 123 3/6\n00:00:00\n" or "mooot 123 3/6\n\n" if no time
-
-  const time = message.split('\n')[1]
+  // Message format is "mooot 123\n🎯3/6\n⏱00:00:00\n"
+  const time = message.split('\n')[2]?.replace('⏱', '').trim()
 
   console.log('time: ' + time)
 
