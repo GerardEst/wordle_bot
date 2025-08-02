@@ -76,16 +76,18 @@ export async function createRecord({
   userName,
   characterId,
   points,
+  time,
 }: {
   chatId: number
   userId?: number
   userName?: string
   characterId?: number
   points: number
+  time: number
 }) {
   if (userId)
     console.log(
-      `Player ${userId}, ${userName} played on chat ${chatId} for +${points} points`
+      `Player ${userId}, ${userName} played on chat ${chatId} for +${points} points in ${time} seconds`
     )
 
   if (userId && userName) await createPlayerIfNotExist(userId, userName)
@@ -97,6 +99,7 @@ export async function createRecord({
         user_id: userId || null,
         character_id: characterId || null,
         punctuation: points,
+        time,
         game: 'mooot',
       },
     ])

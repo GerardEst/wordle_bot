@@ -9,7 +9,7 @@ import {
   buildCurrentAwardsMessage,
   buildTopMessage,
 } from './messages.ts'
-import { getPoints } from './utils.ts'
+import { getPoints, getTime } from './utils.ts'
 import { EMOJI_REACTIONS } from '../conf.ts'
 import { getAllCharacters, getChatCharacters } from '../api/characters.ts'
 
@@ -147,6 +147,7 @@ async function reactToGame(ctx: Context) {
   if (!ctx.message || !ctx.message.text) return
 
   const points = getPoints(ctx.message.text)
+  const time = getTime(ctx.message.text)
 
   const userTodayGames = await api.getChatPunctuations(
     ctx.message.chat.id,
@@ -173,5 +174,6 @@ async function reactToGame(ctx: Context) {
       ctx.message.from.last_name || ''
     }`.trim(),
     points,
+    time,
   })
 }

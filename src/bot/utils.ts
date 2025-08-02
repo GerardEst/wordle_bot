@@ -50,6 +50,21 @@ export function getPoints(message: string) {
   return points + 1
 }
 
+export function getTime(message: string) {
+  // Message format is "mooot 123 3/6\n00:00:00\n" or "mooot 123 3/6\n\n" if no time
+
+  const time = message.split('\n')[1]
+
+  console.log('time: ' + time)
+
+  if (!time || time.trim() === '') return 0
+
+  const [hours, minutes, seconds] = time.split(':').map(Number)
+  const totalSeconds = hours * 3600 + minutes * 60 + seconds
+
+  return totalSeconds
+}
+
 export function getPointsForHability(hability: number) {
   const normalizedHability = hability / 10
   const rand = Math.random()
