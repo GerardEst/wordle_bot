@@ -8,6 +8,7 @@ import {
   buildAwardsMessage,
   buildCurrentAwardsMessage,
   buildTopMessage,
+  buildTimetrialRankingMessageFrom,
 } from './messages.ts'
 import { getPoints, getTime } from './utils.ts'
 import { EMOJI_REACTIONS } from '../conf.ts'
@@ -19,6 +20,20 @@ export function setupCommands(bot: Bot) {
 
     const records = await api.getChatRanking(ctx.chat.id, 'month')
     const message = buildRankingMessageFrom(records)
+
+    ctx.reply(message.text, { parse_mode: message.parse_mode })
+  })
+
+  bot.command('contrarrellotge', async (ctx: Context) => {
+    if (!ctx.chat) return
+
+    const records = await api.getChatRanking(
+      ctx.chat.id,
+      'day',
+      undefined,
+      true
+    )
+    const message = buildTimetrialRankingMessageFrom(records)
 
     ctx.reply(message.text, { parse_mode: message.parse_mode })
   })

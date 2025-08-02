@@ -12,12 +12,16 @@ const commands = [
     description: 'Mostra la classificació actual',
   },
   {
+    command: '/contrarrellotge',
+    description: 'Mostra la classificació contrarrellotge',
+  },
+  {
     command: '/premis',
     description: 'Obre les opcions de premis',
   },
   {
     command: '/top',
-    description: 'Mostra el top 3 mundial',
+    description: 'Mostra el top 5 mundial',
   },
   {
     command: '/afegirpersonatge',

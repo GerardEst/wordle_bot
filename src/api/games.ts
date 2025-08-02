@@ -63,10 +63,11 @@ export async function getChatPunctuations(
 export async function getChatRanking(
   chatId: number,
   period: 'all' | 'month' | 'day',
-  userId?: number
+  userId?: number,
+  timetrial?: boolean
 ) {
   const records = await getChatPunctuations(chatId, period, userId)
-  return getCleanedRanking(records)
+  return getCleanedRanking(records, timetrial)
 }
 
 export async function createRecord({
@@ -137,14 +138,17 @@ export async function getTopPlayersGlobal(): Promise<Result[]> {
 
     // SUPABASE BUG #01
     const ranking = getCleanedRanking((data as unknown as SBGameRecord[]) || [])
-    return ranking.slice(0, 3)
+    return ranking.slice(0, 5)
   } catch (error) {
     console.error('Error getting top players globally', error)
     return []
   }
 }
 
-export function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
+export function getCleanedRanking(
+  records: SBGameRecord[],
+  timetrial: boolean = false
+): RankingEntry[] {
   const userPoints: Record<
     string,
     { id: number; name: string; total: number; totalTime: number }
@@ -181,14 +185,23 @@ export function getCleanedRanking(records: SBGameRecord[]): RankingEntry[] {
     }
   }
 
-  // Sort by points descending, then by total time ascending for tie-breaking
+  // Sort based on timetrial mode
   const ranking = Object.values(userPoints).sort((a, b) => {
-    if (b.total !== a.total) {
+    if (timetrial) {
+      // In timetrial mode: sort by time first, then by points for tie-breaking
+      if (a.totalTime !== b.totalTime) {
+        return a.totalTime - b.totalTime
+      }
       return b.total - a.total
+    } else {
+      // Normal mode: sort by points first, then by time for tie-breaking
+      if (b.total !== a.total) {
+        return b.total - a.total
+      }
+      return a.totalTime - b.totalTime
     }
-    return a.totalTime - b.totalTime
   })
 
   // Remove totalTime from the final result to match RankingEntry interface
-  return ranking.map(({ totalTime, ...entry }) => entry)
+  return ranking
 }

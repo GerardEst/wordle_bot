@@ -41,6 +41,49 @@ export function buildRankingMessageFrom(records: Result[]): FormattedMessage {
   }
 }
 
+export function buildTimetrialRankingMessageFrom(
+  records: Result[]
+): FormattedMessage {
+  if (!records || records.length === 0) {
+    return {
+      text: 'Encara no hi ha puntuacions en aquest xat',
+      parse_mode: 'Markdown',
+    }
+  }
+
+  let answer = `${LEAGUE_EMOJI[getCurrentMonth()]} *${
+    LEAGUE_NAMES[getCurrentMonth()]
+  }* - Contrarrellotge actual \n\n`
+  answer += '```\n'
+  answer += 'Pos  Nom        Temps Ac.\n'
+  answer += '—————————————————————————\n'
+
+  records.forEach((user, index) => {
+    // From seconds to HH:MM:SS
+    const totalSeconds = user.totalTime
+    const hours = Math.floor(totalSeconds / 3600)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const seconds = totalSeconds % 60
+
+    let rank = `${index + 1}`.padEnd(4)
+    if (index === 0) rank = '🥇'
+    else if (index === 1) rank = '🥈'
+    else if (index === 2) rank = '🥉'
+    else rank = ` ${index + 1} `
+    const namePadded = `${user.name}`.padEnd(15)
+
+    answer += `${rank} ${namePadded} ${hours}:${minutes}:${seconds}\n`
+  })
+
+  answer += '```' // End monospace block
+  answer += `\nFalten *${getDaysRemainingInMonth()} dies* pel final de la lliga!\n\n`
+
+  return {
+    text: answer,
+    parse_mode: 'Markdown',
+  }
+}
+
 export function buildPunctuationTableMessage(): FormattedMessage {
   let message = '*🧮 Taula de puntuacions i reaccions*\n\n'
   message += `1/6 - *6 punts* - ${EMOJI_REACTIONS[6]}\n`
@@ -182,7 +225,7 @@ export function buildCharactersActionsMessage(
 }
 
 export function buildTopMessage(topPlayers: Player[]): FormattedMessage {
-  let message = '⭐️ *Top 3 mundial*\n\n'
+  let message = '⭐️ *Top 5 mundial*\n\n'
 
   if (topPlayers.length === 0) {
     message = 'Encara no hi ha jugadors aquest mes'

@@ -35,12 +35,14 @@ export interface RankingEntry {
   id: number
   name: string
   total: number
+  totalTime: number
 }
 
 export interface Result {
   id: number
   name: string
   total: number
+  totalTime: number
 }
 
 export interface Player {
