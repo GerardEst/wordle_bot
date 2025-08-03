@@ -233,7 +233,7 @@ export function buildTopMessage(topPlayers: Player[]): FormattedMessage {
   if (topPlayers.length === 0) {
     message = 'Encara no hi ha jugadors aquest mes'
   } else {
-    const medals = ['1️⃣', '2️⃣', '3️⃣']
+    const medals = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
     topPlayers.forEach((player, index) => {
       const medal = medals[index] || '🏅'
       message += `${medal} ${player.name}: ${player.total} punts\n`
