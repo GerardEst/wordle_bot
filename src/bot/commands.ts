@@ -126,13 +126,17 @@ export function setupCommands(bot: Bot) {
       })
     } else if (ctx.message.text.includes('Eliminar a ')) {
       const characterName = ctx.message.text.split('Eliminar a ')[1]
-      await charactersApi.removeCharacterFromChat(
+      const deletedChar = await charactersApi.removeCharacterFromChat(
         ctx.message.chat.id,
         characterName
       )
-      ctx.reply(`${characterName} s'ha tret de la partida!`, {
-        reply_markup: { remove_keyboard: true },
-      })
+      if (deletedChar) { 
+        ctx.reply(`${characterName} s'ha tret de la partida!`, {
+          reply_markup: { remove_keyboard: true },
+        })
+      } else {
+        ctx.reply('Alguna cosa no ha anat bé, no s\'ha pogut eliminar el personatge.', {)
+      }
     } else if (ctx.message.text === 'Vitrina virtual') {
       const awards = await awardsApi.getAwardsOf(ctx.message.chat.id)
       const message = buildAwardsMessage(awards)
