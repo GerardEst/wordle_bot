@@ -1,7 +1,9 @@
 import { SBCharacter } from '../interfaces.ts'
 import { supabase } from '../lib/supabase.ts'
 
-export function transformChatCharacters(data: { characters: SBCharacter }[]): SBCharacter[] {
+export function transformChatCharacters(
+  data: { characters: SBCharacter }[]
+): SBCharacter[] {
   return data.map((record) => {
     return {
       id: record.characters.id,
@@ -11,8 +13,11 @@ export function transformChatCharacters(data: { characters: SBCharacter }[]): SB
   })
 }
 
-export function findCharacterIdByName(characters: SBCharacter[], name: string): number | null {
-  const character = characters.find(char => char.name === name)
+export function findCharacterIdByName(
+  characters: SBCharacter[],
+  name: string
+): number | null {
+  const character = characters.find((char) => char.name === name)
   return character ? character.id : null
 }
 
@@ -42,6 +47,9 @@ export async function removeCharacterFromChat(
 ) {
   const characterId = await getCharacterIdByName(characterName)
 
+  console.log(characterId)
+  console.log(chatId)
+
   const { data, error } = await supabase
     .from('characters_chats')
     .delete()
@@ -53,6 +61,8 @@ export async function removeCharacterFromChat(
     console.error(error)
     throw 'Error removing character from chat'
   }
+
+  console.log(data)
 
   return data[0]
 }
@@ -68,7 +78,9 @@ export async function getChatCharacters(chatId: number) {
   }
 
   // SUPABASE BUG #01
-  return transformChatCharacters(data as unknown as { characters: SBCharacter }[])
+  return transformChatCharacters(
+    data as unknown as { characters: SBCharacter }[]
+  )
 }
 
 export async function getAllCharacters() {
