@@ -130,12 +130,14 @@ export function setupCommands(bot: Bot) {
         ctx.message.chat.id,
         characterName
       )
-      if (deletedChar) { 
+      if (deletedChar) {
         ctx.reply(`${characterName} s'ha tret de la partida!`, {
           reply_markup: { remove_keyboard: true },
         })
       } else {
-        ctx.reply('Alguna cosa no ha anat bé, no s\'ha pogut eliminar el personatge.', {)
+        ctx.reply(
+          "Alguna cosa no ha anat bé, no s'ha pogut eliminar el personatge."
+        )
       }
     } else if (ctx.message.text === 'Vitrina virtual') {
       const awards = await awardsApi.getAwardsOf(ctx.message.chat.id)
