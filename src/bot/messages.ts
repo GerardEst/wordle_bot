@@ -188,7 +188,10 @@ export function buildCurrentAwardsMessage(): FormattedMessage {
   }
 }
 
-export function buildNewAwardsMessage(results: Result[]): FormattedMessage {
+export function buildNewAwardsMessage(
+  results: Result[],
+  timetrialResults: Result[]
+): FormattedMessage {
   let message = `*${LEAGUE_EMOJI[getCurrentMonth()]} Final de la ${
     LEAGUE_NAMES[getCurrentMonth()]
   } ${LEAGUE_EMOJI[getCurrentMonth()]}*\n\n`
@@ -200,6 +203,18 @@ export function buildNewAwardsMessage(results: Result[]): FormattedMessage {
     )
     message += `*${results[i].name}*, amb *${results[i].total} punts*, rep el trofeu *${award?.name} ${award?.emoji}*\n`
   }
+
+  message += '\n'
+
+  for (let i = 0; i < 3; i++) {
+    if (!timetrialResults[i]) continue
+
+    const award = AWARDS.find(
+      (award) => award.id === parseInt(`${getCurrentMonth()}${i + 5}`)
+    )
+    message += `*${timetrialResults[i].name}*, amb un temps acumulat de *${timetrialResults[i].totalTime}*, rep el trofeu *${award?.name} ${award?.emoji}*\n`
+  }
+
   const award = AWARDS.find(
     (award) => award.id === parseInt(`${getCurrentMonth()}${3}`)
   )

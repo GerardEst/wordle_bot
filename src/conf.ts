@@ -64,6 +64,7 @@ export const AWARDS = [
     name: 'Patac de bronze',
     emoji: '🥉☂️',
   },
+
   // Lliga del meló
   {
     id: 60,
@@ -97,7 +98,22 @@ export const AWARDS = [
     emoji: '🥉🦗',
   },
   {
-    id: 73,
+    id: 85,
+    name: "Guepard d'or",
+    emoji: '🥇🐆',
+  },
+  {
+    id: 86,
+    name: 'Rinoceront de plata',
+    emoji: '🥈🦏',
+  },
+  {
+    id: 87,
+    name: 'Porquet de bronze',
+    emoji: '🥉🐖',
+  },
+  {
+    id: 79,
     name: 'Una formiga',
     emoji: '🐜',
   },
@@ -118,7 +134,22 @@ export const AWARDS = [
     emoji: '🥉🍹',
   },
   {
-    id: 83,
+    id: 85,
+    name: "Traca d'or",
+    emoji: '🥇🧨',
+  },
+  {
+    id: 86,
+    name: 'Fanalet de plata',
+    emoji: '🥈🌷',
+  },
+  {
+    id: 87,
+    name: 'Pogo de bronze',
+    emoji: '🥉💥',
+  },
+  {
+    id: 89,
     name: 'Un glaçó',
     emoji: '🧊',
   },
@@ -139,8 +170,23 @@ export const AWARDS = [
     emoji: '',
   },
   {
-    id: 93,
-    name: 'Un butifler',
-    emoji: '',
+    id: 95,
+    name: " d'or",
+    emoji: '🥇',
+  },
+  {
+    id: 96,
+    name: ' de plata',
+    emoji: '🥈',
+  },
+  {
+    id: 97,
+    name: ' de bronze',
+    emoji: '🥉',
+  },
+  {
+    id: 99,
+    name: 'Un caganer',
+    emoji: '💩',
   },
 ]

@@ -69,30 +69,63 @@ export async function handleEndOfMonth(bot: Bot, chatId?: number) {
 
   for (const chat of chats) {
     const results = await api.getChatRanking(chat, 'month')
-    await saveAwardsToDb(chat, results)
-    await sendResultsToChats(bot, chat, results)
+    const timetrialResults = await api.getChatRanking(
+      chat,
+      'month',
+      undefined,
+      true
+    )
+
+    await saveAwardsToDb(chat, results, timetrialResults)
+    await sendResultsToChats(bot, chat, results, timetrialResults)
   }
 }
 
-async function saveAwardsToDb(chat: number, results: Result[]) {
+async function saveAwardsToDb(
+  chat: number,
+  results: Result[],
+  timetrialResults: Result[]
+) {
+  const top3PlayerIds = new Set<number>()
+
   // Award top 3 positions
   for (let i = 0; i < 3; i++) {
-    if (!results[i]) continue
+    if (results[i]) {
+      await giveAwardTo(
+        chat,
+        results[i].id,
+        parseInt(`${getCurrentMonth()}${i}`)
+      )
+      top3PlayerIds.add(results[i].id)
+    }
 
-    await giveAwardTo(chat, results[i].id, parseInt(`${getCurrentMonth()}${i}`))
+    if (timetrialResults[i]) {
+      await giveAwardTo(
+        chat,
+        timetrialResults[i].id,
+        parseInt(`${getCurrentMonth()}${i + 5}`)
+      )
+      top3PlayerIds.add(timetrialResults[i].id)
+    }
   }
 
-  // Award 4th trophy to all players not in top 3
-  const fourthTrophyId = parseInt(`${getCurrentMonth()}3`)
-  for (let i = 3; i < results.length; i++) {
-    if (!results[i]) continue
+  // Give consolation trophy only to players who didn't get top 3 in any league
+  const consolationTrophyId = parseInt(`${getCurrentMonth()}9`)
 
-    await giveAwardTo(chat, results[i].id, fourthTrophyId)
+  for (const player of results) {
+    if (!top3PlayerIds.has(player.id)) {
+      await giveAwardTo(chat, player.id, consolationTrophyId)
+    }
   }
 }
 
-async function sendResultsToChats(bot: Bot, chat: number, results: Result[]) {
-  const message = buildNewAwardsMessage(results)
+async function sendResultsToChats(
+  bot: Bot,
+  chat: number,
+  results: Result[],
+  timetrialResults: Result[]
+) {
+  const message = buildNewAwardsMessage(results, timetrialResults)
 
   await bot.api.sendMessage(chat, message.text, {
     parse_mode: message.parse_mode,
