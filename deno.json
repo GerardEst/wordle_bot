@@ -10,6 +10,7 @@
     "dev:scrap-correct-word": "deno run --env --allow-env --allow-read --allow-net --allow-write --allow-run --allow-sys src/scrapping/check-correct-word.ts",
     "dev:send-word-info": "deno run --env --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys --allow-import src/cli-tools.ts send-word-info",
     "dev:send-classificacio": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-classificacio",
+    "dev:send-contrarrellotge": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-contrarrellotge",
     "dev:send-llegenda": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-llegenda",
     "dev:send-final-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-advise",
     "dev:send-characters-actions": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions",

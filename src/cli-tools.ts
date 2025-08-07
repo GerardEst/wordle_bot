@@ -9,8 +9,8 @@ import {
   buildAwardsMessage,
   buildCurrentAwardsMessage,
   buildTopMessage,
+  buildTimetrialRankingMessageFrom,
 } from './bot/messages.ts'
-import { sendWordInfo } from './scrapping/send-word-info.ts'
 
 const DEV_CHAT_ID = parseInt(Deno.env.get('DEV_CHAT_ID')!)
 const DEV_USER_ID = parseInt(Deno.env.get('DEV_USER_ID')!)
@@ -37,6 +37,23 @@ if (import.meta.main) {
     }
 
     await takeAction(sendRanking, toChatId)
+  }
+
+  if (command === 'send-contrarrellotge') {
+    const toChatId = parseInt(args[1]) || DEV_CHAT_ID
+
+    const sendTimetrial = async (chatId: number) => {
+      console.log(`Sending timetrial of chat: ${chatId}`)
+      const records = await api.getChatRanking(chatId, 'month', undefined, true)
+
+      const message = buildTimetrialRankingMessageFrom(records)
+
+      await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
+        parse_mode: message.parse_mode,
+      })
+    }
+
+    await takeAction(sendTimetrial, toChatId)
   }
 
   if (command === 'create-game-record') {
@@ -139,23 +156,6 @@ if (import.meta.main) {
     await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
       parse_mode: message.parse_mode,
     })
-  }
-
-  if (command === 'send-word-info') {
-    const word = args[1]
-    const toChatId = parseInt(args[2]) || DEV_CHAT_ID
-
-    // If a word is specified, it will send info for that
-    // If not, it will search for the last word
-    sendWordInfo(word, toChatId)
-  }
-
-  if (command === 'send-word-info-prod') {
-    const word = args[1]
-
-    // If a word is specified, it will send info for that
-    // If not, it will search for the last word
-    sendWordInfo(word)
   }
 
   /*
