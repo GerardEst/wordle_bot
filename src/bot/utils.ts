@@ -95,21 +95,27 @@ export function getTimeForHability(hability: number) {
   const rand = Math.random()
   const normalizedAction = normalizedHability * 0.7 + rand * 0.3
 
+  let baseTime = 0
+
   if (normalizedAction < 0.1) {
-    return Math.floor(Math.random() * 27000) + 9000 // 2.5h to 10h
+    baseTime = Math.floor(Math.random() * 27000) + 9000 // 2.5h to 10h
   } else if (normalizedAction < 0.3) {
-    return Math.floor(Math.random() * 18000) + 3600 // 1h to 6h
+    baseTime = Math.floor(Math.random() * 18000) + 3600 // 1h to 6h
   } else if (normalizedAction < 0.5) {
-    return Math.floor(Math.random() * 1800) + 1800 // 30min to 60min
+    baseTime = Math.floor(Math.random() * 1800) + 1800 // 30min to 60min
   } else if (normalizedAction < 0.7) {
-    return Math.floor(Math.random() * 900) + 600 // 10min to 25min
+    baseTime = Math.floor(Math.random() * 900) + 600 // 10min to 25min
   } else if (normalizedAction < 0.9) {
-    return Math.floor(Math.random() * 300) + 300 // 5min to 10min
+    baseTime = Math.floor(Math.random() * 300) + 300 // 5min to 10min
   } else if (normalizedAction < 0.98) {
-    return Math.floor(Math.random() * 240) + 120 // 2min to 6min
+    baseTime = Math.floor(Math.random() * 240) + 120 // 2min to 6min
   } else {
-    return Math.floor(Math.random() * 120) + 60 // 1min to 3min
+    baseTime = Math.floor(Math.random() * 120) + 60 // 1min to 3min
   }
+
+  // Add random seconds (0-59) to make times more realistic
+  const extraSeconds = Math.floor(Math.random() * 60)
+  return baseTime + extraSeconds
 }
 
 export function getFormatTime(seconds: number): string {
