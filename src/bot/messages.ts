@@ -169,19 +169,15 @@ export function buildCurrentAwardsMessage(): FormattedMessage {
     )
 
   let message = `_Premis en joc a la ${LEAGUE_NAMES[getCurrentMonth()]}_\n\n`
-  message += `1r premi:*${getAwardByPosition(0)?.emoji} ${
-    getAwardByPosition(0)?.name
-  } *\n\n`
-  message += `2n premi:*${getAwardByPosition(1)?.emoji} ${
-    getAwardByPosition(1)?.name
-  } *\n\n`
-  message += `3r premi:*${getAwardByPosition(2)?.emoji} ${
-    getAwardByPosition(2)?.name
-  } *\n\n`
-  message += `_Hi haurà premi de consolació per la resta de participants._\n\n`
-  // message += `Premis de consolació:*${getAwardByPosition(3)?.emoji} ${
-  //   getAwardByPosition(3)?.name
-  // } *\n\n`
+  message += '*Lliga normal*\n'
+  message += `${getAwardByPosition(0)?.emoji} ${getAwardByPosition(0)?.name} \n`
+  message += `${getAwardByPosition(1)?.emoji} ${getAwardByPosition(1)?.name} \n`
+  message += `${getAwardByPosition(2)?.emoji} ${getAwardByPosition(2)?.name} \n`
+  message += '\n*Lliga contrarrellotge*\n'
+  message += `${getAwardByPosition(5)?.emoji} ${getAwardByPosition(5)?.name} \n`
+  message += `${getAwardByPosition(6)?.emoji} ${getAwardByPosition(6)?.name} \n`
+  message += `${getAwardByPosition(7)?.emoji} ${getAwardByPosition(7)?.name} \n`
+  message += `\n_Hi haurà premi de consolació per la resta de participants._\n\n`
 
   return {
     text: message,
