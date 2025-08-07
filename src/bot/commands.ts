@@ -179,6 +179,8 @@ async function reactToGame(ctx: Context) {
   const isGameToday = userTodayGames.length > 0
 
   try {
+    console.log(EMOJI_REACTIONS[points])
+
     await (isGameToday ? ctx.react('🌚') : ctx.react(EMOJI_REACTIONS[points]))
   } catch (error) {
     console.error('Failed to react to message:', error.message)
