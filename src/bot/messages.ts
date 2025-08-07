@@ -217,12 +217,11 @@ export function buildNewAwardsMessage(results: Result[]): FormattedMessage {
 
 export function buildCharactersActionsMessage(
   name: string,
-  points: number
+  points: number,
+  time: string
 ): FormattedMessage {
   return {
-    text: `*${name}* acaba de jugar i ha aconseguit *${points} punt${
-      points === 1 ? '' : 's'
-    }*.`,
+    text: `*${name}*\n🎯 ${7 - points}/6\n⏳ ${time}`,
     parse_mode: 'Markdown',
   }
 }

@@ -6,7 +6,12 @@ import {
   buildNewAwardsMessage,
 } from '../bot/messages.ts'
 import { getChatCharacters } from '../api/characters.ts'
-import { getPointsForHability, getCurrentMonth } from '../bot/utils.ts'
+import {
+  getPointsForHability,
+  getCurrentMonth,
+  getTimeForHability,
+  getFormatTime,
+} from '../bot/utils.ts'
 import { giveAwardTo } from '../api/awards.ts'
 import { Result } from '../interfaces.ts'
 
@@ -81,7 +86,7 @@ async function saveAwardsToDb(chat: number, results: Result[]) {
   const fourthTrophyId = parseInt(`${getCurrentMonth()}3`)
   for (let i = 3; i < results.length; i++) {
     if (!results[i]) continue
-    
+
     await giveAwardTo(chat, results[i].id, fourthTrophyId)
   }
 }
@@ -102,13 +107,21 @@ export async function sendCharactersActions(bot: Bot, chatId?: number) {
 
     for (const character of characters) {
       const points = getPointsForHability(character.hability)
+      const time = getTimeForHability(character.hability)
 
       await api.createRecord({
         chatId: chat,
         characterId: character.id,
         points,
+        time,
       })
-      const message = buildCharactersActionsMessage(character.name, points)
+
+      const formattedTime = getFormatTime(time)
+      const message = buildCharactersActionsMessage(
+        character.name,
+        points,
+        formattedTime
+      )
 
       await bot.api.sendMessage(chat, message.text, {
         parse_mode: message.parse_mode,

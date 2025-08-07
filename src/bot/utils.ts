@@ -64,6 +64,13 @@ export function getTime(message: string) {
 export function getPointsForHability(hability: number) {
   const normalizedHability = hability / 10
   const rand = Math.random()
+
+  // 10% chance for unexpected results
+  if (rand < 0.1) {
+    // Complete random result for variability
+    return Math.floor(Math.random() * 7) // 0-6 points completely random
+  }
+
   const normalizedAction = normalizedHability * 0.7 + rand * 0.3
 
   if (normalizedAction < 0.1) {
@@ -81,4 +88,35 @@ export function getPointsForHability(hability: number) {
   } else {
     return 6
   }
+}
+
+export function getTimeForHability(hability: number) {
+  const normalizedHability = hability / 10
+  const rand = Math.random()
+  const normalizedAction = normalizedHability * 0.7 + rand * 0.3
+
+  if (normalizedAction < 0.1) {
+    return Math.floor(Math.random() * 27000) + 9000 // 2.5h to 10h
+  } else if (normalizedAction < 0.3) {
+    return Math.floor(Math.random() * 18000) + 3600 // 1h to 6h
+  } else if (normalizedAction < 0.5) {
+    return Math.floor(Math.random() * 1800) + 1800 // 30min to 60min
+  } else if (normalizedAction < 0.7) {
+    return Math.floor(Math.random() * 900) + 600 // 10min to 25min
+  } else if (normalizedAction < 0.9) {
+    return Math.floor(Math.random() * 300) + 300 // 5min to 10min
+  } else if (normalizedAction < 0.98) {
+    return Math.floor(Math.random() * 240) + 120 // 2min to 6min
+  } else {
+    return Math.floor(Math.random() * 120) + 60 // 1min to 3min
+  }
+}
+
+export function getFormatTime(seconds: number): string {
+  // Input is in seconds, output should be string like '00:12:24'
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
 }
