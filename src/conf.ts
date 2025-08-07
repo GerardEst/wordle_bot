@@ -1,4 +1,4 @@
-type AllowedEmojiReaction = '☠️' | '😭' | '😐' | '😎' | '🤯' | '🏆' | '🤨'
+type AllowedEmojiReaction = '💩' | '😭' | '😐' | '😎' | '🤯' | '🏆' | '🤨'
 
 export const LEAGUE_NAMES: Record<number, string> = {
   1: 'Lliga Polar',
@@ -31,7 +31,7 @@ export const LEAGUE_EMOJI: Record<number, string> = {
 }
 
 export const EMOJI_REACTIONS: Record<number, AllowedEmojiReaction> = {
-  0: '☠️',
+  0: '💩',
   1: '😭',
   2: '😐',
   3: '😎',
