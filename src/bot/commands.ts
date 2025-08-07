@@ -29,7 +29,7 @@ export function setupCommands(bot: Bot) {
 
     const records = await api.getChatRanking(
       ctx.chat.id,
-      'day',
+      'month',
       undefined,
       true
     )
