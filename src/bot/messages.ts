@@ -2,6 +2,7 @@ import {
   getDaysRemainingInMonth,
   getCurrentMonth,
   isSummerTime,
+  getFormatTime,
 } from './utils.ts'
 import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS, AWARDS } from '../conf.ts'
 import { FormattedMessage, Award, Result, Player } from '../interfaces.ts'
@@ -212,13 +213,22 @@ export function buildNewAwardsMessage(
     const award = AWARDS.find(
       (award) => award.id === parseInt(`${getCurrentMonth()}${i + 5}`)
     )
-    message += `*${timetrialResults[i].name}*, amb un temps acumulat de *${timetrialResults[i].totalTime}*, rep el trofeu *${award?.name} ${award?.emoji}*\n`
+    message += `*${
+      timetrialResults[i].name
+    }*, amb un temps acumulat de *${getFormatTime(
+      timetrialResults[i].totalTime
+    )}*, rep el trofeu *${award?.name} ${award?.emoji}*\n`
   }
 
+  message += '\n'
+
   const award = AWARDS.find(
-    (award) => award.id === parseInt(`${getCurrentMonth()}${3}`)
+    (award) => award.id === parseInt(`${getCurrentMonth()}9`)
   )
-  message += `La resta us emporteu el premi de consolació, ${award?.name} ${award?.emoji}!\n\n`
+
+  message += `La resta us emporteu el premi de consolació, ${award?.name.toLowerCase()} ${
+    award?.emoji
+  }!\n\n`
   message += `\nEnhorabona a tots! 🥳 I recordeu que demà comença la *${
     LEAGUE_NAMES[getCurrentMonth() + 1]
   }*!`

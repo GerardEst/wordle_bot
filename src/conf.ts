@@ -98,17 +98,17 @@ export const AWARDS = [
     emoji: '🥉🦗',
   },
   {
-    id: 85,
+    id: 75,
     name: "Guepard d'or",
     emoji: '🥇🐆',
   },
   {
-    id: 86,
+    id: 76,
     name: 'Rinoceront de plata',
     emoji: '🥈🦏',
   },
   {
-    id: 87,
+    id: 77,
     name: 'Porquet de bronze',
     emoji: '🥉🐖',
   },
