@@ -102,6 +102,7 @@ export async function createRecord({
         punctuation: points,
         time,
         game: 'mooot',
+        lang: 'cat'
       },
     ])
 
