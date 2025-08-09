@@ -101,7 +101,6 @@ export async function createRecord({
         character_id: characterId || null,
         punctuation: points,
         time,
-        game: 'mooot',
         lang: 'cat'
       },
     ])
