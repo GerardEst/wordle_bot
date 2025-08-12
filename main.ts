@@ -2,11 +2,7 @@ import { setupCommands } from './src/bot/commands.ts'
 import { startUp } from './src/bot/startup.ts'
 import { setupCronjobs } from './src/cronjobs/cronjobs.ts'
 
-// Debug environment variables
-console.log('BOT_LANG raw value:', Deno.env.get('BOT_LANG'))
-console.log('TELEGRAM_TOKEN_CAT exists:', !!Deno.env.get('TELEGRAM_TOKEN_CAT'))
-console.log('TELEGRAM_TOKEN_ES exists:', !!Deno.env.get('TELEGRAM_TOKEN_ES'))
-
+// We need a default for deployment. In runtime it gets the lang from env correctly
 const bot_lang = (Deno.env.get('BOT_LANG') as 'cat' | 'es') || 'cat'
 
 console.log(`Launching bot version: ${bot_lang}`)
