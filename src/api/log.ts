@@ -2,11 +2,6 @@ import { supabase } from '../lib/supabase.ts'
 
 type LogLevel = 'debug' | 'info' | 'warn' | 'error'
 
-interface LogEntry {
-    message: string
-    data?: any
-}
-
 async function logToDatabase(
     level: LogLevel,
     message: string,
@@ -14,14 +9,9 @@ async function logToDatabase(
     bot_lang?: string
 ): Promise<void> {
     try {
-        const logEntry: LogEntry = {
-            message,
-            data,
-        }
-
         const { error } = await supabase
             .from('bot_logs')
-            .insert({ message: logEntry, lang: bot_lang, type: level })
+            .insert({ title: message, data: data, lang: bot_lang, type: level })
 
         if (error) {
             console.error('Failed to log to database:', error)
