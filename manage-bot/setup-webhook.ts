@@ -18,13 +18,13 @@ async function setupWebhook(bot: 'es' | 'cat') {
         const data = await response.json()
 
         if (data.ok) {
-            console.log(`✅ Webhook for ${bot} setup successful!`)
+            console.log(`Webhook for ${bot} setup successful!`)
             console.log(data)
         } else {
-            console.error(`❌ Webhook setup for ${bot} failed:`, data)
+            console.error(`Webhook setup for ${bot} failed:`, data)
         }
     } catch (error) {
-        console.error(`❌ Error setting webhook for ${bot}:`, error)
+        console.error(`Error setting webhook for ${bot}:`, error)
     }
 }
 

@@ -227,12 +227,8 @@ async function reactToGame(ctx: Context, lang: lang) {
 
     if (!ctx.message || !ctx.message.text) return
 
-    console.log(`Processing ${lang} game:`, ctx.message.text)
-
     const points = getPoints(ctx.message.text)
     const time = getTime(ctx.message.text)
-
-    console.log(`Parsed points: ${points}, time: ${time}`)
 
     const userTodayGames = await api.getChatPunctuations(
         ctx.message.chat.id,
@@ -242,13 +238,11 @@ async function reactToGame(ctx: Context, lang: lang) {
     )
 
     const isGameToday = userTodayGames.length > 0
-    console.log(`User has game today: ${isGameToday}`)
 
     try {
         await (isGameToday
             ? ctx.react('🌚')
             : ctx.react(EMOJI_REACTIONS[points]))
-        console.log(`Reacted with: ${isGameToday ? '🌚' : EMOJI_REACTIONS[points]}`)
     } catch (error: any) {
         console.error('Failed to react to message:', error.message)
     }
@@ -257,19 +251,14 @@ async function reactToGame(ctx: Context, lang: lang) {
     if (isGameToday) return
 
     // Save player game
-    try {
-        await api.createRecord({
-            chatId: ctx.message.chat.id,
-            userId: ctx.message.from.id,
-            userName: `${ctx.message.from.first_name} ${
-                ctx.message.from.last_name || ''
-            }`.trim(),
-            points,
-            time,
-            lang,
-        })
-        console.log('Game saved successfully')
-    } catch (error: any) {
-        console.error('Failed to save game:', error.message)
-    }
+    await api.createRecord({
+        chatId: ctx.message.chat.id,
+        userId: ctx.message.from.id,
+        userName: `${ctx.message.from.first_name} ${
+            ctx.message.from.last_name || ''
+        }`.trim(),
+        points,
+        time,
+        lang,
+    })
 }

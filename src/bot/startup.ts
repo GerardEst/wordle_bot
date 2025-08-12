@@ -17,13 +17,8 @@ export function startUp(token: string) {
 
         Deno.serve(async (req) => {
             try {
-                console.log('Received request:', req.method, req.url)
                 const contentType = req.headers.get('content-type') || ''
-                console.log('Content-Type:', contentType)
-                
                 if (contentType.includes('application/json')) {
-                    const body = await req.clone().text()
-                    console.log('Webhook payload:', body)
                     return await handleUpdate(req)
                 }
 
