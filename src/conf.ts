@@ -2,18 +2,18 @@ type AllowedEmojiReaction = '💩' | '😭' | '😐' | '😎' | '🤯' | '🏆' 
 
 export const LEAGUE_NAMES: any = {
     es: {
-        1: 'Lliga Polar',
-        2: 'Minilliga',
-        3: 'Lliga Floral',
-        4: 'Lliga del Drac',
-        5: 'Lliga del Raig',
-        6: 'Lliga del Meló',
-        7: 'Lliga Seca',
-        8: 'Lliga Major',
-        9: 'Lliga de 1714',
-        10: 'Lliga Castanyera',
-        11: 'Lliga de la Mosca',
-        12: 'Lliga de Nadal',
+        1: '',
+        2: '',
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
+        8: 'Liga Mayor',
+        9: '',
+        10: '',
+        11: '',
+        12: '',
     },
     cat: {
         1: 'Lliga Polar',
@@ -33,17 +33,17 @@ export const LEAGUE_NAMES: any = {
 
 export const LEAGUE_EMOJI: any = {
     es: {
-        1: '⛄️',
-        2: '🐥',
-        3: '🌻',
-        4: '🐉',
-        5: '⚡',
-        6: '🍈',
-        7: '💨',
+        1: '',
+        2: '',
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
         8: '💃🏻',
-        9: '🤕',
-        10: '🌰',
-        11: '🪰',
+        9: '',
+        10: '',
+        11: '',
         12: '🐫🐫🐫',
     },
     cat: {
@@ -74,7 +74,44 @@ export const EMOJI_REACTIONS: Record<number, AllowedEmojiReaction> = {
 
 // ID is the month and the position
 export const AWARDS = {
-    es: [],
+    es: [
+        // Liga Mayor
+        {
+            id: 80,
+            name: 'Combinado de oro',
+            emoji: '🥇🥃',
+        },
+        {
+            id: 81,
+            name: 'Coctel de plata',
+            emoji: '🥈🍹',
+        },
+        {
+            id: 82,
+            name: 'Cerveza de bronce',
+            emoji: '🥉🍺',
+        },
+        {
+            id: 85,
+            name: 'Traca de oro',
+            emoji: '🥇🧨',
+        },
+        {
+            id: 86,
+            name: 'Baile de plata',
+            emoji: '🥈🌷',
+        },
+        {
+            id: 87,
+            name: 'Pogo de bronce',
+            emoji: '🥉💥',
+        },
+        {
+            id: 89,
+            name: 'Un hielo',
+            emoji: '🧊',
+        },
+    ],
     cat: [
         // Premis especials
         {

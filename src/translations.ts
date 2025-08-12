@@ -6,7 +6,7 @@ const translations: any = {
     timetrial: { es: 'contrarreloj', cat: 'contrarrellotge' },
     legend: { es: 'leyenda', cat: 'llegenda' },
     trophies: { es: 'premios', cat: 'premis' },
-    addCharacter: { es: 'añadirpersonaje', cat: 'afegirpersonatge' },
+    addCharacter: { es: 'anadirpersonaje', cat: 'afegirpersonatge' },
     removeCharacter: { es: 'eliminarpersonaje', cat: 'eliminarpersonatge' },
 
     // Secondary commands
@@ -86,7 +86,7 @@ const translations: any = {
         cat: '*🧮 Taula de puntuacions i reaccions*',
     },
     legendExplain: {
-        es: 'Se daran los puntos al mandar los resultados al chat, y se reaccionará al comentario con el emoji correspondiente',
+        es: 'Se otorgarán los puntos al mandar los resultados al chat, y se reaccionará al comentario con el emoji correspondiente',
         cat: "S'otorgaran els punts al enviar els resultats al xat, i es reaccionarà al comentari amb l'emoji corresponent",
     },
     finalAdviseTitleA: {
