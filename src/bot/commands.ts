@@ -124,7 +124,7 @@ function showTrophiesOptions(ctx: Context, lang: lang) {
 async function sendTop(ctx: Context, lang: lang) {
     if (!ctx.chat) return
 
-    const topPlayers = await api.getTopPlayersGlobal()
+    const topPlayers = await api.getTopPlayersGlobal(lang)
     const message = buildTopMessage(topPlayers, lang)
 
     ctx.reply(message.text, { parse_mode: 'Markdown' })

@@ -132,13 +132,14 @@ export async function getChats(lang: lang): Promise<number[]> {
     }
 }
 
-export async function getTopPlayersGlobal(): Promise<Result[]> {
+export async function getTopPlayersGlobal(lang: lang): Promise<Result[]> {
     const dateRange = getDateRangeForPeriod('month')
 
     try {
         const { data, error } = await supabase
             .from('games_chats')
             .select('user_id, users(name), punctuation, time, created_at')
+            .eq('lang', lang)
             .is('character_id', null)
             .gte('created_at', dateRange.from)
             .lte('created_at', dateRange.to)
