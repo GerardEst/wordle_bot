@@ -1,68 +1,68 @@
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 
 const bot_cat = new Bot(Deno.env.get('TELEGRAM_TOKEN_CAT')!)
-const bot_es = new Bot(Deno.env.get('TELEGRAM_TOKEN_CAT')!)
+const bot_es = new Bot(Deno.env.get('TELEGRAM_TOKEN_ES')!)
 
 const commands_cat = [
-  {
-    command: '/llegenda',
-    description: "Mostra la taula d'equivalències de punts",
-  },
-  {
-    command: '/classificacio',
-    description: 'Mostra la classificació actual',
-  },
-  {
-    command: '/contrarrellotge',
-    description: 'Mostra la classificació contrarrellotge',
-  },
-  {
-    command: '/premis',
-    description: 'Obre les opcions de premis',
-  },
-  {
-    command: '/top',
-    description: 'Mostra el top 5 mundial',
-  },
-  {
-    command: '/afegirpersonatge',
-    description: 'Afegeix un personatge a la lliga',
-  },
-  {
-    command: '/eliminarpersonatge',
-    description: 'Elimina un personatge de la lliga',
-  },
+    {
+        command: '/llegenda',
+        description: "Mostra la taula d'equivalències de punts",
+    },
+    {
+        command: '/classificacio',
+        description: 'Mostra la classificació actual',
+    },
+    {
+        command: '/contrarrellotge',
+        description: 'Mostra la classificació contrarrellotge',
+    },
+    {
+        command: '/premis',
+        description: 'Obre les opcions de premis',
+    },
+    {
+        command: '/top',
+        description: 'Mostra el top 5 mundial',
+    },
+    {
+        command: '/afegirpersonatge',
+        description: 'Afegeix un personatge a la lliga',
+    },
+    {
+        command: '/eliminarpersonatge',
+        description: 'Elimina un personatge de la lliga',
+    },
 ]
 
 const commands_es = [
-  {
-    command: '/leyenda',
-    description: "Muestra la tabla de equivaléncias de puntos",
-  },
-  {
-    command: '/clasificación',
-    description: 'Muestra la clasificación actual',
-  },
-  {
-    command: '/contrarreloj',
-    description: 'Muestra la clasificación contrarreloj',
-  },
-  {
-    command: '/premios',
-    description: 'Abre las opciones de premios',
-  },
-  {
-    command: '/top',
-    description: 'Muestra el top 5 mundial',
-  },
-  {
-    command: '/añadirpersonaje',
-    description: 'Añade un personaje a la liga',
-  },
-  {
-    command: '/eliminarpersonaje',
-    description: 'Elimina un personaje de la liga',
-  },
+    {
+        command: '/leyenda',
+        description: 'Muestra la tabla de equivaléncias de puntos',
+    },
+    {
+        command: '/clasificacion',
+        description: 'Muestra la clasificación actual',
+    },
+    {
+        command: '/contrarreloj',
+        description: 'Muestra la clasificación contrarreloj',
+    },
+    {
+        command: '/premios',
+        description: 'Abre las opciones de premios',
+    },
+    {
+        command: '/top',
+        description: 'Muestra el top 5 mundial',
+    },
+    {
+        command: '/anadirpersonaje',
+        description: 'Añade un personaje a la liga',
+    },
+    {
+        command: '/eliminarpersonaje',
+        description: 'Elimina un personaje de la liga',
+    },
 ]
 
 bot_cat.api.setMyCommands(commands_cat)
