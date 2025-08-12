@@ -3,6 +3,7 @@ import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
 import { Result, SBGameRecord, RankingEntry, lang } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
+import { log } from './log.ts'
 
 // export async function getAllUniqueGamesOfToday(lang:lang) {
 //     try {
@@ -93,8 +94,10 @@ export async function createRecord({
     lang: lang
 }) {
     if (userId)
-        console.log(
-            `Player ${userId}, ${userName} played on chat ${chatId} for +${points} points in ${time} seconds with ${lang} bot`
+        log.info(
+            'User sent a game',
+            `Player ${userId}, ${userName} played on chat ${chatId} for +${points} points in ${time} seconds with ${lang} bot`,
+            lang
         )
 
     if (userId && userName) await createPlayerIfNotExist(userId, userName)
