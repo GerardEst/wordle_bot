@@ -46,10 +46,20 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
 async function reactToMessage(ctx: Context, lang: lang) {
     if (!ctx.message || !ctx.message.text) return
 
-    const isFromMooot = ctx.message.text.includes('#mooot')
+    // If we receive something from any of my wardles, it
+    // goes to reactToGame and uses what for the lang?
+    // The deno env, but how does it know where it is?
+    // When it is launched from a chat with both bots, both deno deploys get triggered and each of them reacts in a way?
+    // So
 
-    if (isFromMooot) {
-        await reactToGame(ctx, lang)
+    const isFromLang = ctx.message.text.includes('#mooot')
+        ? 'cat'
+        : ctx.message.text.includes('#wardle')
+        ? 'es'
+        : null
+
+    if (isFromLang) {
+        await reactToGame(ctx, isFromLang)
     } else if (ctx.message.text.includes(t('add', lang))) {
         sendAddCharacter(ctx, lang)
     } else if (ctx.message.text.includes(t('remove', lang))) {
