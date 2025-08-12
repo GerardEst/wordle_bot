@@ -1,192 +1,227 @@
 type AllowedEmojiReaction = '💩' | '😭' | '😐' | '😎' | '🤯' | '🏆' | '🤨'
 
-export const LEAGUE_NAMES: Record<number, string> = {
-  1: 'Lliga Polar',
-  2: 'Minilliga',
-  3: 'Lliga Floral',
-  4: 'Lliga del Drac',
-  5: 'Lliga del Raig',
-  6: 'Lliga del Meló',
-  7: 'Lliga Seca',
-  8: 'Lliga Major',
-  9: 'Lliga de 1714',
-  10: 'Lliga Castanyera',
-  11: 'Lliga de la Mosca',
-  12: 'Lliga de Nadal',
+export const LEAGUE_NAMES: any = {
+    es: {
+        1: 'Lliga Polar',
+        2: 'Minilliga',
+        3: 'Lliga Floral',
+        4: 'Lliga del Drac',
+        5: 'Lliga del Raig',
+        6: 'Lliga del Meló',
+        7: 'Lliga Seca',
+        8: 'Lliga Major',
+        9: 'Lliga de 1714',
+        10: 'Lliga Castanyera',
+        11: 'Lliga de la Mosca',
+        12: 'Lliga de Nadal',
+    },
+    cat: {
+        1: 'Lliga Polar',
+        2: 'Minilliga',
+        3: 'Lliga Floral',
+        4: 'Lliga del Drac',
+        5: 'Lliga del Raig',
+        6: 'Lliga del Meló',
+        7: 'Lliga Seca',
+        8: 'Lliga Major',
+        9: 'Lliga de 1714',
+        10: 'Lliga Castanyera',
+        11: 'Lliga de la Mosca',
+        12: 'Lliga de Nadal',
+    },
 }
 
-export const LEAGUE_EMOJI: Record<number, string> = {
-  1: '⛄️',
-  2: '🐥',
-  3: '🌻',
-  4: '🐉',
-  5: '⚡',
-  6: '🍈',
-  7: '💨',
-  8: '💃🏻',
-  9: '🤕',
-  10: '🌰',
-  11: '🪰',
-  12: '🐫🐫🐫',
+export const LEAGUE_EMOJI: any = {
+    es: {
+        1: '⛄️',
+        2: '🐥',
+        3: '🌻',
+        4: '🐉',
+        5: '⚡',
+        6: '🍈',
+        7: '💨',
+        8: '💃🏻',
+        9: '🤕',
+        10: '🌰',
+        11: '🪰',
+        12: '🐫🐫🐫',
+    },
+    cat: {
+        1: '⛄️',
+        2: '🐥',
+        3: '🌻',
+        4: '🐉',
+        5: '⚡',
+        6: '🍈',
+        7: '💨',
+        8: '💃🏻',
+        9: '🤕',
+        10: '🌰',
+        11: '🪰',
+        12: '🐫🐫🐫',
+    },
 }
 
 export const EMOJI_REACTIONS: Record<number, AllowedEmojiReaction> = {
-  0: '💩',
-  1: '😭',
-  2: '😐',
-  3: '😎',
-  4: '🤯',
-  5: '🏆',
-  6: '🤨',
+    0: '💩',
+    1: '😭',
+    2: '😐',
+    3: '😎',
+    4: '🤯',
+    5: '🏆',
+    6: '🤨',
 }
 
 // ID is the month and the position
-export const AWARDS = [
-  // Premis especials
-  {
-    id: 200,
-    name: 'Ram de disculpes',
-    emoji: '💐',
-  },
-  // Lliga del Raig
-  {
-    id: 50,
-    name: "Zeus d'or",
-    emoji: '🥇🧔🏼',
-  },
-  {
-    id: 51,
-    name: 'Tro de plata',
-    emoji: '🥈⛈️',
-  },
-  {
-    id: 52,
-    name: 'Patac de bronze',
-    emoji: '🥉☂️',
-  },
+export const AWARDS = {
+    es: [],
+    cat: [
+        // Premis especials
+        {
+            id: 200,
+            name: 'Ram de disculpes',
+            emoji: '💐',
+        },
+        // Lliga del Raig
+        {
+            id: 50,
+            name: "Zeus d'or",
+            emoji: '🥇🧔🏼',
+        },
+        {
+            id: 51,
+            name: 'Tro de plata',
+            emoji: '🥈⛈️',
+        },
+        {
+            id: 52,
+            name: 'Patac de bronze',
+            emoji: '🥉☂️',
+        },
 
-  // Lliga del meló
-  {
-    id: 60,
-    name: 'Meló amb pernil',
-    emoji: '🥇🍈',
-  },
-  {
-    id: 61,
-    name: 'Meló groc de plata',
-    emoji: '🥈🍈',
-  },
-  {
-    id: 62,
-    name: 'Coco de bronze',
-    emoji: '🥉🥥',
-  },
-  // Lliga Seca
-  {
-    id: 70,
-    name: "Camell d'or",
-    emoji: '🥇🐫',
-  },
-  {
-    id: 71,
-    name: 'Cactus de plata',
-    emoji: '🥈🌵',
-  },
-  {
-    id: 72,
-    name: 'Grill de bronze',
-    emoji: '🥉🦗',
-  },
-  {
-    id: 75,
-    name: "Guepard d'or",
-    emoji: '🥇🐆',
-  },
-  {
-    id: 76,
-    name: 'Rinoceront de plata',
-    emoji: '🥈🦏',
-  },
-  {
-    id: 77,
-    name: 'Porquet de bronze',
-    emoji: '🥉🐖',
-  },
-  {
-    id: 79,
-    name: 'Una formiga',
-    emoji: '🐜',
-  },
-  // Lliga Major
-  {
-    id: 80,
-    name: "Ratafia d'or",
-    emoji: '🥇🥃',
-  },
-  {
-    id: 81,
-    name: 'Birra de plata',
-    emoji: '🥈🍺',
-  },
-  {
-    id: 82,
-    name: 'Cubata de bronze',
-    emoji: '🥉🍹',
-  },
-  {
-    id: 85,
-    name: "Traca d'or",
-    emoji: '🥇🧨',
-  },
-  {
-    id: 86,
-    name: 'Fanalet de plata',
-    emoji: '🥈🌷',
-  },
-  {
-    id: 87,
-    name: 'Pogo de bronze',
-    emoji: '🥉💥',
-  },
-  {
-    id: 89,
-    name: 'Un glaçó',
-    emoji: '🧊',
-  },
-  // Lliga de 1714
-  {
-    id: 90,
-    name: "Segador d'or",
-    emoji: '🥇🌾',
-  },
-  {
-    id: 91,
-    name: '',
-    emoji: '',
-  },
-  {
-    id: 92,
-    name: '',
-    emoji: '',
-  },
-  {
-    id: 95,
-    name: " d'or",
-    emoji: '🥇',
-  },
-  {
-    id: 96,
-    name: ' de plata',
-    emoji: '🥈',
-  },
-  {
-    id: 97,
-    name: ' de bronze',
-    emoji: '🥉',
-  },
-  {
-    id: 99,
-    name: 'Un caganer',
-    emoji: '💩',
-  },
-]
+        // Lliga del meló
+        {
+            id: 60,
+            name: 'Meló amb pernil',
+            emoji: '🥇🍈',
+        },
+        {
+            id: 61,
+            name: 'Meló groc de plata',
+            emoji: '🥈🍈',
+        },
+        {
+            id: 62,
+            name: 'Coco de bronze',
+            emoji: '🥉🥥',
+        },
+        // Lliga Seca
+        {
+            id: 70,
+            name: "Camell d'or",
+            emoji: '🥇🐫',
+        },
+        {
+            id: 71,
+            name: 'Cactus de plata',
+            emoji: '🥈🌵',
+        },
+        {
+            id: 72,
+            name: 'Grill de bronze',
+            emoji: '🥉🦗',
+        },
+        {
+            id: 75,
+            name: "Guepard d'or",
+            emoji: '🥇🐆',
+        },
+        {
+            id: 76,
+            name: 'Rinoceront de plata',
+            emoji: '🥈🦏',
+        },
+        {
+            id: 77,
+            name: 'Porquet de bronze',
+            emoji: '🥉🐖',
+        },
+        {
+            id: 79,
+            name: 'Una formiga',
+            emoji: '🐜',
+        },
+        // Lliga Major
+        {
+            id: 80,
+            name: "Ratafia d'or",
+            emoji: '🥇🥃',
+        },
+        {
+            id: 81,
+            name: 'Birra de plata',
+            emoji: '🥈🍺',
+        },
+        {
+            id: 82,
+            name: 'Cubata de bronze',
+            emoji: '🥉🍹',
+        },
+        {
+            id: 85,
+            name: "Traca d'or",
+            emoji: '🥇🧨',
+        },
+        {
+            id: 86,
+            name: 'Fanalet de plata',
+            emoji: '🥈🌷',
+        },
+        {
+            id: 87,
+            name: 'Pogo de bronze',
+            emoji: '🥉💥',
+        },
+        {
+            id: 89,
+            name: 'Un glaçó',
+            emoji: '🧊',
+        },
+        // Lliga de 1714
+        {
+            id: 90,
+            name: "Segador d'or",
+            emoji: '🥇🌾',
+        },
+        {
+            id: 91,
+            name: '',
+            emoji: '',
+        },
+        {
+            id: 92,
+            name: '',
+            emoji: '',
+        },
+        {
+            id: 95,
+            name: " d'or",
+            emoji: '🥇',
+        },
+        {
+            id: 96,
+            name: ' de plata',
+            emoji: '🥈',
+        },
+        {
+            id: 97,
+            name: ' de bronze',
+            emoji: '🥉',
+        },
+        {
+            id: 99,
+            name: 'Un caganer',
+            emoji: '💩',
+        },
+    ],
+}

@@ -3,200 +3,255 @@ import * as api from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
 import * as awardsApi from '../api/awards.ts'
 import {
-  buildRankingMessageFrom,
-  buildPunctuationTableMessage,
-  buildAwardsMessage,
-  buildCurrentAwardsMessage,
-  buildTopMessage,
-  buildTimetrialRankingMessageFrom,
+    buildRankingMessageFrom,
+    buildPunctuationTableMessage,
+    buildAwardsMessage,
+    buildCurrentAwardsMessage,
+    buildTopMessage,
+    buildTimetrialRankingMessageFrom,
 } from './messages.ts'
 import { getPoints, getTime } from './utils.ts'
 import { EMOJI_REACTIONS } from '../conf.ts'
 import { getAllCharacters, getChatCharacters } from '../api/characters.ts'
+import { lang } from '../interfaces.ts'
+import { t } from '../translations.ts'
 
-export function setupCommands(bot: Bot) {
-  bot.command('classificacio', async (ctx: Context) => {
-    if (!ctx.chat) return
+export function setupCommands(bot: Bot, bot_lang: lang) {
+    // TODO - Cada un dels comandos ara accepta el lang, i s'ha de modificar
 
-    const records = await api.getChatRanking(ctx.chat.id, 'month')
-    const message = buildRankingMessageFrom(records)
-
-    ctx.reply(message.text, { parse_mode: message.parse_mode })
-  })
-
-  bot.command('contrarrellotge', async (ctx: Context) => {
-    if (!ctx.chat) return
-
-    const records = await api.getChatRanking(
-      ctx.chat.id,
-      'month',
-      undefined,
-      true
+    bot.command(t('classification', bot_lang), (ctx: Context) =>
+        sendClasification(ctx, bot_lang)
     )
-    const message = buildTimetrialRankingMessageFrom(records)
+    bot.command(t('timetrial', bot_lang), (ctx: Context) => {
+        sendTimetrialClassification(ctx, bot_lang)
+    })
+    bot.command(t('legend', bot_lang), (ctx: Context) => {
+        sendLegend(ctx, bot_lang)
+    })
+    bot.command(t('trophies', bot_lang), (ctx: Context) => {
+        showTrophiesOptions(ctx, bot_lang)
+    })
+    bot.command('top', (ctx: Context) => {
+        sendTop(ctx, bot_lang)
+    })
+    bot.command(t('addCharacter', bot_lang), (ctx: Context) => {
+        sendAddCharacterOptions(ctx, bot_lang)
+    })
+    bot.command(t('removeCharacter', bot_lang), (ctx: Context) => {
+        sendRemoveCharacterOptions(ctx, bot_lang)
+    })
+    bot.on('message', (ctx: Context) => {
+        reactToMessage(ctx, bot_lang)
+    })
+}
 
-    ctx.reply(message.text, { parse_mode: message.parse_mode })
-  })
-
-  bot.command('llegenda', (ctx: Context) => {
-    if (!ctx.chat) return
-
-    const message = buildPunctuationTableMessage()
-    ctx.reply(message.text, { parse_mode: message.parse_mode })
-  })
-
-  bot.command('premis', (ctx: Context) => {
-    if (!ctx.chat) return
-
-    const keyboard = new Keyboard()
-    keyboard.text('Vitrina virtual')
-    keyboard.row()
-    keyboard.text('Trofeus en joc')
-    keyboard.row()
-    keyboard.text('🔙 Tancar opcions')
-    keyboard.resized()
-    keyboard.oneTime()
-
-    ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
-  })
-
-  bot.command('top', async (ctx: Context) => {
-    if (!ctx.chat) return
-
-    const topPlayers = await api.getTopPlayersGlobal()
-    const message = buildTopMessage(topPlayers)
-
-    // TODO - Treure els characters del top
-    // -todo - veure com fa la suma i evitar que em sumi lo del xat test
-
-    ctx.reply(message.text, { parse_mode: 'Markdown' })
-  })
-
-  bot.command('afegirpersonatge', async (ctx: Context) => {
-    if (!ctx.chat) return
-
-    const allCharacters = await getAllCharacters()
-
-    const keyboard = new Keyboard()
-    for (const character of allCharacters) {
-      keyboard.text('Afegir a ' + character.name)
-      keyboard.row()
-    }
-    keyboard.text('🔙 Tancar opcions')
-    keyboard.resized()
-    keyboard.oneTime()
-
-    ctx.reply('Selecciona una opció:', { reply_markup: keyboard })
-  })
-
-  bot.command('eliminarpersonatge', async (ctx: Context) => {
-    if (!ctx.chat) return
-
-    const chatCharacters = await getChatCharacters(ctx.chat.id)
-
-    if (chatCharacters.length === 0) {
-      ctx.reply('No hi ha personatges a la lliga.')
-      return
-    }
-
-    const keyboard = new Keyboard()
-    for (const character of chatCharacters) {
-      keyboard.text('Eliminar a ' + character.name)
-      keyboard.row()
-    }
-    keyboard.text('🔙 Tancar opcions')
-    keyboard.resized()
-    keyboard.oneTime()
-
-    ctx.reply('Quin personatge vols eliminar?', { reply_markup: keyboard })
-  })
-
-  bot.on('message', async (ctx: Context) => {
+async function reactToMessage(ctx: Context, lang: lang) {
     if (!ctx.message || !ctx.message.text) return
 
     const isFromMooot = ctx.message.text.includes('#mooot')
 
     if (isFromMooot) {
-      await reactToGame(ctx)
-    } else if (ctx.message.text.includes('Afegir a ')) {
-      const characterName = ctx.message.text.split('Afegir a ')[1]
-      await charactersApi.addCharacterToChat(ctx.message.chat.id, characterName)
-      ctx.reply(`${characterName} s'ha afegit a la partida!`, {
-        reply_markup: { remove_keyboard: true },
-      })
-    } else if (ctx.message.text.includes('Eliminar a ')) {
-      const characterName = ctx.message.text.split('Eliminar a ')[1]
-      const deletedChar = await charactersApi.removeCharacterFromChat(
-        ctx.message.chat.id,
-        characterName
-      )
-      if (deletedChar) {
-        ctx.reply(`${characterName} s'ha tret de la partida!`, {
-          reply_markup: { remove_keyboard: true },
+        await reactToGame(ctx, lang)
+    } else if (ctx.message.text.includes(t('add', lang))) {
+        sendAddCharacter(ctx, lang)
+    } else if (ctx.message.text.includes(t('remove', lang))) {
+        sendRemoveCharacter(ctx, lang)
+    } else if (ctx.message.text === t('showcase', lang)) {
+        sendShowcase(ctx, lang)
+    } else if (ctx.message.text === t('monthTrophies', lang)) {
+        sendMonthTrophies(ctx, lang)
+    } else if (ctx.message.text === t('closeOptions', lang)) {
+        await ctx.reply(t('optionsClosed', lang), {
+            reply_markup: { remove_keyboard: true },
         })
-      } else {
-        ctx.reply(
-          "Alguna cosa no ha anat bé, no s'ha pogut eliminar el personatge."
-        )
-      }
-    } else if (ctx.message.text === 'Vitrina virtual') {
-      const awards = await awardsApi.getAwardsOf(ctx.message.chat.id)
-      const message = buildAwardsMessage(awards)
-
-      ctx.reply(message.text, {
-        parse_mode: message.parse_mode,
-        reply_markup: { remove_keyboard: true },
-      })
-    } else if (ctx.message.text === 'Trofeus en joc') {
-      const message = buildCurrentAwardsMessage()
-
-      ctx.reply(message.text, {
-        parse_mode: message.parse_mode,
-        reply_markup: { remove_keyboard: true },
-      })
-    } else if (ctx.message.text === '🔙 Tancar opcions') {
-      await ctx.reply('Opcions tancades', {
-        reply_markup: { remove_keyboard: true },
-      })
     }
-  })
 }
 
-async function reactToGame(ctx: Context) {
-  console.log(ctx.message)
+async function sendClasification(ctx: Context, lang: lang) {
+    if (!ctx.chat) return
 
-  if (!ctx.message || !ctx.message.text) return
+    const records = await api.getChatRanking(ctx.chat.id, 'month', lang)
+    const message = buildRankingMessageFrom(records, lang)
 
-  const points = getPoints(ctx.message.text)
-  const time = getTime(ctx.message.text)
+    ctx.reply(message.text, { parse_mode: message.parse_mode })
+}
 
-  const userTodayGames = await api.getChatPunctuations(
-    ctx.message.chat.id,
-    'day',
-    ctx.message.from.id
-  )
+async function sendTimetrialClassification(ctx: Context, lang: lang) {
+    if (!ctx.chat) return
 
-  const isGameToday = userTodayGames.length > 0
+    const records = await api.getChatRanking(
+        ctx.chat.id,
+        'month',
+        lang,
+        undefined,
+        true
+    )
+    const message = buildTimetrialRankingMessageFrom(records, lang)
 
-  try {
-    console.log(EMOJI_REACTIONS[points])
+    ctx.reply(message.text, { parse_mode: message.parse_mode })
+}
 
-    await (isGameToday ? ctx.react('🌚') : ctx.react(EMOJI_REACTIONS[points]))
-  } catch (error) {
-    console.error('Failed to react to message:', error.message)
-  }
+function sendLegend(ctx: Context, lang: lang) {
+    if (!ctx.chat) return
 
-  // We don't save the game if user already have a game today
-  if (isGameToday) return
+    const message = buildPunctuationTableMessage(lang)
+    ctx.reply(message.text, { parse_mode: message.parse_mode })
+}
 
-  // Save player game
-  await api.createRecord({
-    chatId: ctx.message.chat.id,
-    userId: ctx.message.from.id,
-    userName: `${ctx.message.from.first_name} ${
-      ctx.message.from.last_name || ''
-    }`.trim(),
-    points,
-    time,
-  })
+function showTrophiesOptions(ctx: Context, lang: lang) {
+    if (!ctx.chat) return
+
+    const keyboard = new Keyboard()
+    keyboard.text(t('showcase', lang))
+    keyboard.row()
+    keyboard.text(t('monthTrophies', lang))
+    keyboard.row()
+    keyboard.text(t('closeOptions', lang))
+    keyboard.resized()
+    keyboard.oneTime()
+
+    ctx.reply(t('selectOption', lang), { reply_markup: keyboard })
+}
+
+async function sendTop(ctx: Context, lang: lang) {
+    if (!ctx.chat) return
+
+    const topPlayers = await api.getTopPlayersGlobal()
+    const message = buildTopMessage(topPlayers, lang)
+
+    ctx.reply(message.text, { parse_mode: 'Markdown' })
+}
+
+async function sendAddCharacterOptions(ctx: Context, lang: lang) {
+    if (!ctx.chat) return
+
+    const allCharacters = await getAllCharacters(lang)
+
+    const keyboard = new Keyboard()
+    for (const character of allCharacters) {
+        keyboard.text(t('add', lang) + character.name)
+        keyboard.row()
+    }
+    keyboard.text(t('closeOptions', lang))
+    keyboard.resized()
+    keyboard.oneTime()
+
+    ctx.reply(t('selectOption', lang), { reply_markup: keyboard })
+}
+
+async function sendRemoveCharacterOptions(ctx: Context, lang: lang) {
+    if (!ctx.chat) return
+
+    const chatCharacters = await getChatCharacters(ctx.chat.id)
+
+    if (chatCharacters.length === 0) {
+        ctx.reply(t('noCharacters', lang))
+        return
+    }
+
+    const keyboard = new Keyboard()
+    for (const character of chatCharacters) {
+        keyboard.text(t('remove', lang) + character.name)
+        keyboard.row()
+    }
+    keyboard.text(t('closeOptions', lang))
+    keyboard.resized()
+    keyboard.oneTime()
+
+    ctx.reply(t('whichCharaterToDelete', lang), { reply_markup: keyboard })
+}
+
+async function sendAddCharacter(ctx: Context, lang: lang) {
+    const message = ctx.message
+    if (!message || !message.text) return
+
+    const characterName = message.text.split(t('add', lang))[1]
+    await charactersApi.addCharacterToChat(ctx.message.chat.id, characterName)
+
+    ctx.reply(`${characterName} ${t('charHasBeenAdded', lang)}`, {
+        reply_markup: { remove_keyboard: true },
+    })
+}
+
+async function sendRemoveCharacter(ctx: Context, lang: lang) {
+    const message = ctx.message
+    if (!message || !message.text) return
+
+    const characterName = message.text.split(t('remove', lang))[1]
+    const deletedChar = await charactersApi.removeCharacterFromChat(
+        ctx.message.chat.id,
+        characterName
+    )
+    if (deletedChar) {
+        ctx.reply(`${characterName} ${t('charHasBeenRemoved', lang)}`, {
+            reply_markup: { remove_keyboard: true },
+        })
+    } else {
+        ctx.reply(t('cantRemoveChar', lang))
+    }
+}
+
+async function sendShowcase(ctx: Context, lang: lang) {
+    const message = ctx.message
+    if (!message || !message.text) return
+
+    const awards = await awardsApi.getAwardsOf(message.chat.id)
+    const replyMessage = buildAwardsMessage(awards, lang)
+
+    ctx.reply(replyMessage.text, {
+        parse_mode: replyMessage.parse_mode,
+        reply_markup: { remove_keyboard: true },
+    })
+}
+
+function sendMonthTrophies(ctx: Context, lang: lang) {
+    const message = buildCurrentAwardsMessage(lang)
+
+    ctx.reply(message.text, {
+        parse_mode: message.parse_mode,
+        reply_markup: { remove_keyboard: true },
+    })
+}
+
+async function reactToGame(ctx: Context, lang: lang) {
+    console.log(ctx.message)
+
+    if (!ctx.message || !ctx.message.text) return
+
+    const points = getPoints(ctx.message.text)
+    const time = getTime(ctx.message.text)
+
+    const userTodayGames = await api.getChatPunctuations(
+        ctx.message.chat.id,
+        'day',
+        lang,
+        ctx.message.from.id
+    )
+
+    const isGameToday = userTodayGames.length > 0
+
+    try {
+        console.log(EMOJI_REACTIONS[points])
+
+        await (isGameToday
+            ? ctx.react('🌚')
+            : ctx.react(EMOJI_REACTIONS[points]))
+    } catch (error: any) {
+        console.error('Failed to react to message:', error.message)
+    }
+
+    // We don't save the game if user already have a game today
+    if (isGameToday) return
+
+    // Save player game
+    await api.createRecord({
+        chatId: ctx.message.chat.id,
+        userId: ctx.message.from.id,
+        userName: `${ctx.message.from.first_name} ${
+            ctx.message.from.last_name || ''
+        }`.trim(),
+        points,
+        time,
+        lang,
+    })
 }
