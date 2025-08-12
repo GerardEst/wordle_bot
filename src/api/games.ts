@@ -37,6 +37,7 @@ export async function getChatPunctuations(
                   )
                   .eq('chat_id', chatId)
                   .eq('user_id', userId)
+                  .eq('lang', lang)
                   .gte('created_at', dateRange.from)
                   .lte('created_at', dateRange.to)
                   .order('punctuation', { ascending: false })
@@ -47,6 +48,7 @@ export async function getChatPunctuations(
                       'user_id, users(name), character_id, characters(name), punctuation, time, created_at'
                   )
                   .eq('chat_id', chatId)
+                  .eq('lang', lang)
                   .gte('created_at', dateRange.from)
                   .lte('created_at', dateRange.to)
                   .order('punctuation', { ascending: false })
@@ -115,9 +117,11 @@ export async function createRecord({
     }
 }
 
-export async function getChats(): Promise<number[]> {
+export async function getChats(lang: lang): Promise<number[]> {
     try {
-        const { data, error } = await supabase.rpc('get_unique_chat_ids')
+        const { data, error } = await supabase.rpc('get_unique_chat_ids', {
+            lang_param: lang,
+        })
 
         if (error) throw error
 

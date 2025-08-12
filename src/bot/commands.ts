@@ -17,8 +17,6 @@ import { lang } from '../interfaces.ts'
 import { t } from '../translations.ts'
 
 export function setupCommands(bot: Bot, bot_lang: lang) {
-    // TODO - Cada un dels comandos ara accepta el lang, i s'ha de modificar
-
     bot.command(t('classification', bot_lang), (ctx: Context) =>
         sendClasification(ctx, bot_lang)
     )

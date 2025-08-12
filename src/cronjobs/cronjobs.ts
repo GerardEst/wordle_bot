@@ -16,9 +16,6 @@ import { giveAwardTo } from '../api/awards.ts'
 import { lang, Result } from '../interfaces.ts'
 
 export function setupCronjobs(bot: Bot, lang: lang) {
-    // TODO - Aqui segons l'idioma cambien coses?
-    // Potser no directament aquí sino només als missatges finals
-
     Deno.cron(
         'Send league end advise msg at 9 or 10 of every end of month',
         '0 8 28-31 * *',
@@ -58,7 +55,7 @@ export function setupCronjobs(bot: Bot, lang: lang) {
 
 async function sendEndAdviseToChats(bot: Bot, lang: lang) {
     const message = buildFinalAdviseMessage(lang)
-    const chats = await api.getChats()
+    const chats = await api.getChats(lang)
 
     for (const chat of chats) {
         await bot.api.sendMessage(chat, message.text, {
@@ -68,7 +65,7 @@ async function sendEndAdviseToChats(bot: Bot, lang: lang) {
 }
 
 export async function handleEndOfMonth(bot: Bot, lang: lang, chatId?: number) {
-    const chats = chatId ? [chatId] : await api.getChats()
+    const chats = chatId ? [chatId] : await api.getChats(lang)
 
     for (const chat of chats) {
         const results = await api.getChatRanking(chat, 'month', lang)
@@ -145,7 +142,7 @@ export async function sendCharactersActions(
     lang: lang,
     chatId?: number
 ) {
-    const chats = chatId ? [chatId] : await api.getChats()
+    const chats = chatId ? [chatId] : await api.getChats(lang)
 
     for (const chat of chats) {
         const characters = await getChatCharacters(chat)
