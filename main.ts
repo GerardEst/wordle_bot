@@ -3,8 +3,9 @@ import { startUp } from './src/bot/startup.ts'
 import { setupCronjobs } from './src/cronjobs/cronjobs.ts'
 
 // Debug environment variables
-console.log('All environment variables:', Object.fromEntries(Deno.env.toObject()))
 console.log('BOT_LANG raw value:', Deno.env.get('BOT_LANG'))
+console.log('TELEGRAM_TOKEN_CAT exists:', !!Deno.env.get('TELEGRAM_TOKEN_CAT'))
+console.log('TELEGRAM_TOKEN_ES exists:', !!Deno.env.get('TELEGRAM_TOKEN_ES'))
 
 const bot_lang = (Deno.env.get('BOT_LANG') as 'cat' | 'es') || 'cat'
 
