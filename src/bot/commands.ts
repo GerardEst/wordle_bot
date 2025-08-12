@@ -58,7 +58,7 @@ async function reactToMessage(ctx: Context, lang: lang) {
         ? 'es'
         : null
 
-    if (isFromLang) {
+    if (isFromLang && isFromLang === lang) {
         await reactToGame(ctx, isFromLang)
     } else if (ctx.message.text.includes(t('add', lang))) {
         sendAddCharacter(ctx, lang)
