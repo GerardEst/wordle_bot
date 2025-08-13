@@ -8,6 +8,7 @@ const translations: any = {
     trophies: { es: 'premios', cat: 'premis' },
     addCharacter: { es: 'anadirpersonaje', cat: 'afegirpersonatge' },
     removeCharacter: { es: 'eliminarpersonaje', cat: 'eliminarpersonatge' },
+    instructions: { es: 'instrucciones', cat: 'instruccions' },
 
     // Secondary commands
     add: { es: 'Añadir a ', cat: 'Afegir a ' },
@@ -164,6 +165,16 @@ const translations: any = {
     topNoPlayers: {
         es: 'Aún no hay jugadores este mes',
         cat: 'Encara no hi ha jugadors aquest mes',
+    },
+
+    // Instructions and welcome messages
+    welcomeMessage: {
+        es: '¡Hola! 👋\n\n🎯 Soy tu bot de ligas de Wordle. Cuando compartas tus resultados de #wardle aquí, los rastrearé automáticamente y mantendré una clasificación del grupo.\n\n📊 Usa /instrucciones para ver todos los comandos disponibles.\n\n¡Que empiecen los juegos! 🎮',
+        cat: 'Hola! 👋\n\n🎯 Sóc el bot de lligues de Mooot. Quan compartiu els resultats de Mooot aquí, els rastrejare automàticament i mantindré una classificació del grup.\n\n📊 Fés servir /instruccions per veure més detalls.\n\n',
+    },
+    instructionsMessage: {
+        es: '📋 *Instrucciones del Bot de Liga Wordle*\n\n🎯 *¿Cómo funciona?*\nComparte tus resultados de #wardle en este chat y yo me encargaré del resto. Reaccionaré a tu mensaje y guardaré tu puntuación automáticamente.\n\n📊 *Comandos disponibles:*\n• /clasificacion - Ver clasificación mensual\n• /contrarreloj - Ver clasificación por tiempo\n• /leyenda - Tabla de puntos y reacciones\n• /premios - Ver premios disponibles\n• /top - Top 5 mundial\n• /anadirpersonaje - Añadir personajes virtuales\n• /eliminarpersonaje - Eliminar personajes\n\n🏆 *Sistema de puntos:*\n• 1 intento = 6 puntos\n• 2 intentos = 5 puntos\n• 3 intentos = 4 puntos\n• 4 intentos = 3 puntos\n• 5 intentos = 2 puntos\n• 6 intentos = 1 punto\n• X (fallo) = 0 puntos\n\n¡Solo puedes jugar una vez al día! 🌚',
+        cat: '📋 *Instruccions del Bot de la Lliga del Mooot*\n\n🎯 *Com funciona?*\nCompartiu els resultats del Mooot en aquest xat i jo faig la resta. Reaccionaré als vostres missatges i registraré les puntuacions per formar la classificació.\n\nLes lligues son mensuals, cada final de mes es reparteixen premis als guanyadors i comença una nova lliga\n\nHi ha dues classificacions, la normal, que té en compte els punts aconseguits, i la contrarrellotge, que té en compte el temps. Els premis son diferents per cada lliga.\n\n📊 *Ordres disponibles:*\n• /classificacio - Veure classificació mensual\n• /contrarrellotge - Veure classificació per temps\n• /llegenda - Taula de punts i reaccions\n• /premis - Veure premis disponibles\n• /top - Top 5 mundial\n• /afegirpersonatge - Afegir personatges virtuals\n• /eliminarpersonatge - Eliminar personatges\n\n🏆 *Sistema de punts:*\n• 1 intent = 6 punts\n• 2 intents = 5 punts\n• 3 intents = 4 punts\n• 4 intents = 3 punts\n• 5 intents = 2 punts\n• 6 intents = 1 punt\n• X (fallada) = 0 punts\n\nNomés pots jugar un cop al dia!',
     },
 }
 
