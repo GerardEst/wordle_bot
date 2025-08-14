@@ -5,22 +5,6 @@ import { Result, SBGameRecord, RankingEntry, lang } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { log } from './log.ts'
 
-// export async function getAllUniqueGamesOfToday(lang:lang) {
-//     try {
-//         const { data, error } = await supabase.rpc(
-//             'get_all_user_punctuations_from_today',
-//             { lang_param: lang }
-//         )
-
-//         if (error) throw error
-
-//         return data
-//     } catch (error) {
-//         console.error('Error getting games', error)
-//         return []
-//     }
-// }
-
 export async function getChatPunctuations(
     chatId: number,
     period: 'all' | 'month' | 'day',

@@ -41,12 +41,12 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command(t('instructions', bot_lang), (ctx: Context) => {
         sendInstructions(ctx, bot_lang)
     })
-    
+
     // Welcome message when bot is added to a group
     bot.on('my_chat_member', (ctx: Context) => {
         handleChatMemberUpdate(ctx, bot_lang)
     })
-    
+
     bot.on('message', (ctx: Context) => {
         reactToMessage(ctx, bot_lang)
     })
@@ -225,9 +225,6 @@ function sendMonthTrophies(ctx: Context, lang: lang) {
 }
 
 async function reactToGame(ctx: Context, lang: lang) {
-    // TODO - Ara mateix reacciona en mooot en xats amb els dos, nosé què passa amb un xat només amb wardle
-    // Hauria de cambiar #wardle per #warde_es per en un futur igualar tot fàcilment i fer l'anglès
-
     if (!ctx.message || !ctx.message.text) return
 
     const points = getPoints(ctx.message.text)
@@ -268,20 +265,21 @@ async function reactToGame(ctx: Context, lang: lang) {
 
 function sendInstructions(ctx: Context, lang: lang) {
     if (!ctx.chat) return
-    
+
     const message = t('instructionsMessage', lang)
     ctx.reply(message, { parse_mode: 'Markdown' })
 }
 
 async function handleChatMemberUpdate(ctx: Context, lang: lang) {
     if (!ctx.myChatMember || !ctx.chat) return
-    
+
     const { old_chat_member, new_chat_member } = ctx.myChatMember
-    
+
     // Check if bot was just added to the group
     if (
-        old_chat_member.status === 'left' && 
-        (new_chat_member.status === 'member' || new_chat_member.status === 'administrator')
+        old_chat_member.status === 'left' &&
+        (new_chat_member.status === 'member' ||
+            new_chat_member.status === 'administrator')
     ) {
         const welcomeMessage = t('welcomeMessage', lang)
         await ctx.reply(welcomeMessage, { parse_mode: 'Markdown' })
