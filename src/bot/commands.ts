@@ -55,11 +55,7 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
 async function reactToMessage(ctx: Context, lang: lang) {
     if (!ctx.message || !ctx.message.text) return
 
-    const isFromLang = ctx.message.text.includes('#mooot')
-        ? 'cat'
-        : ctx.message.text.includes('#wardle')
-        ? 'es'
-        : null
+    const isFromLang = checkLang(ctx.message.text)
 
     if (isFromLang && isFromLang === lang) {
         await reactToGame(ctx, isFromLang)
@@ -76,6 +72,13 @@ async function reactToMessage(ctx: Context, lang: lang) {
             reply_markup: { remove_keyboard: true },
         })
     }
+}
+
+function checkLang(message: string) {
+    if (message.includes('#mooot')) return 'cat'
+    if (message.includes('#wardle_es')) return 'es'
+    if (message.includes('#wardle_en')) return 'en'
+    return null
 }
 
 async function sendClasification(ctx: Context, lang: lang) {
