@@ -8,7 +8,7 @@ const bot_lang = (Deno.env.get('BOT_LANG') as lang) || 'cat'
 
 console.log(`Launching bot version: ${bot_lang}`)
 
-const bot = startUp(Deno.env.get(`TELEGRAM_TOKEN_${bot_lang}`)!)
+const bot = startUp(Deno.env.get(`TELEGRAM_TOKEN_${bot_lang.toUpperCase()}`)!)
 
 setupCommands(bot, bot_lang)
 setupCronjobs(bot, bot_lang)
