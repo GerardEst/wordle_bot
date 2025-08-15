@@ -2,6 +2,7 @@ import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 
 const bot_cat = new Bot(Deno.env.get('TELEGRAM_TOKEN_CAT')!)
 const bot_es = new Bot(Deno.env.get('TELEGRAM_TOKEN_ES')!)
+const bot_en = new Bot(Deno.env.get('TELEGRAM_TOKEN_EN')!)
 
 const commands_cat = [
     {
@@ -65,5 +66,37 @@ const commands_es = [
     },
 ]
 
+const commands_en = [
+    {
+        command: '/legend',
+        description: 'Show the legend',
+    },
+    {
+        command: '/classification',
+        description: 'Show current classification',
+    },
+    {
+        command: '/timetrial',
+        description: 'Show timetrial classification',
+    },
+    {
+        command: '/trophies',
+        description: 'Open trophies options',
+    },
+    {
+        command: '/top',
+        description: 'Show the global top 5',
+    },
+    // {
+    //     command: '/addcharacter',
+    //     description: 'Añade un personaje a la liga',
+    // },
+    // {
+    //     command: '/deletecharacter',
+    //     description: 'Elimina un personaje de la liga',
+    // },
+]
+
 bot_cat.api.setMyCommands(commands_cat)
 bot_es.api.setMyCommands(commands_es)
+bot_en.api.setMyCommands(commands_en)

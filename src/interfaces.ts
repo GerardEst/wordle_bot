@@ -1,4 +1,4 @@
-export type lang = 'es' | 'cat'
+export type lang = 'cat' | 'es' | 'en'
 
 // SUPABASE INTERFACES
 

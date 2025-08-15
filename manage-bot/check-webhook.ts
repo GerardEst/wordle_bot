@@ -1,8 +1,7 @@
-async function checkWebhook(bot: 'es' | 'cat') {
-    const token =
-        bot === 'cat'
-            ? Deno.env.get('TELEGRAM_TOKEN_CAT')!
-            : Deno.env.get('TELEGRAM_TOKEN_ES')!
+import { lang } from '../src/interfaces.ts'
+
+async function checkWebhook(bot: lang) {
+    const token = Deno.env.get(`TELEGRAM_TOKEN_${bot.toUpperCase()}`)!
 
     const telegramApiUrl = `https://api.telegram.org/bot${token}/getWebhookInfo`
     try {
@@ -15,5 +14,6 @@ async function checkWebhook(bot: 'es' | 'cat') {
     }
 }
 
-checkWebhook('es')
 checkWebhook('cat')
+checkWebhook('en')
+checkWebhook('es')

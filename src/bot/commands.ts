@@ -206,7 +206,7 @@ async function sendShowcase(ctx: Context, lang: lang) {
     const message = ctx.message
     if (!message || !message.text) return
 
-    const awards = await awardsApi.getAwardsOf(message.chat.id)
+    const awards = await awardsApi.getAwardsOf(message.chat.id, lang)
     const replyMessage = buildAwardsMessage(awards, lang)
 
     ctx.reply(replyMessage.text, {

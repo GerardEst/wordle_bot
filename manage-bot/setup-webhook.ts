@@ -1,13 +1,10 @@
+import { lang } from '../src/interfaces.ts'
+
 console.log('Setting up webhook for Telegram bot...')
 
-async function setupWebhook(bot: 'es' | 'cat') {
-    const token =
-        bot === 'cat'
-            ? Deno.env.get('TELEGRAM_TOKEN_CAT')
-            : Deno.env.get('TELEGRAM_TOKEN_ES')
-
-    const domain =
-        bot === 'cat' ? Deno.env.get('DOMAIN_CAT') : Deno.env.get('DOMAIN_ES')
+async function setupWebhook(bot: lang) {
+    const token = Deno.env.get(`TELEGRAM_TOKEN_${bot.toUpperCase()}`)
+    const domain = Deno.env.get(`DOMAIN_${bot.toUpperCase()}`)
 
     const telegramApiUrl = `https://api.telegram.org/bot${token}/setWebhook?url=${domain}`
 
@@ -28,5 +25,6 @@ async function setupWebhook(bot: 'es' | 'cat') {
     }
 }
 
-setupWebhook('es')
 setupWebhook('cat')
+setupWebhook('es')
+setupWebhook('en')

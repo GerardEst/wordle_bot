@@ -1,20 +1,6 @@
 type AllowedEmojiReaction = '💩' | '😭' | '😐' | '😎' | '🤯' | '🏆' | '🤨'
 
 export const LEAGUE_NAMES: any = {
-    es: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: 'Liga Mayor',
-        9: '',
-        10: '',
-        11: '',
-        12: '',
-    },
     cat: {
         1: 'Lliga Polar',
         2: 'Minilliga',
@@ -29,9 +15,51 @@ export const LEAGUE_NAMES: any = {
         11: 'Lliga de la Mosca',
         12: 'Lliga de Nadal',
     },
+    es: {
+        1: '',
+        2: '',
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
+        8: 'Liga Mayor',
+        9: '',
+        10: '',
+        11: '',
+        12: '',
+    },
+    en: {
+        1: '',
+        2: '',
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
+        8: 'Desert League',
+        9: '',
+        10: '',
+        11: '',
+        12: '',
+    },
 }
 
 export const LEAGUE_EMOJI: any = {
+    cat: {
+        1: '⛄️',
+        2: '🐥',
+        3: '🌻',
+        4: '🐉',
+        5: '⚡',
+        6: '🍈',
+        7: '💨',
+        8: '💃🏻',
+        9: '🤕',
+        10: '🌰',
+        11: '🪰',
+        12: '🐫🐫🐫',
+    },
     es: {
         1: '',
         2: '',
@@ -46,19 +74,19 @@ export const LEAGUE_EMOJI: any = {
         11: '',
         12: '🐫🐫🐫',
     },
-    cat: {
-        1: '⛄️',
-        2: '🐥',
-        3: '🌻',
-        4: '🐉',
-        5: '⚡',
-        6: '🍈',
-        7: '💨',
-        8: '💃🏻',
-        9: '🤕',
-        10: '🌰',
-        11: '🪰',
-        12: '🐫🐫🐫',
+    en: {
+        1: '',
+        2: '',
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
+        8: '🐫',
+        9: '',
+        10: '',
+        11: '',
+        12: '🎅🏽',
     },
 }
 
@@ -74,44 +102,6 @@ export const EMOJI_REACTIONS: Record<number, AllowedEmojiReaction> = {
 
 // ID is the month and the position
 export const AWARDS = {
-    es: [
-        // Liga Mayor
-        {
-            id: 80,
-            name: 'Combinado de oro',
-            emoji: '🥇🥃',
-        },
-        {
-            id: 81,
-            name: 'Coctel de plata',
-            emoji: '🥈🍹',
-        },
-        {
-            id: 82,
-            name: 'Cerveza de bronce',
-            emoji: '🥉🍺',
-        },
-        {
-            id: 85,
-            name: 'Traca de oro',
-            emoji: '🥇🧨',
-        },
-        {
-            id: 86,
-            name: 'Baile de plata',
-            emoji: '🥈🌷',
-        },
-        {
-            id: 87,
-            name: 'Pogo de bronce',
-            emoji: '🥉💥',
-        },
-        {
-            id: 89,
-            name: 'Un hielo',
-            emoji: '🧊',
-        },
-    ],
     cat: [
         // Premis especials
         {
@@ -259,6 +249,82 @@ export const AWARDS = {
             id: 99,
             name: 'Un caganer',
             emoji: '💩',
+        },
+    ],
+    es: [
+        // Liga Mayor
+        {
+            id: 80,
+            name: 'Combinado de oro',
+            emoji: '🥇🥃',
+        },
+        {
+            id: 81,
+            name: 'Coctel de plata',
+            emoji: '🥈🍹',
+        },
+        {
+            id: 82,
+            name: 'Cerveza de bronce',
+            emoji: '🥉🍺',
+        },
+        {
+            id: 85,
+            name: 'Traca de oro',
+            emoji: '🥇🧨',
+        },
+        {
+            id: 86,
+            name: 'Baile de plata',
+            emoji: '🥈🌷',
+        },
+        {
+            id: 87,
+            name: 'Pogo de bronce',
+            emoji: '🥉💥',
+        },
+        {
+            id: 89,
+            name: 'Un hielo',
+            emoji: '🧊',
+        },
+    ],
+    en: [
+        // Desert League
+        {
+            id: 80,
+            name: 'Gold Camel',
+            emoji: '🥇',
+        },
+        {
+            id: 81,
+            name: 'Silver Oasis',
+            emoji: '🥈',
+        },
+        {
+            id: 82,
+            name: 'Bronze Dune',
+            emoji: '🥉',
+        },
+        {
+            id: 85,
+            name: '',
+            emoji: '🥇',
+        },
+        {
+            id: 86,
+            name: '',
+            emoji: '🥈',
+        },
+        {
+            id: 87,
+            name: '',
+            emoji: '🥉',
+        },
+        {
+            id: 89,
+            name: '',
+            emoji: '',
         },
     ],
 }

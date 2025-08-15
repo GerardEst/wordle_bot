@@ -2,10 +2,10 @@ import { AWARDS } from '../conf.ts'
 import { Award, lang, SBAward } from '../interfaces.ts'
 import { supabase } from '../lib/supabase.ts'
 
-export function processAwards(data: SBAward[]): Award[] {
+export function processAwards(data: SBAward[], lang: lang): Award[] {
     return data
         .map((record: SBAward) => {
-            const trophy = AWARDS.find(
+            const trophy = AWARDS[lang].find(
                 (trophy) => trophy.id === record.trophy_id
             )
 
@@ -29,6 +29,7 @@ export function processAwards(data: SBAward[]): Award[] {
 
 export async function getAwardsOf(
     chatId: number,
+    lang: lang,
     userId?: number
 ): Promise<Award[]> {
     const { data, error } = userId
@@ -49,7 +50,7 @@ export async function getAwardsOf(
     if (error) throw 'Error'
 
     // SUPABASE BUG #01
-    return processAwards(data as unknown as SBAward[])
+    return processAwards(data as unknown as SBAward[], lang)
 }
 
 export async function giveAwardTo(
@@ -58,16 +59,14 @@ export async function giveAwardTo(
     trophyId: number,
     lang: lang
 ) {
-    const { error } = await supabase
-        .from('trophies_chats')
-        .insert([
-            {
-                chat_id: chatId,
-                user_id: userId,
-                trophy_id: trophyId,
-                lang: lang,
-            },
-        ])
+    const { error } = await supabase.from('trophies_chats').insert([
+        {
+            chat_id: chatId,
+            user_id: userId,
+            trophy_id: trophyId,
+            lang: lang,
+        },
+    ])
 
     if (error) {
         console.error('Error giving award', error)
