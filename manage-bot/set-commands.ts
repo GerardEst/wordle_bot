@@ -99,14 +99,14 @@ const commands_en = [
         command: '/instructions',
         description: 'Show bot instructions',
     },
-    // {
-    //     command: '/addcharacter',
-    //     description: 'Añade un personaje a la liga',
-    // },
-    // {
-    //     command: '/deletecharacter',
-    //     description: 'Elimina un personaje de la liga',
-    // },
+    {
+        command: '/addcharacter',
+        description: 'Add an extra to the league',
+    },
+    {
+        command: '/deletecharacter',
+        description: 'Remove an extra from the league',
+    },
 ]
 
 bot_cat.api.setMyCommands(commands_cat)
