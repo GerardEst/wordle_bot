@@ -294,17 +294,17 @@ export const AWARDS = {
         {
             id: 80,
             name: 'Gold Camel',
-            emoji: '🥇',
+            emoji: '🥇🐫',
         },
         {
             id: 81,
             name: 'Silver Oasis',
-            emoji: '🥈',
+            emoji: '🥈🏝️',
         },
         {
             id: 82,
             name: 'Bronze Dune',
-            emoji: '🥉',
+            emoji: '🥉🏜️',
         },
         {
             id: 85,
