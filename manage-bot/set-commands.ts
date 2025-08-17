@@ -33,6 +33,10 @@ const commands_cat = [
         command: '/eliminarpersonatge',
         description: 'Elimina un personatge de la lliga',
     },
+    {
+        command: '/instruccions',
+        description: 'Mostra les instruccions del bot',
+    },
 ]
 
 const commands_es = [
@@ -64,6 +68,10 @@ const commands_es = [
         command: '/eliminarpersonaje',
         description: 'Elimina un personaje de la liga',
     },
+    {
+        command: '/instrucciones',
+        description: 'Muestra las instrucciones del bot',
+    },
 ]
 
 const commands_en = [
@@ -86,6 +94,10 @@ const commands_en = [
     {
         command: '/top',
         description: 'Show the global top 5',
+    },
+    {
+        command: '/instructions',
+        description: 'Show bot instructions',
     },
     // {
     //     command: '/addcharacter',
