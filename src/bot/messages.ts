@@ -143,7 +143,7 @@ export function buildFinalAdviseMessage(lang: lang): FormattedMessage {
 }
 
 export function buildAwardsMessage(
-    awards: Award[],
+    awards: Award[] | null,
     lang: lang
 ): FormattedMessage {
     if (!awards || awards.length === 0) {
