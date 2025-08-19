@@ -31,26 +31,28 @@ export async function getAwardsOf(
     chatId: number,
     lang: lang,
     userId?: number
-): Promise<Award[]> {
-    const { data, error } = userId
-        ? await supabase
-              .from('trophies_chats')
-              .select(
-                  'trophy_id, users(id, name), characters(id, name) chat_id, created_at'
-              )
-              .eq('user_id', userId)
-              .eq('chat_id', chatId)
-        : await supabase
-              .from('trophies_chats')
-              .select(
-                  'trophy_id, users(id, name), characters(id, name), chat_id, created_at'
-              )
-              .eq('chat_id', chatId)
+): Promise<Award[] | null> {
+    console.log(`Getting awards of group ${chatId}`)
+    try {
+        const { data, error } = userId
+            ? await supabase
+                  .from('trophies_chats')
+                  .select('trophy_id, users(id, name), chat_id, created_at')
+                  .eq('user_id', userId)
+                  .eq('chat_id', chatId)
+            : await supabase
+                  .from('trophies_chats')
+                  .select('trophy_id, users(id, name), chat_id, created_at')
+                  .eq('chat_id', chatId)
 
-    if (error) throw 'Error'
+        if (error) throw error
 
-    // SUPABASE BUG #01
-    return processAwards(data as unknown as SBAward[], lang)
+        // SUPABASE BUG #01
+        return processAwards(data as unknown as SBAward[], lang)
+    } catch (error) {
+        console.error(error)
+        return null
+    }
 }
 
 export async function giveAwardTo(
@@ -59,6 +61,8 @@ export async function giveAwardTo(
     trophyId: number,
     lang: lang
 ) {
+    console.log(`Giving award ${trophyId} to ${userId} in chat ${chatId}`)
+
     const { error } = await supabase.from('trophies_chats').insert([
         {
             chat_id: chatId,

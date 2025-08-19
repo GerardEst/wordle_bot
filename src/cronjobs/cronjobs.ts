@@ -89,10 +89,15 @@ async function saveAwardsToDb(
     lang: lang
 ) {
     const top3PlayerIds = new Set<number>()
+    const MAXIMUM_CHARACTER_ID = 100
 
     // Award top 3 positions
     for (let i = 0; i < 3; i++) {
-        if (results[i]) {
+        console.log(results[i].id)
+        console.log(timetrialResults[i].id)
+
+        // If the id is from a npc (id>MAXIMUM_CHARACTER_ID), skip the trophy. NPCs don't win trophies.
+        if (results[i] && results[i].id > MAXIMUM_CHARACTER_ID) {
             await giveAwardTo(
                 chat,
                 results[i].id,
@@ -102,7 +107,10 @@ async function saveAwardsToDb(
             top3PlayerIds.add(results[i].id)
         }
 
-        if (timetrialResults[i]) {
+        if (
+            timetrialResults[i] &&
+            timetrialResults[i].id > MAXIMUM_CHARACTER_ID
+        ) {
             await giveAwardTo(
                 chat,
                 timetrialResults[i].id,
@@ -117,7 +125,7 @@ async function saveAwardsToDb(
     const consolationTrophyId = parseInt(`${getCurrentMonth()}9`)
 
     for (const player of results) {
-        if (!top3PlayerIds.has(player.id)) {
+        if (!top3PlayerIds.has(player.id) && player.id > MAXIMUM_CHARACTER_ID) {
             await giveAwardTo(chat, player.id, consolationTrophyId, lang)
         }
     }

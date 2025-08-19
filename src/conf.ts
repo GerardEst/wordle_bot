@@ -10,7 +10,7 @@ export const LEAGUE_NAMES: any = {
         6: 'Lliga del Meló',
         7: 'Lliga Seca',
         8: 'Lliga Major',
-        9: 'Lliga de 1714',
+        9: 'Lliga de Catalunya',
         10: 'Lliga Castanyera',
         11: 'Lliga de la Mosca',
         12: 'Lliga de Nadal',
@@ -24,10 +24,10 @@ export const LEAGUE_NAMES: any = {
         6: '',
         7: '',
         8: 'Liga Mayor',
-        9: '',
+        9: 'Liga Escolar',
         10: '',
         11: '',
-        12: '',
+        12: 'Liga de Navidad',
     },
     en: {
         1: '',
@@ -38,10 +38,10 @@ export const LEAGUE_NAMES: any = {
         6: '',
         7: '',
         8: 'Desert League',
-        9: '',
+        9: 'Students League',
         10: '',
         11: '',
-        12: '',
+        12: 'Christmas League',
     },
 }
 
@@ -55,7 +55,7 @@ export const LEAGUE_EMOJI: any = {
         6: '🍈',
         7: '💨',
         8: '💃🏻',
-        9: '🤕',
+        9: '💛',
         10: '🌰',
         11: '🪰',
         12: '🐫🐫🐫',
@@ -69,7 +69,7 @@ export const LEAGUE_EMOJI: any = {
         6: '',
         7: '',
         8: '💃🏻',
-        9: '',
+        9: '🚸',
         10: '',
         11: '',
         12: '🐫🐫🐫',
@@ -83,7 +83,7 @@ export const LEAGUE_EMOJI: any = {
         6: '',
         7: '',
         8: '🐫',
-        9: '',
+        9: '🚸',
         10: '',
         11: '',
         12: '🎅🏽',
@@ -214,7 +214,7 @@ export const AWARDS = {
             name: 'Un glaçó',
             emoji: '🧊',
         },
-        // Lliga de 1714
+        // Lliga de Catalunya
         {
             id: 90,
             name: "Segador d'or",
@@ -222,33 +222,33 @@ export const AWARDS = {
         },
         {
             id: 91,
-            name: '',
-            emoji: '',
+            name: 'Gegant de plata',
+            emoji: '🥈👫🏻',
         },
         {
             id: 92,
-            name: '',
-            emoji: '',
+            name: 'Caganer de bronze',
+            emoji: '🥉💩',
         },
         {
             id: 95,
-            name: " d'or",
-            emoji: '🥇',
+            name: "Anxaneta d'or",
+            emoji: '🥇🖐🏼',
         },
         {
             id: 96,
-            name: ' de plata',
-            emoji: '🥈',
+            name: 'Sardana de plata',
+            emoji: '🥈🤝🏼',
         },
         {
             id: 97,
-            name: ' de bronze',
-            emoji: '🥉',
+            name: 'Gralla de bronze',
+            emoji: '🥉🪈',
         },
         {
             id: 99,
-            name: 'Un caganer',
-            emoji: '💩',
+            name: 'Una barretina',
+            emoji: '🔺',
         },
     ],
     es: [
@@ -288,13 +288,49 @@ export const AWARDS = {
             name: 'Un hielo',
             emoji: '🧊',
         },
+        // Liga Escolar
+        {
+            id: 90,
+            name: 'Doctorado',
+            emoji: '🥇📜',
+        },
+        {
+            id: 91,
+            name: 'Máster',
+            emoji: '🥈📜',
+        },
+        {
+            id: 92,
+            name: 'Grado',
+            emoji: '🥉📜',
+        },
+        {
+            id: 95,
+            name: '',
+            emoji: '🥇',
+        },
+        {
+            id: 96,
+            name: '',
+            emoji: '🥈',
+        },
+        {
+            id: 97,
+            name: '',
+            emoji: '🥉',
+        },
+        {
+            id: 99,
+            name: '',
+            emoji: '',
+        },
     ],
     en: [
         // Desert League
         {
             id: 80,
-            name: 'Gold Camel',
-            emoji: '🥇🐫',
+            name: 'Gold Sunset',
+            emoji: '🥇☀️',
         },
         {
             id: 81,
@@ -308,21 +344,57 @@ export const AWARDS = {
         },
         {
             id: 85,
+            name: 'Gold Cheeta',
+            emoji: '🥇🐆',
+        },
+        {
+            id: 86,
+            name: 'Silver Rhino',
+            emoji: '🥈🦏',
+        },
+        {
+            id: 87,
+            name: 'Bronze Camel',
+            emoji: '🥉🐫',
+        },
+        {
+            id: 89,
+            name: 'A desert rock',
+            emoji: '🪨',
+        },
+        // Student League
+        {
+            id: 90,
+            name: 'Doctoral degree',
+            emoji: '🥇📜',
+        },
+        {
+            id: 91,
+            name: "Master's degree",
+            emoji: '🥈📜',
+        },
+        {
+            id: 92,
+            name: "Bachelor's degree",
+            emoji: '🥉📜',
+        },
+        {
+            id: 95,
             name: '',
             emoji: '🥇',
         },
         {
-            id: 86,
+            id: 96,
             name: '',
             emoji: '🥈',
         },
         {
-            id: 87,
+            id: 97,
             name: '',
             emoji: '🥉',
         },
         {
-            id: 89,
+            id: 99,
             name: '',
             emoji: '',
         },

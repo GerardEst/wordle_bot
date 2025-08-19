@@ -135,7 +135,7 @@ if (import.meta.main) {
 
         const sendAwards = async (chatId: number) => {
             console.log(`Checking group awards of chat: ${chatId}`)
-            const awards = await awardsApi.getAwardsOf(chatId)
+            const awards = await awardsApi.getAwardsOf(chatId, 'cat')
 
             const message = buildAwardsMessage(awards, 'cat')
 
@@ -162,7 +162,7 @@ if (import.meta.main) {
     }
 
     if (command === 'send-top') {
-        const topPlayers = await api.getTopPlayersGlobal()
+        const topPlayers = await api.getTopPlayersGlobal('cat')
         const message = buildTopMessage(topPlayers, 'cat')
         await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
             parse_mode: message.parse_mode,
