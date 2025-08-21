@@ -58,6 +58,8 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     //         reply_markup: keyboard,
     //     })
     // })
+
+    // Admin commands
     bot.command('setglobalmenu', async (ctx) => {
         try {
             // Set menu button for all chats (don't specify chat_id)
