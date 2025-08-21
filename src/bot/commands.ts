@@ -1,4 +1,9 @@
-import { Bot, Context, Keyboard } from 'https://deno.land/x/grammy/mod.ts'
+import {
+    Bot,
+    Context,
+    Keyboard,
+    InlineKeyboard,
+} from 'https://deno.land/x/grammy/mod.ts'
 import * as api from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
 import * as awardsApi from '../api/awards.ts'
@@ -49,6 +54,20 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
 
     bot.on('message', (ctx: Context) => {
         reactToMessage(ctx, bot_lang)
+    })
+
+    // Play
+    bot.command('play', async (ctx) => {
+        // Create inline keyboard with WebApp button
+        const keyboard = new InlineKeyboard().webApp(
+            "🎮 Play Today's Wordle",
+            'https://mooot.cat'
+        )
+
+        // Send message with the WebApp button
+        await ctx.reply("🎯 Ready for today's Wordle challenge?", {
+            reply_markup: keyboard,
+        })
     })
 }
 
