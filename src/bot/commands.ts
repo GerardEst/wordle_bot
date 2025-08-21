@@ -64,7 +64,7 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
             await ctx.api.setChatMenuButton(undefined, {
                 type: 'web_app',
                 text: '🎮 Wordle',
-                web_app: { url: 'https://yourgame.com' },
+                web_app: { url: 'https://mooot.cat' },
             })
 
             await ctx.reply('✅ Global menu button set for all chats!')
