@@ -25,6 +25,11 @@ const translations: any = {
         cat: 'instruccions',
         en: 'instructions',
     },
+    play: {
+        es: 'jugar',
+        cat: 'jugar',
+        en: 'play',
+    },
 
     // Secondary commands
     add: { es: 'Añadir a ', cat: 'Afegir a ', en: 'Add ' },

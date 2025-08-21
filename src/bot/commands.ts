@@ -46,19 +46,19 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command(t('instructions', bot_lang), (ctx: Context) => {
         sendInstructions(ctx, bot_lang)
     })
-    bot.command('play', async (ctx: Context) => {
+    bot.command(t('play', bot_lang), (ctx: Context) => {
         console.log('Play')
         sendInstructions(ctx, bot_lang)
-        // Create inline keyboard with WebApp button
-        const keyboard = new InlineKeyboard().webApp(
-            "🎮 Play Today's Wordle",
-            'https://mooot.cat'
-        )
+        // // Create inline keyboard with WebApp button
+        // const keyboard = new InlineKeyboard().webApp(
+        //     "🎮 Play Today's Wordle",
+        //     'https://mooot.cat'
+        // )
 
-        // Send message with the WebApp button
-        await ctx.reply("🎯 Ready for today's Wordle challenge?", {
-            reply_markup: keyboard,
-        })
+        // // Send message with the WebApp button
+        // await ctx.reply("🎯 Ready for today's Wordle challenge?", {
+        //     reply_markup: keyboard,
+        // })
     })
 
     // Welcome message when bot is added to a group
