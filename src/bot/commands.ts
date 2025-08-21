@@ -46,19 +46,9 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command(t('instructions', bot_lang), (ctx: Context) => {
         sendInstructions(ctx, bot_lang)
     })
-
-    // Welcome message when bot is added to a group
-    bot.on('my_chat_member', (ctx: Context) => {
-        handleChatMemberUpdate(ctx, bot_lang)
-    })
-
-    bot.on('message', (ctx: Context) => {
-        reactToMessage(ctx, bot_lang)
-    })
-
-    // Play
-    bot.command('play', async (ctx) => {
+    bot.command('play', async (ctx: Context) => {
         console.log('Play')
+        sendInstructions(ctx, bot_lang)
         // Create inline keyboard with WebApp button
         const keyboard = new InlineKeyboard().webApp(
             "🎮 Play Today's Wordle",
@@ -69,6 +59,15 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
         await ctx.reply("🎯 Ready for today's Wordle challenge?", {
             reply_markup: keyboard,
         })
+    })
+
+    // Welcome message when bot is added to a group
+    bot.on('my_chat_member', (ctx: Context) => {
+        handleChatMemberUpdate(ctx, bot_lang)
+    })
+
+    bot.on('message', (ctx: Context) => {
+        reactToMessage(ctx, bot_lang)
     })
 }
 
