@@ -46,17 +46,32 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command(t('instructions', bot_lang), (ctx: Context) => {
         sendInstructions(ctx, bot_lang)
     })
-    bot.command(t('play', bot_lang), async (ctx: Context) => {
-        console.log('Play')
-        //sendInstructions(ctx, bot_lang)
-        // Create inline keyboard with WebApp button
-        const button = InlineKeyboard.webApp('🎮 Juga!', 'https://moooot.com')
-        const array = [[button]]
-        const keyboard = InlineKeyboard.from(array)
+    // bot.command(t('play', bot_lang), async (ctx: Context) => {
+    //     console.log('Play')
+    //     //sendInstructions(ctx, bot_lang)
+    //     // Create inline keyboard with WebApp button
+    //     const button = InlineKeyboard.webApp('🎮 Juga!', 'https://moooot.com')
+    //     const array = [[button]]
+    //     const keyboard = InlineKeyboard.from(array)
 
-        await ctx.reply("🎯 Ready for today's Wordle challenge?", {
-            reply_markup: keyboard,
-        })
+    //     await ctx.reply("🎯 Ready for today's Wordle challenge?", {
+    //         reply_markup: keyboard,
+    //     })
+    // })
+    bot.command('setglobalmenu', async (ctx) => {
+        try {
+            // Set menu button for all chats (don't specify chat_id)
+            await ctx.api.setChatMenuButton(undefined, {
+                type: 'web_app',
+                text: '🎮 Wordle',
+                web_app: { url: 'https://yourgame.com' },
+            })
+
+            await ctx.reply('✅ Global menu button set for all chats!')
+        } catch (error) {
+            console.error('Error setting global menu button:', error)
+            await ctx.reply('❌ Failed to set global menu button.')
+        }
     })
 
     // Welcome message when bot is added to a group
