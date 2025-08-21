@@ -50,16 +50,9 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
         console.log('Play')
         //sendInstructions(ctx, bot_lang)
         // Create inline keyboard with WebApp button
-        const keyboard = {
-            inline_keyboard: [
-                [
-                    {
-                        text: "🎮 Play Today's Wordle",
-                        web_app: { url: 'https://mooot.cat' },
-                    },
-                ],
-            ],
-        }
+        const button = InlineKeyboard.webApp('🎮 Juga!', 'https://moooot.com')
+        const array = [[button]]
+        const keyboard = InlineKeyboard.from(array)
 
         await ctx.reply("🎯 Ready for today's Wordle challenge?", {
             reply_markup: keyboard,
