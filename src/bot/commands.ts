@@ -58,6 +58,7 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
 
     // Play
     bot.command('play', async (ctx) => {
+        console.log('Play')
         // Create inline keyboard with WebApp button
         const keyboard = new InlineKeyboard().webApp(
             "🎮 Play Today's Wordle",
