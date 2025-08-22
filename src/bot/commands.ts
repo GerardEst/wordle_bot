@@ -1,4 +1,4 @@
-import { Bot, Context, Keyboard } from 'https://deno.land/x/grammy/mod.ts'
+import { Bot, Context, Keyboard, InlineKeyboard } from 'https://deno.land/x/grammy/mod.ts'
 import * as api from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
 import * as awardsApi from '../api/awards.ts'
@@ -115,15 +115,11 @@ async function setChatPlayButton(ctx: Context, lang: lang) {
     } else {
         // For group chats, send a message with inline keyboard and pin it
         try {
+            const inlineKeyboard = new InlineKeyboard()
+                .webApp(`🎯 ${t('play', lang)}`, t('gameUrl', lang))
+            
             const message = await ctx.reply(`🎮 ${t('play', lang)}!`, {
-                reply_markup: {
-                    inline_keyboard: [[
-                        {
-                            text: `🎯 ${t('play', lang)}`,
-                            url: t('gameUrl', lang)
-                        }
-                    ]]
-                }
+                reply_markup: inlineKeyboard
             })
             
             // Pin the message
