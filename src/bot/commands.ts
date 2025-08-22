@@ -63,10 +63,13 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command('setglobalmenu', async (ctx) => {
         try {
             // Set menu button for all chats (don't specify chat_id)
-            await ctx.api.setChatMenuButton(undefined, {
-                type: 'web_app',
-                text: '🎮 Wordle',
-                web_app: { url: 'https://mooot.cat' },
+            await ctx.api.setChatMenuButton({
+                chat_id: 815394161,
+                menu_button: {
+                    type: 'web_app',
+                    text: 'Jugar',
+                    web_app: { url: 'https://mooot.cat' },
+                },
             })
 
             await ctx.reply('✅ Global menu button set for all chats!')
