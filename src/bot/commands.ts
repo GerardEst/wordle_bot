@@ -96,20 +96,43 @@ async function setAllChatsPlayButton(ctx: Context, bot_lang: lang) {
 }
 
 async function setChatPlayButton(ctx: Context, lang: lang) {
-    try {
-        await ctx.api.setChatMenuButton({
-            chat_id: ctx.chat?.id,
-            menu_button: {
-                type: 'web_app',
-                text: t('play', lang),
-                web_app: { url: t('gameUrl', lang) },
-            },
-        })
+    if (!ctx.chat) return
 
-        await ctx.reply('✅ Global menu button set for all chats!')
-    } catch (error) {
-        console.error('Error setting global menu button:', error)
-        await ctx.reply('❌ Failed to set global menu button.')
+    if (ctx.chat.type === 'private') {
+        // For private chats, use menu button
+        try {
+            await ctx.api.setChatMenuButton({
+                chat_id: ctx.chat.id,
+                menu_button: {
+                    type: 'web_app',
+                    text: t('play', lang),
+                    web_app: { url: t('gameUrl', lang) },
+                },
+            })
+        } catch (error) {
+            console.error('Error setting menu button:', error)
+        }
+    } else {
+        // For group chats, send a message with inline keyboard and pin it
+        try {
+            const message = await ctx.reply(`🎮 ${t('play', lang)}!`, {
+                reply_markup: {
+                    inline_keyboard: [[
+                        {
+                            text: `🎯 ${t('play', lang)}`,
+                            web_app: { url: t('gameUrl', lang) }
+                        }
+                    ]]
+                }
+            })
+            
+            // Pin the message
+            await ctx.api.pinChatMessage(ctx.chat.id, message.message_id, {
+                disable_notification: true
+            })
+        } catch (error) {
+            console.error('Error sending play button:', error)
+        }
     }
 }
 
