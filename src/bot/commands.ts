@@ -120,7 +120,7 @@ async function setChatPlayButton(ctx: Context, lang: lang) {
                     inline_keyboard: [[
                         {
                             text: `🎯 ${t('play', lang)}`,
-                            web_app: { url: t('gameUrl', lang) }
+                            url: t('gameUrl', lang)
                         }
                     ]]
                 }
