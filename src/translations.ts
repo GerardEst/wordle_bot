@@ -1,6 +1,12 @@
 import { lang } from './interfaces.ts'
 
-const translations: any = {
+interface Translations {
+    [key: string]: {
+        [L in lang]: string
+    }
+}
+
+const translations: Translations = {
     // Commands
     classification: {
         es: 'clasificacion',
@@ -254,6 +260,13 @@ const translations: any = {
         es: '📋 *Instrucciones del bot de wardle.day*\n\n🎯 *¿Cómo funciona?*\nComparte tus resultados de wardle.day en este chat y yo me encargaré del resto. Reaccionaré a tu mensaje y guardaré tu puntuación automáticamente.\n\n📊 *Comandos disponibles:*\n• /clasificacion - Ver clasificación mensual\n• /contrarreloj - Ver clasificación por tiempo\n• /leyenda - Tabla de puntos y reacciones\n• /premios - Ver premios disponibles\n• /top - Top 5 mundial\n• /anadirpersonaje - Añadir personajes virtuales\n• /eliminarpersonaje - Eliminar personajes\n\n🏆 *Sistema de puntos:*\n• 1 intento = 6 puntos\n• 2 intentos = 5 puntos\n• 3 intentos = 4 puntos\n• 4 intentos = 3 puntos\n• 5 intentos = 2 puntos\n• 6 intentos = 1 punto\n• X (fallo) = 0 puntos\n\n¡Solo puedes jugar una vez al día! 🌚',
         cat: '📋 *Instruccions del bot Mooot*\n\n🎯 *Com funciona?*\nCompartiu els resultats del mooot.cat en aquest xat i jo faig la resta. Reaccionaré als vostres missatges i registraré les puntuacions per formar la classificació.\n\nLes lligues son mensuals, cada final de mes es reparteixen premis als guanyadors i comença una nova lliga\n\nHi ha dues classificacions, la normal, que té en compte els punts aconseguits, i la contrarrellotge, que té en compte el temps. Els premis son diferents per cada lliga.\n\n📊 *Ordres disponibles:*\n• /classificacio - Veure classificació mensual\n• /contrarrellotge - Veure classificació per temps\n• /llegenda - Taula de punts i reaccions\n• /premis - Veure premis disponibles\n• /top - Top 5 mundial\n• /afegirpersonatge - Afegir personatges virtuals\n• /eliminarpersonatge - Eliminar personatges\n\n🏆 *Sistema de punts:*\n• 1 intent = 6 punts\n• 2 intents = 5 punts\n• 3 intents = 4 punts\n• 4 intents = 3 punts\n• 5 intents = 2 punts\n• 6 intents = 1 punt\n• X (fallada) = 0 punts\n\nNomés pots jugar un cop al dia!',
         en: "📋 *Wardle.day bot instructions*\n\n🎯 *How does it work?*\nShare your wardle.day/en results in this chat and I'll take care of the rest. I'll react to your message and save your score automatically.\n\nLeagues are monthly, at the end of each month trophies are awarded to winners and a new league begins.\n\nThere are two classifications: normal (based on points) and time trial (based on time). Trophies are different for each league.\n\n📊 *Available commands:*\n• /classification - View monthly classification\n• /timetrial - View time trial classification\n• /legend - Points and reactions table\n• /trophies - View available trophies\n• /top - Global Top 5\n• /addcharacter - Add virtual characters\n• /removecharacter - Remove characters\n\n🏆 *Scoring system:*\n• 1 attempt = 6 points\n• 2 attempts = 5 points\n• 3 attempts = 4 points\n• 4 attempts = 3 points\n• 5 attempts = 2 points\n• 6 attempts = 1 point\n• X (failed) = 0 points\n\nYou can only play once per day! 🌚",
+    },
+
+    // URL
+    gameUrl: {
+        es: 'https://wardle.day',
+        cat: 'https://mooot.cat',
+        en: 'https://wardle.day/en',
     },
 }
 

@@ -1,9 +1,4 @@
-import {
-    Bot,
-    Context,
-    Keyboard,
-    InlineKeyboard,
-} from 'https://deno.land/x/grammy/mod.ts'
+import { Bot, Context, Keyboard } from 'https://deno.land/x/grammy/mod.ts'
 import * as api from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
 import * as awardsApi from '../api/awards.ts'
@@ -20,6 +15,8 @@ import { EMOJI_REACTIONS } from '../conf.ts'
 import { getAllCharacters, getChatCharacters } from '../api/characters.ts'
 import { lang } from '../interfaces.ts'
 import { t } from '../translations.ts'
+
+const DEV_USER_ID = parseInt(Deno.env.get('DEV_USER_ID')!)
 
 export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command(t('classification', bot_lang), (ctx: Context) =>
@@ -46,47 +43,74 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command(t('instructions', bot_lang), (ctx: Context) => {
         sendInstructions(ctx, bot_lang)
     })
-    // bot.command(t('play', bot_lang), async (ctx: Context) => {
-    //     console.log('Play')
-    //     //sendInstructions(ctx, bot_lang)
-    //     // Create inline keyboard with WebApp button
-    //     const button = InlineKeyboard.webApp('🎮 Juga!', 'https://moooot.com')
-    //     const array = [[button]]
-    //     const keyboard = InlineKeyboard.from(array)
-
-    //     await ctx.reply("🎯 Ready for today's Wordle challenge?", {
-    //         reply_markup: keyboard,
-    //     })
-    // })
 
     // Admin commands
-    bot.command('setglobalmenu', async (ctx) => {
-        try {
-            // Set menu button for all chats (don't specify chat_id)
-            await ctx.api.setChatMenuButton({
-                chat_id: 815394161,
-                menu_button: {
-                    type: 'web_app',
-                    text: 'Jugar',
-                    web_app: { url: 'https://mooot.cat' },
-                },
-            })
-
-            await ctx.reply('✅ Global menu button set for all chats!')
-        } catch (error) {
-            console.error('Error setting global menu button:', error)
-            await ctx.reply('❌ Failed to set global menu button.')
+    bot.command('setglobalmenu', async (ctx: Context) => {
+        if (ctx.from?.id !== DEV_USER_ID) {
+            await ctx.reply('😶‍🌫️ This command is for admins only')
+            return
         }
+        setAllChatsPlayButton(ctx, bot_lang)
     })
 
     // Welcome message when bot is added to a group
     bot.on('my_chat_member', (ctx: Context) => {
         handleChatMemberUpdate(ctx, bot_lang)
+        setChatPlayButton(ctx, bot_lang)
     })
 
     bot.on('message', (ctx: Context) => {
         reactToMessage(ctx, bot_lang)
     })
+}
+
+async function setAllChatsPlayButton(ctx: Context, bot_lang: lang) {
+    const chats = await api.getChats(bot_lang)
+
+    for (const chatId of chats) {
+        try {
+            // Check if this bot is in the chat, if it is, add the button with this bot lang
+            // We have to launch the command in every bot to affect all the langs
+            const chatMember = await ctx.api.getChatMember(chatId, ctx.me.id)
+            if (chatMember.status === 'left' || chatMember.status === 'kicked')
+                continue
+
+            await ctx.api.setChatMenuButton({
+                chat_id: chatId,
+                menu_button: {
+                    type: 'web_app',
+                    text: t('play', bot_lang),
+                    web_app: { url: t('gameUrl', bot_lang) },
+                },
+            })
+
+            await ctx.reply('✅ Button setted for chat ' + chatId)
+        } catch (error) {
+            console.error(
+                'Error setting chat button. The bot may not be a member:',
+                error
+            )
+            await ctx.reply('Error setting button on chat ' + chatId)
+        }
+    }
+}
+
+async function setChatPlayButton(ctx: Context, lang: lang) {
+    try {
+        await ctx.api.setChatMenuButton({
+            chat_id: ctx.chat?.id,
+            menu_button: {
+                type: 'web_app',
+                text: t('play', lang),
+                web_app: { url: t('gameUrl', lang) },
+            },
+        })
+
+        await ctx.reply('✅ Global menu button set for all chats!')
+    } catch (error) {
+        console.error('Error setting global menu button:', error)
+        await ctx.reply('❌ Failed to set global menu button.')
+    }
 }
 
 async function reactToMessage(ctx: Context, lang: lang) {
@@ -283,8 +307,12 @@ async function reactToGame(ctx: Context, lang: lang) {
         await (isGameToday
             ? ctx.react('🌚')
             : ctx.react(EMOJI_REACTIONS[points]))
-    } catch (error: any) {
-        console.error('Failed to react to message:', error.message)
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error('Failed to react to message:', error.message)
+        } else {
+            console.error('Failed to react to message:', error)
+        }
     }
 
     // We don't save the game if user already have a game today

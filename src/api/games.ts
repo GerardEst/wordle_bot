@@ -5,6 +5,7 @@ import { Result, SBGameRecord, RankingEntry, lang } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { log } from './log.ts'
 
+
 export async function getChatPunctuations(
     chatId: number,
     period: 'all' | 'month' | 'day',
