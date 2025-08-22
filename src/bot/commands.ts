@@ -98,9 +98,12 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
 async function setChatPlayButton(ctx: Context, lang: lang) {
     if (!ctx.chat) return
 
-    const message = await ctx.reply('Mooot: https://t.me/mooot_cat_bot/mooot', {
-        parse_mode: 'Markdown',
-    })
+    const message = await ctx.reply(
+        'Juga ara a Mooot: https://t.me/mooot_cat_bot/mooot',
+        {
+            parse_mode: 'HTML',
+        }
+    )
 
     try {
         await ctx.api.pinChatMessage(ctx.chat.id, message.message_id, {
@@ -108,6 +111,7 @@ async function setChatPlayButton(ctx: Context, lang: lang) {
         })
         await ctx.reply('✅ Daily Wordle game pinned to the top!')
     } catch (error) {
+        console.log(error)
         await ctx.reply("❌ Couldn't pin message. Make sure I'm an admin!")
     }
 }
