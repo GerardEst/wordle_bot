@@ -1,7 +1,18 @@
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
 const dev = Deno.env.get('ENV') === 'dev'
 
+function getCorsHeaders() {
+    return {
+        'Access-Control-Allow-Origin': 'https://mooot.cat',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Max-Age': '86400'
+    }
+}
+
 async function handlePrepareShare(req: Request, bot: Bot) {
+    const corsHeaders = getCorsHeaders()
+    
     try {
         const body = await req.json()
         
@@ -9,7 +20,13 @@ async function handlePrepareShare(req: Request, bot: Bot) {
         if (!body.result || !body.user_id) {
             return new Response(
                 JSON.stringify({ error: 'Missing required parameters: result and user_id' }),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
+                { 
+                    status: 400, 
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        ...corsHeaders
+                    } 
+                }
             )
         }
 
@@ -27,13 +44,25 @@ async function handlePrepareShare(req: Request, bot: Bot) {
 
         return new Response(
             JSON.stringify(result),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
+            { 
+                status: 200, 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    ...corsHeaders
+                } 
+            }
         )
     } catch (error) {
         console.error('Error in handlePrepareShare:', error)
         return new Response(
             JSON.stringify({ error: 'Failed to prepare inline message' }),
-            { status: 500, headers: { 'Content-Type': 'application/json' } }
+            { 
+                status: 500, 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    ...corsHeaders
+                } 
+            }
         )
     }
 }
@@ -57,8 +86,17 @@ export function startUp(token: string) {
                 const url = new URL(req.url)
                 
                 // Handle /prepare-share endpoint
-                if (url.pathname === '/prepare-share' && req.method === 'POST') {
-                    return await handlePrepareShare(req, bot)
+                if (url.pathname === '/prepare-share') {
+                    if (req.method === 'OPTIONS') {
+                        // Handle preflight request
+                        return new Response(null, {
+                            status: 204,
+                            headers: getCorsHeaders()
+                        })
+                    }
+                    if (req.method === 'POST') {
+                        return await handlePrepareShare(req, bot)
+                    }
                 }
                 
                 const contentType = req.headers.get('content-type') || ''
