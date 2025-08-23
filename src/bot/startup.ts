@@ -42,7 +42,7 @@ async function handlePrepareShare(req: Request, bot: Bot) {
                 id: Date.now().toString(),
                 title: `Mooot`,
                 input_message_content: {
-                    message_text: body.resultText,
+                    message_text: body.message,
                     parse_mode: 'HTML',
                 },
                 // reply_markup: {
