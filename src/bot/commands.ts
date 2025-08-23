@@ -59,6 +59,29 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
         setChatPlayButton(ctx, bot_lang)
     })
 
+    bot.on('inline_query', async (ctx) => {
+        const query = ctx.inlineQuery.query
+
+        if (query.startsWith('#mooot')) {
+            const tries = 7 - getPoints(query)
+            const time = getTime(query)
+            const shareTries = tries === 7 ? 'X/6' : tries + '/6'
+
+            await ctx.answerInlineQuery([
+                {
+                    type: 'article',
+                    id: '1',
+                    title: `Compartir Mooot`,
+                    input_message_content: {
+                        message_text: `Mooot\n🎯 ${shareTries}\n⏳ ${time}\n`,
+                        parse_mode: 'Markdown',
+                    },
+                    description: 'Tap to share your result',
+                },
+            ])
+        }
+    })
+
     bot.on('message', (ctx: Context) => {
         reactToMessage(ctx, bot_lang)
     })
