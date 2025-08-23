@@ -44,19 +44,10 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
         sendInstructions(ctx, bot_lang)
     })
 
-    // Admin commands
-    // bot.command('setglobalmenu', async (ctx: Context) => {
-    //     if (ctx.from?.id !== DEV_USER_ID) {
-    //         await ctx.reply('😶‍🌫️ This command is for admins only')
-    //         return
-    //     }
-    //     setAllChatsPlayButton(ctx, bot_lang)
-    // })
-
     // Welcome message when bot is added to a group
     bot.on('my_chat_member', (ctx: Context) => {
         handleChatMemberUpdate(ctx, bot_lang)
-        setChatPlayButton(ctx, bot_lang)
+        //setChatPlayButton(ctx, bot_lang)
     })
 
     bot.on('message', (ctx: Context) => {
@@ -64,57 +55,26 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     })
 }
 
-// async function setAllChatsPlayButton(ctx: Context, bot_lang: lang) {
-//     const chats = await api.getChats(bot_lang)
+// async function setChatPlayButton(ctx: Context, lang: lang) {
+//     if (!ctx.chat) return
 
-//     for (const chatId of chats) {
-//         try {
-//             // Check if this bot is in the chat, if it is, add the button with this bot lang
-//             // We have to launch the command in every bot to affect all the langs
-//             const chatMember = await ctx.api.getChatMember(chatId, ctx.me.id)
-//             if (chatMember.status === 'left' || chatMember.status === 'kicked')
-//                 continue
-
-//             await ctx.api.setChatMenuButton({
-//                 chat_id: chatId,
-//                 menu_button: {
-//                     type: 'web_app',
-//                     text: t('play', bot_lang),
-//                     web_app: { url: t('gameUrl', bot_lang) },
-//                 },
-//             })
-
-//             await ctx.reply('✅ Button setted for chat ' + chatId)
-//         } catch (error) {
-//             console.error(
-//                 'Error setting chat button. The bot may not be a member:',
-//                 error
-//             )
-//             await ctx.reply('Error setting button on chat ' + chatId)
+//     const message = await ctx.reply(
+//         'Juga ara a Mooot: https://t.me/mooot_cat_bot/mooot',
+//         {
+//             parse_mode: 'HTML',
 //         }
+//     )
+
+//     try {
+//         await ctx.api.pinChatMessage(ctx.chat.id, message.message_id, {
+//             disable_notification: true,
+//         })
+//         await ctx.reply('✅ Daily Wordle game pinned to the top!')
+//     } catch (error) {
+//         console.log(error)
+//         await ctx.reply("❌ Couldn't pin message. Make sure I'm an admin!")
 //     }
 // }
-
-async function setChatPlayButton(ctx: Context, lang: lang) {
-    if (!ctx.chat) return
-
-    const message = await ctx.reply(
-        'Juga ara a Mooot: https://t.me/mooot_cat_bot/mooot',
-        {
-            parse_mode: 'HTML',
-        }
-    )
-
-    try {
-        await ctx.api.pinChatMessage(ctx.chat.id, message.message_id, {
-            disable_notification: true,
-        })
-        await ctx.reply('✅ Daily Wordle game pinned to the top!')
-    } catch (error) {
-        console.log(error)
-        await ctx.reply("❌ Couldn't pin message. Make sure I'm an admin!")
-    }
-}
 
 async function reactToMessage(ctx: Context, lang: lang) {
     if (!ctx.message || !ctx.message.text) return
