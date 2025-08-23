@@ -37,7 +37,25 @@ async function handlePrepareShare(req: Request, bot: Bot) {
         // Call Telegram's savePreparedInlineMessage method
         const result = await bot.api.savePreparedInlineMessage(
             body.user_id,
-            body.result,
+            {
+                type: 'article',
+                id: Date.now().toString(),
+                title: `Mooot`,
+                input_message_content: {
+                    message_text: body.resultText,
+                    parse_mode: 'HTML',
+                },
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: '🚀 Open App',
+                                url: 't.me/mooot_cat_bot/mooot',
+                            },
+                        ],
+                    ],
+                },
+            },
             {
                 allow_user_chats: true,
                 allow_bot_chats: true,
