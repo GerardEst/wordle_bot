@@ -20,11 +20,11 @@ async function handlePrepareShare(req: Request, bot: Bot) {
         const body = await req.json()
 
         // Validate required parameters
-        if (!body.result || !body.user_id) {
+        if (!body.message || !body.user_id) {
             return cors(
                 new Response(
                     JSON.stringify({
-                        error: 'Missing required parameters: result and user_id',
+                        error: 'Missing required parameters: message and user_id',
                     }),
                     {
                         status: 400,
