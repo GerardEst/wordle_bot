@@ -50,7 +50,8 @@ async function handlePrepareShare(req: Request, bot: Bot) {
                         [
                             {
                                 text: 'Jugar',
-                                url: 'https://t.me/mooot_cat_bot/mooot',
+                                // url: 'https://t.me/mooot_cat_bot/mooot',
+                                url: 'https://t.me/mooot_cat_bot?startapp=mooot',
                             },
                         ],
                     ],
