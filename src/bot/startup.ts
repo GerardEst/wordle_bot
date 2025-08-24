@@ -1,4 +1,5 @@
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
+import { t } from '../translations.ts'
 const dev = Deno.env.get('ENV') === 'dev'
 
 function cors(response: Response, origin = 'https://mooot.cat'): Response {
@@ -49,8 +50,8 @@ async function handlePrepareShare(req: Request, bot: Bot) {
                     inline_keyboard: [
                         [
                             {
-                                text: '🚀 Open App',
-                                url: 't.me/mooot_cat_bot/mooot',
+                                text: 'Jugar',
+                                url: 'https://t.me/mooot_cat_bot/app?startapp=mooot',
                             },
                         ],
                     ],
