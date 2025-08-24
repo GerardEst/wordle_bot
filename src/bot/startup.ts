@@ -45,16 +45,16 @@ async function handlePrepareShare(req: Request, bot: Bot) {
                     message_text: body.message,
                     parse_mode: 'HTML',
                 },
-                // reply_markup: {
-                //     inline_keyboard: [
-                //         [
-                //             {
-                //                 text: '🚀 Open App',
-                //                 url: 't.me/mooot_cat_bot/mooot',
-                //             },
-                //         ],
-                //     ],
-                // },
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: '🚀 Open App',
+                                url: 't.me/mooot_cat_bot/mooot',
+                            },
+                        ],
+                    ],
+                },
             },
             {
                 allow_user_chats: true,
