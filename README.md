@@ -7,11 +7,11 @@
 
 # moootbot
 
-**_Competeix en lligues mensuals del [Mooot](https://mooot.cat) entre amics._**
+**_Competeix en lligues mensuals de wordle en català entre amics._**
 
-Aquest bot transforma qualsevol grup de Telegram en una competició del [Mooot](https://mooot.cat), amb una classificació mensual actualitzada diariament, premis pels millors jugadors, personatges convidats de la cultura catalana, dades interessants sobre la paraula...
+Aquest bot transforma qualsevol grup de Telegram en una competició del wordle en català, amb una classificació mensual actualitzada diariament, premis pels millors jugadors, personatges convidats de la cultura catalana, dades interessants sobre la paraula...
 
-[Afegeix el bot a un xat](https://t.me/mooot_cat_bot?startgroup=true), però abans, convé que veieu l'[ús de dades](#ús-de-dades).
+[Afegeix el bot a un xat](https://t.me/mooot_cat_bot?startgroup=true)
 
 <br>
 
@@ -26,7 +26,7 @@ o bé:
 
 <br>
 
-**_El bot començarà a treballar a la sombra, convertint el grup en una lliga i afegint les següents funcionalitats:_**
+**_El bot us saludarà amb les instruccions i començarà a treballar a la sombra, convertint el grup en una lliga i afegint les següents funcionalitats:_**
 
 <br>
 
@@ -74,12 +74,13 @@ Quan es comparteix una partida, el bot reacciona amb un emoji al missatge que va
 - `/llegenda` - Mostra la taula de punts
 - `/extres` - Opcions per afegir personatges a la partida
 - `/premis` - Consulta els trofeus virtuals guanyats i els que estan en joc
-- `/top` - Mostra el top 3 de jugadors de totes les lligues
+- `/top` - Mostra el top 5 de jugadors de totes les lligues
+- `/instruccions` - Mostra tota la info i funcionalitats del bot
 
 <br>
 
-## Ús de dades
+<!-- ## Ús de dades
 
 Al afegir moootbot a un grup, se li dona accés a tots els missatges que es comparteixin a partir d'aquell moment. **Si no fos així, no podria reaccionar ni guardar les partides que se li comparteixen.**
 
-En qualsevol cas, tot i tenir accés teòric, **no es consulta ni es guarda cap missatge que no sigui una partida compartida o una comanda del bot**, com podeu veure al codi font.
+En qualsevol cas, tot i tenir accés teòric, **no es consulta ni es guarda cap missatge que no sigui una partida compartida o una comanda del bot**, com podeu veure al codi font. -->
