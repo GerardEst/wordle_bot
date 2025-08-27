@@ -277,7 +277,7 @@ function sendInstructions(ctx: Context, lang: lang) {
     if (!ctx.chat) return
 
     const message = t('instructionsMessage', lang)
-    ctx.reply(message, { parse_mode: 'Markdown' })
+    ctx.reply(message, { parse_mode: 'HTML' })
 }
 
 async function handleChatMemberUpdate(ctx: Context, lang: lang) {
@@ -292,6 +292,6 @@ async function handleChatMemberUpdate(ctx: Context, lang: lang) {
             new_chat_member.status === 'administrator')
     ) {
         const welcomeMessage = t('welcomeMessage', lang)
-        await ctx.reply(welcomeMessage, { parse_mode: 'Markdown' })
+        await ctx.reply(welcomeMessage, { parse_mode: 'HTML' })
     }
 }
