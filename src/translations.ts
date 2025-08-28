@@ -204,40 +204,20 @@ const translations: Translations = {
         cat: 'Final de la',
         en: 'End of the',
     },
-    endOfLeagueMessageB: {
-        es: 'con',
-        cat: 'amb',
-        en: 'with',
-    },
     endOfLeagueMessageC: {
-        es: 'puntos*, recibe el premio',
-        cat: 'punts*, rep el premi',
-        en: 'points*, receives the trophy',
-    },
-    endOfLeagueMessageD: {
-        es: 'con un tiempo acumulado de',
-        cat: 'amb un temps acumulat de',
-        en: 'with an accumulated time of',
-    },
-    endOfLeagueMessageE: {
-        es: 'recibe el premio',
-        cat: 'rep el premi',
-        en: 'receives the trophy',
+        es: 'puntos',
+        cat: 'punts',
+        en: 'points',
     },
     endOfLeagueMessageF: {
         es: 'Los demás os lleváis el premio de consolación,',
-        cat: 'La resta us emporteu el premi de consolació,',
+        cat: 'La resta us emporteu el fantàstic premi de consolació,',
         en: 'Everyone else gets the consolation prize,',
     },
-    endOfLeagueMessageG: {
-        es: 'Enorabuena a todos! 🥳 Y recordad que mañana empieza la ',
-        cat: 'Enhorabona a tots! 🥳 I recordeu que demà comença la ',
-        en: 'Congratulations to everyone! 🥳 And remember that tomorrow the ',
-    },
     endOfLeagueMessageH: {
-        es: '_Podéis ver los premios enviando /premios_',
-        cat: '_Podeu veure els premis enviant /premis_',
-        en: '_You can see the trophies by sending /trophies_',
+        es: '_Podéis ver los premios conseguidos enviando /premios_',
+        cat: '_Podeu veure els premis que teniu enviant /premis_',
+        en: '_You can see your trophies by sending /trophies_',
     },
     topTitle: {
         es: '⭐️ *Top 5 mundial*',
@@ -253,20 +233,13 @@ const translations: Translations = {
     // Instructions and welcome messages
     welcomeMessage: {
         es: '¡Hola! 👋 Soy el bot de Wardle\n\nCompartid los resultados de wardle.day en este grupo y empezará la competición! Yo me encargo de mantener una clasificación y dar premios a los mejores.\n\nEnviad /clasificacion siempre que queráis para ver como va la liga, y /instrucciones para ver mas detalles de lo que puedo hacer.',
-        cat: 'Hola! 👋 Sóc jo, en Moootbot\n\nPer començar a competir, jugueu la partida diaria obrint t.me/mooot_cat_bot/mooot o clicant el botó de Jugar i compartiu el vostre resultat en aquet grup. Jo m’encarregaré de mantenir una classificació, donar premis als millors, etc\n\nEnvieu /classificacio sempre que vulgueu per veure com va la lliga, i /instruccions per veure més detalls del que puc fer.\n\nJuga ara! ⤵️',
+        cat: 'Hola! 👋 Sóc jo, en Mooot\n\nPer començar a competir, jugueu la partida diaria obrint t.me/mooot_cat_bot/mooot o clicant el botó de Jugar i compartiu el vostre resultat en aquet grup. Jo m’encarregaré de mantenir una classificació, donar premis als millors, etc\n\nEnvieu /classificacio sempre que vulgueu per veure com va la lliga, i /instruccions per veure més detalls del que puc fer.\n\nJuga ara! ⤵️',
         en: "Hello! 👋 I'm the Wardle bot\n\n Share your results from wardle.day/en in this group and the competition will begin! I will create a classification and give trophies to the best players.\n\nUse /classification anytime you need to see how the league is going, and /instructions to know more about what I can do.",
     },
     instructionsMessage: {
         es: '📋 <strong>Instrucciones del bot de wardle.day*\n\n🎯 *¿Cómo funciona?*\nComparte tus resultados de wardle.day en este chat y yo me encargaré del resto. Reaccionaré a tu mensaje y guardaré tu puntuación automáticamente.\n\n📊 *Comandos disponibles:*\n• /clasificacion - Ver clasificación mensual\n• /contrarreloj - Ver clasificación por tiempo\n• /leyenda - Tabla de puntos y reacciones\n• /premios - Ver premios disponibles\n• /top - Top 5 mundial\n• /anadirpersonaje - Añadir personajes virtuales\n• /eliminarpersonaje - Eliminar personajes\n\n🏆 *Sistema de puntos:*\n• 1 intento = 6 puntos\n• 2 intentos = 5 puntos\n• 3 intentos = 4 puntos\n• 4 intentos = 3 puntos\n• 5 intentos = 2 puntos\n• 6 intentos = 1 punto\n• X (fallo) = 0 puntos\n\n¡Solo puedes jugar una vez al día!',
         cat: '📋 <strong>Instruccions</strong>\n\n<strong>Com funciona?</strong>\n1. Jugueu obrint t.me/mooot_cat_bot/mooot o clicant el botó de Jugar\n2. Compartiu els resultats en aquest xat\nJo faig la resta!\n\nReaccionaré als vostres missatges i registraré les puntuacions per formar la classificació.\n\nLes lligues son mensuals, cada final de mes es reparteixen premis als guanyadors i comença una nova lliga\n\nHi ha dues classificacions, la normal, que té en compte els punts aconseguits, i la contrarrellotge, que té en compte el temps. Els premis son diferents per cada lliga.\n\n<strong>Ordres disponibles</strong>\n/classificacio - Veure classificació mensual\n/contrarrellotge - Veure classificació per temps\n/llegenda - Taula de punts i reaccions\n/premis - Veure premis disponibles\n/top - Top 5 mundial\n/afegirpersonatge - Afegir personatges virtuals\n/eliminarpersonatge - Eliminar personatges\n/instruccions - Veure aquestes instruccions\n\n<strong>Sistema de punts</strong>\n1 intent = 6 punts\n2 intents = 5 punts\n3 intents = 4 punts\n4 intents = 3 punts\n5 intents = 2 punts\n6 intents = 1 punt\nX (fallada) = 0 punts',
         en: "📋 <strong>Wardle.day bot instructions*\n\n🎯 *How does it work?*\nShare your wardle.day/en results in this chat and I'll take care of the rest. I'll react to your message and save your score automatically.\n\nLeagues are monthly, at the end of each month trophies are awarded to winners and a new league begins.\n\nThere are two classifications: normal (based on points) and time trial (based on time). Trophies are different for each league.\n\n📊 *Available commands:*\n• /classification - View monthly classification\n• /timetrial - View time trial classification\n• /legend - Points and reactions table\n• /trophies - View available trophies\n• /top - Global Top 5\n• /addcharacter - Add virtual characters\n• /removecharacter - Remove characters\n\n🏆 *Scoring system:*\n• 1 attempt = 6 points\n• 2 attempts = 5 points\n• 3 attempts = 4 points\n• 4 attempts = 3 points\n• 5 attempts = 2 points\n• 6 attempts = 1 point\n• X (failed) = 0 points\n\nYou can only play once per day!",
-    },
-
-    // URL
-    gameUrl: {
-        es: 'https://wardle.day',
-        cat: 'https://mooot.cat',
-        en: 'https://wardle.day/en',
     },
 }
 

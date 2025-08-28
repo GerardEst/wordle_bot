@@ -4,7 +4,14 @@ import {
     isSummerTime,
     getFormatTime,
 } from './utils.ts'
-import { LEAGUE_NAMES, LEAGUE_EMOJI, EMOJI_REACTIONS, AWARDS } from '../conf.ts'
+import {
+    LEAGUE_NAMES,
+    LEAGUE_EMOJI,
+    EMOJI_REACTIONS,
+    AWARDS,
+    LEAGUE_BYE_MESSAGE,
+    LEAGUE_BYE_MESSAGE_ENDING,
+} from '../conf.ts'
 import { FormattedMessage, Award, Result, Player, lang } from '../interfaces.ts'
 import { t } from '../translations.ts'
 
@@ -238,18 +245,21 @@ export function buildNewAwardsMessage(
     let message = `*${LEAGUE_EMOJI[lang][getCurrentMonth()]} ${t(
         'endOfLeagueMessageA',
         lang
-    )} ${LEAGUE_NAMES[lang][getCurrentMonth()]} ${
-        LEAGUE_EMOJI[lang][getCurrentMonth()]
-    }*\n\n`
+    )} ${LEAGUE_NAMES[lang][getCurrentMonth()]}*\n\n`
+
+    message += `_${LEAGUE_BYE_MESSAGE[lang][getCurrentMonth()]}_\n\n`
+
     for (let i = 0; i < 3; i++) {
         if (!results[i]) continue
-
         const award = AWARDS[lang].find(
             (award) => award.id === parseInt(`${getCurrentMonth()}${i}`)
         )
-        message += `*${results[i].name}*, ${t('endOfLeagueMessageB', lang)} *${
-            results[i].total
-        } ${t('endOfLeagueMessageC', lang)} *${award?.name} ${award?.emoji}*\n`
+
+        message += `*${award?.emoji} ${award?.name}*\n`
+        message += `${results[i].name} (${results[i].total} ${t(
+            'endOfLeagueMessageC',
+            lang
+        )}) \n\n`
     }
 
     message += '\n'
@@ -260,13 +270,11 @@ export function buildNewAwardsMessage(
         const award = AWARDS[lang].find(
             (award) => award.id === parseInt(`${getCurrentMonth()}${i + 5}`)
         )
-        message += `*${timetrialResults[i].name}*, ${t(
-            'endOfLeagueMessageD',
-            lang
-        )} *${getFormatTime(timetrialResults[i].totalTime)}*, ${t(
-            'endOfLeagueMessageE',
-            lang
-        )} *${award?.name} ${award?.emoji}*\n`
+
+        message += `*${award?.emoji} ${award?.name}*\n`
+        message += `${timetrialResults[i].name} (${getFormatTime(
+            timetrialResults[i].totalTime
+        )})\n\n`
     }
 
     message += '\n'
@@ -278,11 +286,9 @@ export function buildNewAwardsMessage(
     message += `${t(
         'endOfLeagueMessageF',
         lang
-    )} ${award?.name.toLowerCase()} ${award?.emoji}!\n\n`
-    message += `\n${t('endOfLeagueMessageG', lang)}*${
-        LEAGUE_NAMES[lang][getCurrentMonth() + 1]
-    }*!`
-    message += `\n\n${t('endOfLeagueMessageH', lang)}`
+    )} ${award?.name.toLowerCase()} ${award?.emoji}!\n\n\n`
+    message += `_${LEAGUE_BYE_MESSAGE_ENDING[lang][getCurrentMonth()]}_\n\n`
+    message += `${t('endOfLeagueMessageH', lang)}`
 
     return {
         text: message,
