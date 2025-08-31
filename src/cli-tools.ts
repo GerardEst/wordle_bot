@@ -175,10 +175,14 @@ if (import.meta.main) {
      */
 
     if (command === 'simulate-end-of-month') {
-        console.log(`Simulating end of month for dev chat: ${DEV_CHAT_ID}`)
+        const toChatId = parseInt(args[1])
+
+        console.log(
+            `Simulating end of month for chat: ${toChatId || DEV_CHAT_ID}`
+        )
 
         const simulateEndOfMonth = async () => {
-            await handleEndOfMonth(bot, 'cat', DEV_CHAT_ID)
+            await handleEndOfMonth(bot, 'cat', toChatId || DEV_CHAT_ID)
         }
 
         await simulateEndOfMonth()

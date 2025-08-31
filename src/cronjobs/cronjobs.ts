@@ -93,9 +93,6 @@ async function saveAwardsToDb(
 
     // Award top 3 positions
     for (let i = 0; i < 3; i++) {
-        console.log(results[i].id)
-        console.log(timetrialResults[i].id)
-
         // If the id is from a npc (id>MAXIMUM_CHARACTER_ID), skip the trophy. NPCs don't win trophies.
         if (results[i] && results[i].id > MAXIMUM_CHARACTER_ID) {
             await giveAwardTo(
