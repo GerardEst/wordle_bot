@@ -180,17 +180,9 @@ export function buildAwardsMessage(
         const [userName, userAwards] = entry
 
         message += `\n*${userName}*\n`
-        message += '╔\n'
 
-        userAwards.forEach((award, awardIndex) => {
-            const isLastAward = awardIndex === userAwards.length - 1
+        userAwards.forEach((award) => {
             message += `  ${award.emoji} ${award.name} \n`
-
-            if (isLastAward) {
-                message += '╚\n'
-            } else {
-                message += '╠\n'
-            }
         })
     })
 
