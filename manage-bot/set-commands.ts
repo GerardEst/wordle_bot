@@ -62,7 +62,11 @@ const commands_es = [
     },
     {
         command: '/top',
-        description: 'Muestra el top 5 mundial',
+        description: 'Muestra el top 10 mundial',
+    },
+    {
+        command: '/topcontrarreloj',
+        description: 'Muestra el top 10 mundial',
     },
     {
         command: '/anadirpersonaje',
@@ -97,7 +101,11 @@ const commands_en = [
     },
     {
         command: '/top',
-        description: 'Show the global top 5',
+        description: 'Show the global top 10',
+    },
+    {
+        command: '/toptimetrial',
+        description: 'Show the global top 10',
     },
     {
         command: '/instructions',

@@ -16,6 +16,11 @@ const translations: Translations = {
     timetrial: { es: 'contrarreloj', cat: 'contrarrellotge', en: 'timetrial' },
     legend: { es: 'leyenda', cat: 'llegenda', en: 'legend' },
     trophies: { es: 'premios', cat: 'premis', en: 'trophies' },
+    toptimetrial: {
+        es: 'topcontrarreloj',
+        cat: 'topcontrarrellotge',
+        en: 'toptimetrial',
+    },
     addCharacter: {
         es: 'anadirpersonaje',
         cat: 'afegirpersonatge',

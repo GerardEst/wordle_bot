@@ -34,7 +34,7 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command('top', (ctx: Context) => {
         sendTop(ctx, bot_lang)
     })
-    bot.command('topcontrarrellotge', (ctx: Context) => {
+    bot.command(t('toptimetrial', bot_lang), (ctx: Context) => {
         sendTop(ctx, bot_lang, 'timetrial')
     })
     bot.command(t('addCharacter', bot_lang), (ctx: Context) => {
