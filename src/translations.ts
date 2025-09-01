@@ -237,8 +237,8 @@ const translations: Translations = {
     topFactor: {
         es: 'puntos',
         cat: 'punts',
-        en: 'points'
-    }
+        en: 'points',
+    },
 
     // Instructions and welcome messages
     welcomeMessage: {
