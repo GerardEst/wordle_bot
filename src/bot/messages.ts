@@ -304,13 +304,13 @@ export function buildTopMessage(
     lang: lang,
     mode = 'normal'
 ): FormattedMessage {
-    let message = `${t('topTitle', lang)}\n\n`
+    let message = `${t(
+        mode === 'normal' ? 'topTitle' : 'topTimetrialTitle',
+        lang
+    )}\n\n`
 
     if (topPlayers.length === 0) {
-        message = t(
-            mode === 'normal' ? 'topNoPlayers' : 'topTimetrialTitle',
-            lang
-        )
+        message = t('topNoPlayers', lang)
     } else {
         const medals = ['🥇', '🥈', '🥉']
         topPlayers.forEach((player, index) => {
