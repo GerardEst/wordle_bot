@@ -119,7 +119,10 @@ export async function getChats(lang: lang): Promise<number[]> {
     }
 }
 
-export async function getTopPlayersGlobal(lang: lang): Promise<Result[]> {
+export async function getTopPlayersGlobal(
+    lang: lang,
+    timetrial: boolean
+): Promise<Result[]> {
     const dateRange = getDateRangeForPeriod('month')
 
     try {
@@ -135,7 +138,8 @@ export async function getTopPlayersGlobal(lang: lang): Promise<Result[]> {
 
         // SUPABASE BUG #01
         const ranking = getCleanedRanking(
-            (data as unknown as SBGameRecord[]) || []
+            (data as unknown as SBGameRecord[]) || [],
+            timetrial
         )
         return ranking.slice(0, 10)
     } catch (error) {

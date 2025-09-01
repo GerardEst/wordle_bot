@@ -23,7 +23,11 @@ const commands_cat = [
     },
     {
         command: '/top',
-        description: 'Mostra el top 5 mundial',
+        description: 'Mostra el top 10 mundial',
+    },
+    {
+        command: '/topcontrarrellotge',
+        description: 'Mostra el top 10 mundial',
     },
     {
         command: '/afegirpersonatge',

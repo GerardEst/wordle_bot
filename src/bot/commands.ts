@@ -34,6 +34,9 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command('top', (ctx: Context) => {
         sendTop(ctx, bot_lang)
     })
+    bot.command('topcontrarrellotge', (ctx: Context) => {
+        sendTop(ctx, bot_lang, 'timetrial')
+    })
     bot.command(t('addCharacter', bot_lang), (ctx: Context) => {
         sendAddCharacterOptions(ctx, bot_lang)
     })
@@ -130,11 +133,11 @@ function showTrophiesOptions(ctx: Context, lang: lang) {
     ctx.reply(t('selectOption', lang), { reply_markup: keyboard })
 }
 
-async function sendTop(ctx: Context, lang: lang) {
+async function sendTop(ctx: Context, lang: lang, mode = 'normal') {
     if (!ctx.chat) return
 
-    const topPlayers = await api.getTopPlayersGlobal(lang)
-    const message = buildTopMessage(topPlayers, lang)
+    const topPlayers = await api.getTopPlayersGlobal(lang, mode === 'timetrial')
+    const message = buildTopMessage(topPlayers, lang, mode)
 
     ctx.reply(message.text, { parse_mode: 'Markdown' })
 }

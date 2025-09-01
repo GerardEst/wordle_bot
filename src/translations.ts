@@ -224,6 +224,11 @@ const translations: Translations = {
         cat: '⭐️ *Top 10 mundial*',
         en: '⭐️ *Global Top 10*',
     },
+    topTimetrialTitle: {
+        es: '⭐️ *Top 10 contrarreloj mundial*',
+        cat: '⭐️ *Top 10 contrarrellotge mundial*',
+        en: '⭐️ *Global timetrial Top 10*',
+    },
     topNoPlayers: {
         es: 'Aún no hay jugadores este mes',
         cat: 'Encara no hi ha jugadors aquest mes',

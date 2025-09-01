@@ -50,6 +50,7 @@ export interface Result {
 export interface Player {
     name: string
     total: number
+    totalTime: number
 }
 
 export interface Award {

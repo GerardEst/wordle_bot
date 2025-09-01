@@ -301,17 +301,25 @@ export function buildCharactersActionsMessage(
 
 export function buildTopMessage(
     topPlayers: Player[],
-    lang: lang
+    lang: lang,
+    mode = 'normal'
 ): FormattedMessage {
     let message = `${t('topTitle', lang)}\n\n`
 
     if (topPlayers.length === 0) {
-        message = t('topNoPlayers', lang)
+        message = t(
+            mode === 'normal' ? 'topNoPlayers' : 'topTimetrialTitle',
+            lang
+        )
     } else {
         const medals = ['🥇', '🥈', '🥉']
         topPlayers.forEach((player, index) => {
             const medal = medals[index] || ''
-            message += `${medal} ${player.name}: ${player.total} punts\n`
+            message += `${medal} ${player.name}: ${
+                mode === 'normal'
+                    ? player.total
+                    : getFormatTime(player.totalTime)
+            } punts\n`
         })
     }
 
