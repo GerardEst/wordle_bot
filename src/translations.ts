@@ -234,6 +234,11 @@ const translations: Translations = {
         cat: 'Encara no hi ha jugadors aquest mes',
         en: 'No players this month yet',
     },
+    topFactor: {
+        es: 'puntos',
+        cat: 'punts',
+        en: 'points'
+    }
 
     // Instructions and welcome messages
     welcomeMessage: {

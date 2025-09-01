@@ -315,11 +315,11 @@ export function buildTopMessage(
         const medals = ['🥇', '🥈', '🥉']
         topPlayers.forEach((player, index) => {
             const medal = medals[index] || ''
-            message += `${medal} ${player.name}: ${
+            message += `${medal} ${player.name} (${
                 mode === 'normal'
                     ? player.total
                     : getFormatTime(player.totalTime)
-            } punts\n`
+            }${mode === 'normal' ? ' punts' : ''})\n`
         })
     }
 
