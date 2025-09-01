@@ -5,7 +5,6 @@ import { Result, SBGameRecord, RankingEntry, lang } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { log } from './log.ts'
 
-
 export async function getChatPunctuations(
     chatId: number,
     period: 'all' | 'month' | 'day',
@@ -138,7 +137,7 @@ export async function getTopPlayersGlobal(lang: lang): Promise<Result[]> {
         const ranking = getCleanedRanking(
             (data as unknown as SBGameRecord[]) || []
         )
-        return ranking.slice(0, 5)
+        return ranking.slice(0, 10)
     } catch (error) {
         console.error('Error getting top players globally', error)
         return []

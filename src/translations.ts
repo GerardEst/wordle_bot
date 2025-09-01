@@ -220,9 +220,9 @@ const translations: Translations = {
         en: '_You can see your trophies by sending /trophies_',
     },
     topTitle: {
-        es: '⭐️ *Top 5 mundial*',
-        cat: '⭐️ *Top 5 mundial*',
-        en: '⭐️ *Global Top 5*',
+        es: '⭐️ *Top 10 mundial*',
+        cat: '⭐️ *Top 10 mundial*',
+        en: '⭐️ *Global Top 10*',
     },
     topNoPlayers: {
         es: 'Aún no hay jugadores este mes',

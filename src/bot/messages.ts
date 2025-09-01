@@ -308,9 +308,9 @@ export function buildTopMessage(
     if (topPlayers.length === 0) {
         message = t('topNoPlayers', lang)
     } else {
-        const medals = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
+        const medals = ['🥇', '🥈', '🥉']
         topPlayers.forEach((player, index) => {
-            const medal = medals[index] || '🏅'
+            const medal = medals[index] || ''
             message += `${medal} ${player.name}: ${player.total} punts\n`
         })
     }
