@@ -173,6 +173,7 @@ export async function sendCharactersActions(
 
             await bot.api.sendMessage(chat, message.text, {
                 parse_mode: message.parse_mode,
+                disable_notification: true
             })
         }
     }
