@@ -18,8 +18,11 @@ function cors(response: Response, origin = 'https://mooot.cat'): Response {
 }
 
 async function handlePrepareShare(req: Request, bot: Bot) {
+    console.log('handling preparation of share')
     try {
         const body = await req.json()
+
+        console.log('got the body', body)
 
         // Validate required parameters
         if (!body.message || !body.user_id) {
@@ -37,6 +40,7 @@ async function handlePrepareShare(req: Request, bot: Bot) {
             )
         }
 
+        console.log("try to prepare message")
         // Call Telegram's savePreparedInlineMessage method
         const result = await bot.api.savePreparedInlineMessage(
             body.user_id,
@@ -66,6 +70,8 @@ async function handlePrepareShare(req: Request, bot: Bot) {
                 allow_channel_chats: false,
             }
         )
+
+        console.log("got the message", result)
 
         return cors(
             new Response(JSON.stringify(result), {
@@ -105,7 +111,6 @@ export function startUp(token: string) {
 
                 // Handle /prepare-share endpoint
                 if (url.pathname === '/prepare-share') {
-                    console.log("Someone trying to prepare a share")
                     if (req.method === 'OPTIONS') {
                         // Handle preflight request
                         return cors(new Response(null, { status: 204 }))
