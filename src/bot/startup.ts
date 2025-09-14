@@ -111,6 +111,7 @@ export function startUp(token: string) {
 
                 // Handle /prepare-share endpoint
                 if (url.pathname === '/prepare-share') {
+                    console.log("somebody wants to share")
                     if (req.method === 'OPTIONS') {
                         // Handle preflight request
                         return cors(new Response(null, { status: 204 }))
