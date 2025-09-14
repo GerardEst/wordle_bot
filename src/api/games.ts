@@ -3,7 +3,7 @@ import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
 import { Result, SBGameRecord, RankingEntry, lang } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
-import { log } from './log.ts'
+import { supalog } from './log.ts'
 
 export async function getChatPunctuations(
     chatId: number,
@@ -78,7 +78,7 @@ export async function createRecord({
     lang: lang
 }) {
     if (userId)
-        log.info(
+        supalog.info(
             'User sent a game',
             `Player ${userId}, ${userName} played on chat ${chatId} for +${points} points in ${time} seconds with ${lang} bot`,
             lang

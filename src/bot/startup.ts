@@ -1,4 +1,6 @@
 import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
+import { supalog } from '../api/log.ts'
+
 const dev = Deno.env.get('ENV') === 'dev'
 
 function cors(response: Response, origin = 'https://mooot.cat'): Response {
@@ -21,6 +23,7 @@ async function handlePrepareShare(req: Request, bot: Bot) {
 
         // Validate required parameters
         if (!body.message || !body.user_id) {
+            console.log('Missing parameters')
             return cors(
                 new Response(
                     JSON.stringify({
@@ -72,6 +75,7 @@ async function handlePrepareShare(req: Request, bot: Bot) {
         )
     } catch (error) {
         console.error('Error in handlePrepareShare:', error)
+        supalog.error('Error in handlePrepareShare:', error)
         return cors(
             new Response(
                 JSON.stringify({ error: 'Failed to prepare inline message' }),
@@ -101,6 +105,7 @@ export function startUp(token: string) {
 
                 // Handle /prepare-share endpoint
                 if (url.pathname === '/prepare-share') {
+                    console.log("Someone trying to prepare a share")
                     if (req.method === 'OPTIONS') {
                         // Handle preflight request
                         return cors(new Response(null, { status: 204 }))

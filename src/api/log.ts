@@ -23,7 +23,7 @@ async function logToDatabase(
     }
 }
 
-export const log = {
+export const supalog = {
     debug: (message: string, data?: any, bot_lang?: string) =>
         logToDatabase('debug', message, data, bot_lang),
 
