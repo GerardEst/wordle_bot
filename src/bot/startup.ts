@@ -3,12 +3,31 @@ import { supalog } from '../api/log.ts'
 
 const dev = Deno.env.get('ENV') === 'dev'
 
-function cors(response: Response, origin = 'https://mooot.cat'): Response {
+function isAllowedOrigin(origin: string | null): boolean {
+    if (!origin) return false
+    // Allow prod domain
+    if (origin === 'https://mooot.cat') return true
+    // Allow Vercel preview deployments
+    if (origin.endsWith('.vercel.app')) return true
+    // Allow local development
+    if (origin.startsWith('http://localhost')) return true
+    return false
+}
+
+function cors(response: Response, req?: Request): Response {
     const headers = new Headers(response.headers)
-    headers.set('Access-Control-Allow-Origin', origin)
+    const requestOrigin = req?.headers.get('origin') ?? null
+
+    // If the origin is allowed, echo it back; otherwise fall back to prod domain
+    const allowOrigin = isAllowedOrigin(requestOrigin)
+        ? (requestOrigin as string)
+        : 'https://mooot.cat'
+
+    headers.set('Access-Control-Allow-Origin', allowOrigin)
     headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS')
     headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
     headers.set('Access-Control-Max-Age', '86400')
+    headers.append('Vary', 'Origin')
 
     return new Response(response.body, {
         status: response.status,
@@ -36,7 +55,8 @@ async function handlePrepareShare(req: Request, bot: Bot) {
                         status: 400,
                         headers: { 'Content-Type': 'application/json' },
                     }
-                )
+                ),
+                req
             )
         }
 
@@ -77,7 +97,8 @@ async function handlePrepareShare(req: Request, bot: Bot) {
             new Response(JSON.stringify(result), {
                 status: 200,
                 headers: { 'Content-Type': 'application/json' },
-            })
+            }),
+            req
         )
     } catch (error) {
         console.error('Error in handlePrepareShare:', error)
@@ -86,7 +107,8 @@ async function handlePrepareShare(req: Request, bot: Bot) {
             new Response(
                 JSON.stringify({ error: 'Failed to prepare inline message' }),
                 { status: 500, headers: { 'Content-Type': 'application/json' } }
-            )
+            ),
+            req
         )
     }
 }
@@ -114,7 +136,7 @@ export function startUp(token: string) {
                     console.log("somebody wants to share", req.method)
                     if (req.method === 'OPTIONS') {
                         // Handle preflight request
-                        return cors(new Response(null, { status: 204 }))
+                        return cors(new Response(null, { status: 204 }), req)
                     }
                     if (req.method === 'POST') {
                         console.log('its a post')
