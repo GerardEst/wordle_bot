@@ -116,6 +116,7 @@ export function startUp(token: string) {
                         return cors(new Response(null, { status: 204 }))
                     }
                     if (req.method === 'POST') {
+                        console.log('its a post')
                         return await handlePrepareShare(req, bot)
                     }
                 }
