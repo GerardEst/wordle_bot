@@ -164,6 +164,7 @@ export function getCleanedRanking(
         }
     > = {}
     const processedUserDates: Record<string, Set<string>> = {}
+    const allSpainDates: Set<string> = new Set()
 
     for (const record of records) {
         const userId = record.user_id || record.character_id
@@ -188,6 +189,7 @@ export function getCleanedRanking(
         }
 
         const spainDateString = recordInSpain.toISOString().split('T')[0]
+        allSpainDates.add(spainDateString)
 
         // Only count this record if we haven't seen this Spain date for this user yet
         if (!processedUserDates[userId].has(spainDateString)) {
@@ -209,8 +211,15 @@ export function getCleanedRanking(
         }
     })
 
+    // Filter out users who haven't played on all available days (since period start to today)
+    const requiredDays = allSpainDates.size
+    const fullyPlayed = usersWithAverages.filter((entry) => {
+        const datesCount = processedUserDates[String(entry.id)]?.size || 0
+        return datesCount === requiredDays && requiredDays > 0
+    })
+
     // Sort based on timetrial mode using average time
-    const ranking: RankingEntry[] = usersWithAverages.sort((a, b) => {
+    const ranking: RankingEntry[] = fullyPlayed.sort((a, b) => {
         if (timetrial) {
             // In timetrial mode: sort by average time first, then by points
             if ((a.averageTime || 0) !== (b.averageTime || 0))
