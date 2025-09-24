@@ -164,7 +164,6 @@ export function getCleanedRanking(
         }
     > = {}
     const processedUserDates: Record<string, Set<string>> = {}
-    const allSpainDates: Set<string> = new Set()
 
     for (const record of records) {
         const userId = record.user_id || record.character_id
@@ -189,8 +188,7 @@ export function getCleanedRanking(
         }
 
         const spainDateString = recordInSpain.toISOString().split('T')[0]
-        allSpainDates.add(spainDateString)
-
+        
         // Only count this record if we haven't seen this Spain date for this user yet
         if (!processedUserDates[userId].has(spainDateString)) {
             userPoints[userId].total += points
@@ -211,8 +209,9 @@ export function getCleanedRanking(
         }
     })
 
-    // Filter out users who haven't played on all available days (since period start to today)
-    const requiredDays = allSpainDates.size
+    // Filter out users who haven't played every day of the current month up to today (Spain time)
+    const todaySpain = getSpainDateFromUTC(new Date().toISOString())
+    const requiredDays = todaySpain.getDate()
     const fullyPlayed = usersWithAverages.filter((entry) => {
         const datesCount = processedUserDates[String(entry.id)]?.size || 0
         return datesCount === requiredDays && requiredDays > 0
