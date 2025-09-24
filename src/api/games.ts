@@ -154,7 +154,14 @@ export function getCleanedRanking(
 ): RankingEntry[] {
     const userPoints: Record<
         string,
-        { id: number; name: string; total: number; totalTime: number }
+        {
+            id: number
+            name: string
+            total: number
+            averageTime: number // Will store average time (in seconds) after processing
+            _sumTime: number // Internal accumulator for total time
+            _count: number // Internal counter of valid records (unique Spain dates)
+        }
     > = {}
     const processedUserDates: Record<string, Set<string>> = {}
 
@@ -162,7 +169,7 @@ export function getCleanedRanking(
         const userId = record.user_id || record.character_id
         const userName = record.users?.name || record.characters?.name
         const points = record.punctuation
-        const time = record.time
+        const time = record.time ?? 0
         const recordInSpain = getSpainDateFromUTC(record.created_at)
 
         if (!userId || !userName) return []
@@ -173,7 +180,9 @@ export function getCleanedRanking(
                 id: userId,
                 name: userName,
                 total: 0,
-                totalTime: 0,
+                averageTime: 0,
+                _sumTime: 0,
+                _count: 0,
             }
             processedUserDates[userId] = new Set()
         }
@@ -183,28 +192,41 @@ export function getCleanedRanking(
         // Only count this record if we haven't seen this Spain date for this user yet
         if (!processedUserDates[userId].has(spainDateString)) {
             userPoints[userId].total += points
-            userPoints[userId].totalTime += time
+            userPoints[userId]._sumTime += time
+            userPoints[userId]._count += 1
             processedUserDates[userId].add(spainDateString)
         }
     }
 
-    // Sort based on timetrial mode
-    const ranking = Object.values(userPoints).sort((a, b) => {
-        if (timetrial) {
-            // In timetrial mode: sort by time first, then by points for tie-breaking
-            if (a.totalTime !== b.totalTime) {
-                return a.totalTime - b.totalTime
-            }
-            return b.total - a.total
-        } else {
-            // Normal mode: sort by points first, then by time for tie-breaking
-            if (b.total !== a.total) {
-                return b.total - a.total
-            }
-            return a.totalTime - b.totalTime
+    // Compute average time (seconds) per user and expose it via averageTime
+    const usersWithAverages: RankingEntry[] = Object.values(userPoints).map((u) => {
+        const avg = u._count > 0 ? Math.round(u._sumTime / u._count) : 0
+        return {
+            id: u.id,
+            name: u.name,
+            total: u.total,
+            averageTime: avg,
         }
     })
 
-    // Remove totalTime from the final result to match RankingEntry interface
+    // Sort based on timetrial mode using average time
+    const ranking: RankingEntry[] = usersWithAverages.sort((a, b) => {
+        if (timetrial) {
+            // In timetrial mode: sort by average time first, then by points
+            if ((a.averageTime || 0) !== (b.averageTime || 0))
+                return (a.averageTime || 0) - (b.averageTime || 0)
+            return b.total - a.total
+        } else {
+            // Normal mode: sort by points first, then by average time
+            if (b.total !== a.total) return b.total - a.total
+            return (a.averageTime || 0) - (b.averageTime || 0)
+        }
+    })
+
+    // When not timetrial, omit averageTime in the returned objects to keep payload minimal
+    if (!timetrial) {
+        return ranking.map(({ id, name, total }) => ({ id, name, total }))
+    }
+
     return ranking
 }

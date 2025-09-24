@@ -76,7 +76,7 @@ export function buildTimetrialRankingMessageFrom(
 
     records.forEach((user, index) => {
         // From seconds to HH:MM:SS
-        const totalSeconds = user.totalTime
+        const totalSeconds = user.averageTime || 0
         const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0')
         const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
             2,
@@ -265,7 +265,7 @@ export function buildNewAwardsMessage(
 
         message += `*${award?.emoji} ${award?.name}*\n`
         message += `${timetrialResults[i].name} (${getFormatTime(
-            timetrialResults[i].totalTime
+            timetrialResults[i].averageTime || 0
         )})\n\n`
     }
 
@@ -318,7 +318,7 @@ export function buildTopMessage(
             message += `${medal} ${player.name} (${
                 mode === 'normal'
                     ? player.total
-                    : getFormatTime(player.totalTime)
+                    : getFormatTime(player.averageTime || 0)
             }${mode === 'normal' ? ' punts' : ''})\n`
         })
     }

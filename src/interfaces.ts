@@ -37,20 +37,20 @@ export interface RankingEntry {
     id: number
     name: string
     total: number
-    totalTime: number
+    averageTime?: number
 }
 
 export interface Result {
     id: number
     name: string
     total: number
-    totalTime: number
+    averageTime?: number
 }
 
 export interface Player {
     name: string
     total: number
-    totalTime: number
+    averageTime?: number
 }
 
 export interface Award {
