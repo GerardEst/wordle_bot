@@ -12,6 +12,17 @@ export interface SBGameRecord {
     created_at: string
 }
 
+// La vista unique_games ens torna els camps de manera una mica diferent
+export interface SBUniqueGameRecord{
+    user_id?: number
+    user_name?: string
+    punctuation: number
+    time: number
+    chats_id: number[]
+    created_at: string
+    created_at_date: string
+}
+
 export interface SBCharacter {
     id: number
     name: string

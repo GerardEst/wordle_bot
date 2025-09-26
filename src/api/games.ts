@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase.ts'
 import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
-import { Result, SBGameRecord, RankingEntry, lang } from '../interfaces.ts'
+import { Result, SBGameRecord, RankingEntry, lang, SBUniqueGameRecord } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { supalog } from './log.ts'
 
@@ -127,18 +127,17 @@ export async function getTopPlayersGlobal(
 
     try {
         const { data, error } = await supabase
-            .from('games_chats')
-            .select('user_id, users(name), punctuation, time, created_at')
+            .from('unique_games')
+            .select('user_id, user_name, punctuation, time, created_at_date')
             .eq('lang', lang)
-            .is('character_id', null)
-            .gte('created_at', dateRange.from)
-            .lte('created_at', dateRange.to)
+            .gte('created_at_date', dateRange.from)
+            .lte('created_at_date', dateRange.to)
 
         if (error) throw error
 
         // SUPABASE BUG #01
         const ranking = getCleanedRanking(
-            (data as unknown as SBGameRecord[]) || [],
+            (data as unknown as SBUniqueGameRecord[]) || [],
             timetrial
         )
         return ranking.slice(0, 10)

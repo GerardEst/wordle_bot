@@ -1,0 +1,37 @@
+L'unic que vui és que al crear la classificació per temps, en comptes de sumar els temps de cada personaes
+faci la mitjana. La manera directa de fer-ho és modificant la funció on es genera la classificació a partir
+de les partides obtingudes del backend. Evidentment es necessiten totes les partides, el que no es necessita
+és les partides repetides de la mateixa persona en diferents xats. Potser, per facilitar les coses, podria
+obtenir de supabase les partides "netes" en cas de volerles totes, ja que quan demanem les d'un xat ja venen
+úniques.
+
+- No sé si hi ha una crida per tenir-les totes diferent de les de tenir el xat, suposo que si.
+
+Vale tenim un getTopPlayersGlobal al que li podem passar si calcular en base al temps o als punts. Això bàsicament
+fa la call per tenir tots els games a full i després fa getCleanedRanking per crear la classificació final en base
+a punts o temps. Entenc que aquí rebem tots els games, perquè no veig a la call de supabase
+que faci res per evitar-ho.
+
+- De moment, el millor serà veure com obtenir el mateix però sense repetir partides enviades a diferents grups
+
+Vale, després de 45min amb chatgpt tinc la vista. Obtenim així les partides úniques diaries per tothom,
+d'una manera molt més neta, i per tant espero que getCleanedRanking pugui simplificar-se molt.
+
+- Clar, getCleanedRanking tambés es fa servir quan obtenim les coses del games_chats, que venen una mica diferents, amb els characters, etc.
+
+Podria duplicar getChatRanking i fer un getGlobalChatRanking, per exemple.
+Això de moment, i sino ara o més endavant, fer
+Una vista o una funció amb els mateixos camps, que li passi el grup i em torni els camps igual que la vista que acabo de fer,
+per poder fer servir la mateixa getCleanedRanking.
+O sino, encara més directe, fer una vista que tingui els punts totals i temps mitg de cada persona 
+
+- Vale, resulta que crear una vista amb les estadistiques ha sigut super facil
+
+Ara puc obtenir les coses directament de la vista, sense fer calculs al front. Demà seguim, el plan és:
+
+- Eliminar personatges?
+    - Si sí, refactor i neteja per treure complexitat absurda
+    - Si no, afegir-los a la vista unique_games per poder-los afegir
+    a la vista d'estadistiques
+- Instalar supabase CLI per poder guardar les vistes (tenir migracions etc)
+- Per fer els rankings a getTopPlayersGlobal i getChatRanking, fer servir la vista nova i simplificar-ho tot. 
