@@ -34,4 +34,15 @@ Ara puc obtenir les coses directament de la vista, sense fer calculs al front. D
     - Si no, afegir-los a la vista unique_games per poder-los afegir
     a la vista d'estadistiques
 - Instalar supabase CLI per poder guardar les vistes (tenir migracions etc)
-- Per fer els rankings a getTopPlayersGlobal i getChatRanking, fer servir la vista nova i simplificar-ho tot. 
+
+No era tant fàcil. Sí, instalar supabase cli és fàcil, fer-ho servir també, però perquè la DX sigui
+bona he de fer cosetes. Per començar, importar tota la info em genera una migració gegant, i a partir 
+d'aquí jo podria anar generant migracions per cada canvi. Cosa que tampoc em molestaria. Una migració
+per crear una taula, una altra per una vista, etc. Però després cada canvi hauria de ser una migració
+i és com una mica lleig. L'alternativa maca és tenir-ho tot dins schema i fer un diff perquè supabase
+calculi els canvis que hi ha hagut i generi la migració automàticament. Em fa una mica de por, perquè
+hi ha coses que no "s'adona" que hi son. Potser de moment seria menys lio fer migracions per tot. Però
+és la manera maca i la que provaré per ara.
+
+- Per fer els rankings a getTopPlayersGlobal i getChatRanking, fer servir la vista nova i simplificar-ho tot.
+I si tingués una vista amb la classificació global?
