@@ -1,7 +1,13 @@
 import { supabase } from '../lib/supabase.ts'
 import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
-import { Result, SBGameRecord, RankingEntry, lang, SBUniqueGameRecord } from '../interfaces.ts'
+import {
+    lang,
+    PlayerFromGlobal,
+    RankingEntry,
+    Result,
+    SBGameRecord,
+} from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { supalog } from './log.ts'
 
@@ -77,12 +83,13 @@ export async function createRecord({
     time: number
     lang: lang
 }) {
-    if (userId)
+    if (userId) {
         supalog.info(
             'User sent a game',
             `Player ${userId}, ${userName} played on chat ${chatId} for +${points} points in ${time} seconds with ${lang} bot`,
             lang
         )
+    }
 
     if (userId && userName) await createPlayerIfNotExist(userId, userName)
 
@@ -123,26 +130,29 @@ export async function getTopPlayersGlobal(
     lang: lang,
     timetrial: boolean
 ): Promise<Result[]> {
-    const dateRange = getDateRangeForPeriod('month')
-
     try {
         const { data, error } = await supabase
-            .from('unique_games')
-            .select('user_id, user_name, punctuation, time, created_at_date')
+            .from('unique_games_totals_by_lang')
+            .select('user_id, user_name, total_points, avg_time')
+            // si volem ordre per temps, ascending serà true, si volem per punts ha de ser descending (fals)
+            .order(timetrial ? 'avg_time' : 'total_points', {
+                ascending: timetrial,
+            })
             .eq('lang', lang)
-            .gte('created_at_date', dateRange.from)
-            .lte('created_at_date', dateRange.to)
+            .limit(10)
 
         if (error) throw error
 
-        // SUPABASE BUG #01
-        const ranking = getCleanedRanking(
-            (data as unknown as SBUniqueGameRecord[]) || [],
-            timetrial
-        )
-        return ranking.slice(0, 10)
+        return data.map((player: PlayerFromGlobal) => {
+            return {
+                id: player.user_id,
+                name: player.user_name,
+                total: player.total_points,
+                totalTime: player.avg_time,
+            }
+        })
     } catch (error) {
-        console.error('Error getting top players globally', error)
+        console.error('Error getting top global players', error)
         return []
     }
 }
