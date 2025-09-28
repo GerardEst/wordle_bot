@@ -71,6 +71,7 @@ export interface FormattedMessage {
 export interface PlayerFromGlobal {
     user_id: number
     user_name: string
+    games_count: number
     total_points: number
     avg_time: number
 }

@@ -10,6 +10,7 @@ import {
 } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { supalog } from './log.ts'
+import { dayOfMonth } from '../lib/timezones.ts'
 
 export async function getChatPunctuations(
     chatId: number,
@@ -133,7 +134,7 @@ export async function getTopPlayersGlobal(
     try {
         const { data, error } = await supabase
             .from('user_game_totals_by_lang')
-            .select('user_id, user_name, total_points, avg_time')
+            .select('user_id, user_name, games_count, total_points, avg_time')
             // si volem ordre per temps, ascending serà true, si volem per punts ha de ser descending (fals)
             .order(timetrial ? 'avg_time' : 'total_points', {
                 ascending: timetrial,
@@ -143,14 +144,26 @@ export async function getTopPlayersGlobal(
 
         if (error) throw error
 
-        return data.map((player: PlayerFromGlobal) => {
-            return {
-                id: player.user_id,
-                name: player.user_name,
-                total: player.total_points,
-                totalTime: player.avg_time,
-            }
-        })
+        return data
+            .filter((player: PlayerFromGlobal) => {
+                if (timetrial) {
+                    /** En cas de timetrial, només ens quedem els jugadors que hagin jugat tots els dies
+                     * menys un, per donar una mica de marge i perquè surti bé quan algú ho mira però encara
+                     * no ha jugat
+                     */
+                    return player.games_count >= dayOfMonth() - 1
+                } else {
+                    return true
+                }
+            })
+            .map((player: PlayerFromGlobal) => {
+                return {
+                    id: player.user_id,
+                    name: player.user_name,
+                    total: player.total_points,
+                    totalTime: player.avg_time,
+                }
+            })
     } catch (error) {
         console.error('Error getting top global players', error)
         return []
