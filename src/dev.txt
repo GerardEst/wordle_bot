@@ -46,3 +46,7 @@ hi ha coses que no "s'adona" que hi son. Potser de moment seria menys lio fer mi
 
 - Per fer els rankings a getTopPlayersGlobal i getChatRanking, fer servir la vista nova i simplificar-ho tot.
 I si tingués una vista amb la classificació global?
+
+// TODO - Tots els totalTime s'haurien de dir avgTime per claredat
+// TODO - Estan passant coses rares amb prettier, ara posa molts tabs. Deixar-ho com m'agradi
+// i correr un prettier global. Deu passar perquè estava al mac i es llegeix diferent o algo així.

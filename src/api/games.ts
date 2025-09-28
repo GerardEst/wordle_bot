@@ -132,6 +132,8 @@ export async function getTopPlayersGlobal(
     timetrial: boolean
 ): Promise<Result[]> {
     try {
+        console.log(dayOfMonth() - 1)
+
         const { data, error } = await supabase
             .from('user_game_totals_by_lang')
             .select('user_id, user_name, games_count, total_points, avg_time')
