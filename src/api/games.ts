@@ -132,8 +132,6 @@ export async function getTopPlayersGlobal(
     timetrial: boolean
 ): Promise<Result[]> {
     try {
-        console.log(dayOfMonth() - 1)
-
         const { data, error } = await supabase
             .from('user_game_totals_by_lang')
             .select('user_id, user_name, games_count, total_points, avg_time')
@@ -141,8 +139,10 @@ export async function getTopPlayersGlobal(
             .order(timetrial ? 'avg_time' : 'total_points', {
                 ascending: timetrial,
             })
-            // en timetrial, volem eliminar tots els que no han jugat totes les partides (amb una de marge)
-            .gt('games_count', timetrial ? dayOfMonth() - 1 : 0)
+            // en timetrial, volem eliminar tots els que no han jugat totes les partides (amb una mica de marge)
+            .gt('games_count', timetrial ? dayOfMonth() - 3 : 0)
+            // i en general, que hagin jugat alguna partida
+            .gt('avg_time', 0)
             .eq('lang', lang)
             .limit(10)
 
