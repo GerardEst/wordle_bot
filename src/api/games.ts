@@ -139,31 +139,21 @@ export async function getTopPlayersGlobal(
             .order(timetrial ? 'avg_time' : 'total_points', {
                 ascending: timetrial,
             })
+            // en timetrial, volem eliminar tots els que no han jugat totes les partides (amb una de marge)
+            .gt('games_count', timetrial ? dayOfMonth() - 1 : 0)
             .eq('lang', lang)
             .limit(10)
 
         if (error) throw error
 
-        return data
-            .filter((player: PlayerFromGlobal) => {
-                if (timetrial) {
-                    /** En cas de timetrial, només ens quedem els jugadors que hagin jugat tots els dies
-                     * menys un, per donar una mica de marge i perquè surti bé quan algú ho mira però encara
-                     * no ha jugat
-                     */
-                    return player.games_count >= dayOfMonth() - 1
-                } else {
-                    return true
-                }
-            })
-            .map((player: PlayerFromGlobal) => {
-                return {
-                    id: player.user_id,
-                    name: player.user_name,
-                    total: player.total_points,
-                    totalTime: player.avg_time,
-                }
-            })
+        return data.map((player: PlayerFromGlobal) => {
+            return {
+                id: player.user_id,
+                name: player.user_name,
+                total: player.total_points,
+                totalTime: player.avg_time,
+            }
+        })
     } catch (error) {
         console.error('Error getting top global players', error)
         return []
