@@ -132,7 +132,7 @@ export async function getTopPlayersGlobal(
 ): Promise<Result[]> {
     try {
         const { data, error } = await supabase
-            .from('unique_games_totals_by_lang')
+            .from('user_game_totals_by_lang')
             .select('user_id, user_name, total_points, avg_time')
             // si volem ordre per temps, ascending serà true, si volem per punts ha de ser descending (fals)
             .order(timetrial ? 'avg_time' : 'total_points', {
