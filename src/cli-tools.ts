@@ -27,7 +27,7 @@ if (import.meta.main) {
 
         const sendRanking = async (chatId: number) => {
             console.log(`Sending ranking of chat: ${chatId}`)
-            const records = await api.getChatRanking(chatId, 'month', 'cat')
+            const records = await api.getTopPlayersGlobal('cat', false, chatId)
 
             const message = buildRankingMessageFrom(records, 'cat')
 
@@ -44,13 +44,7 @@ if (import.meta.main) {
 
         const sendTimetrial = async (chatId: number) => {
             console.log(`Sending timetrial of chat: ${chatId}`)
-            const records = await api.getChatRanking(
-                chatId,
-                'month',
-                'cat',
-                undefined,
-                true
-            )
+            const records = await api.getTopPlayersGlobal('cat', true, chatId)
 
             const message = buildTimetrialRankingMessageFrom(records, 'cat')
 
@@ -61,24 +55,6 @@ if (import.meta.main) {
 
         await takeAction(sendTimetrial, toChatId)
     }
-
-    // if (command === 'create-game-record') {
-    //   const toChatId = parseInt(args[1]) || DEV_CHAT_ID
-
-    //   let pointsPrompt = prompt('Points')
-    //   if (!pointsPrompt) pointsPrompt = '1'
-    //   const points = parseInt(pointsPrompt.trim())
-
-    //   const createGameRecord = async (chatId: number) => {
-    //     console.log(
-    //       `Giving ${points} points to user ${DEV_USER_ID} in chat: ${chatId}`
-    //     )
-
-    //     await api.createRecord({ chatId, userId: DEV_USER_ID, points })
-    //   }
-
-    //   await takeAction(createGameRecord, toChatId)
-    // }
 
     if (command === 'send-llegenda') {
         console.log(`Sending punctuation table to dev chat: ${DEV_CHAT_ID}`)
@@ -162,7 +138,7 @@ if (import.meta.main) {
     }
 
     if (command === 'send-top') {
-        const topPlayers = await api.getTopPlayersGlobal('cat')
+        const topPlayers = await api.getTopPlayersGlobal('cat', false)
         const message = buildTopMessage(topPlayers, 'cat')
         await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
             parse_mode: message.parse_mode,

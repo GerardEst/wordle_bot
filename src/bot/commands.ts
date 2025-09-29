@@ -90,7 +90,7 @@ function checkLang(message: string) {
 async function sendClasification(ctx: Context, lang: lang) {
     if (!ctx.chat) return
 
-    const records = await api.getChatRanking(ctx.chat.id, 'month', lang)
+    const records = await api.getTopPlayersGlobal(lang, false, ctx.chat.id)
     const message = buildRankingMessageFrom(records, lang)
 
     ctx.reply(message.text, { parse_mode: message.parse_mode })
@@ -99,13 +99,7 @@ async function sendClasification(ctx: Context, lang: lang) {
 async function sendTimetrialClassification(ctx: Context, lang: lang) {
     if (!ctx.chat) return
 
-    const records = await api.getChatRanking(
-        ctx.chat.id,
-        'month',
-        lang,
-        undefined,
-        true
-    )
+    const records = await api.getTopPlayersGlobal(lang, true, ctx.chat.id)
     const message = buildTimetrialRankingMessageFrom(records, lang)
 
     ctx.reply(message.text, { parse_mode: message.parse_mode })
@@ -239,6 +233,7 @@ async function reactToGame(ctx: Context, lang: lang) {
     const points = getPoints(ctx.message.text)
     const time = getTime(ctx.message.text)
 
+    // TODO - Innecessaria, pot ser una call mmmmolt més simple
     const userTodayGames = await api.getChatPunctuations(
         ctx.message.chat.id,
         'day',

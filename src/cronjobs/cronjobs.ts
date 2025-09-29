@@ -68,14 +68,8 @@ export async function handleEndOfMonth(bot: Bot, lang: lang, chatId?: number) {
     const chats = chatId ? [chatId] : await api.getChats(lang)
 
     for (const chat of chats) {
-        const results = await api.getChatRanking(chat, 'month', lang)
-        const timetrialResults = await api.getChatRanking(
-            chat,
-            'month',
-            lang,
-            undefined,
-            true
-        )
+        const results = await api.getTopPlayersGlobal(lang, false, chat)
+        const timetrialResults = await api.getTopPlayersGlobal(lang, true, chat)
 
         await saveAwardsToDb(chat, results, timetrialResults, lang)
         await sendResultsToChats(bot, chat, results, timetrialResults, lang)
@@ -173,7 +167,7 @@ export async function sendCharactersActions(
 
             await bot.api.sendMessage(chat, message.text, {
                 parse_mode: message.parse_mode,
-                disable_notification: true
+                disable_notification: true,
             })
         }
     }

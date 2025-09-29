@@ -1,13 +1,6 @@
 import { supabase } from '../lib/supabase.ts'
-import { getSpainDateFromUTC } from '../bot/utils.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
-import {
-    lang,
-    PlayerFromGlobal,
-    RankingEntry,
-    Result,
-    SBGameRecord,
-} from '../interfaces.ts'
+import { lang, PlayerFromGlobal, Result, SBGameRecord } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { supalog } from './log.ts'
 import { dayOfMonth } from '../lib/timezones.ts'
@@ -54,17 +47,6 @@ export async function getChatPunctuations(
         console.error('Error getting chat punctuations', error)
         return []
     }
-}
-
-export async function getChatRanking(
-    chatId: number,
-    period: 'all' | 'month' | 'day',
-    lang: lang,
-    userId?: number,
-    timetrial?: boolean
-) {
-    const records = await getChatPunctuations(chatId, period, lang, userId)
-    return getCleanedRanking(records, timetrial)
 }
 
 export async function createRecord({
@@ -129,10 +111,11 @@ export async function getChats(lang: lang): Promise<number[]> {
 
 export async function getTopPlayersGlobal(
     lang: lang,
-    timetrial: boolean
+    timetrial: boolean,
+    chatId?: number
 ): Promise<Result[]> {
     try {
-        const { data, error } = await supabase
+        let query = supabase
             .from('user_game_totals_by_lang')
             .select('user_id, user_name, games_count, total_points, avg_time')
             // si volem ordre per temps, ascending serà true, si volem per punts ha de ser descending (fals)
@@ -144,7 +127,14 @@ export async function getTopPlayersGlobal(
             // i en general, que hagin jugat alguna partida
             .gt('avg_time', 0)
             .eq('lang', lang)
+            .contains('chats_ids', [chatId])
             .limit(10)
+
+        if (chatId) {
+            query = query.contains('chats_ids', [chatId])
+        }
+
+        const { data, error } = await query
 
         if (error) throw error
 
@@ -160,65 +150,4 @@ export async function getTopPlayersGlobal(
         console.error('Error getting top global players', error)
         return []
     }
-}
-
-export function getCleanedRanking(
-    records: SBGameRecord[],
-    timetrial: boolean = false
-): RankingEntry[] {
-    const userPoints: Record<
-        string,
-        { id: number; name: string; total: number; totalTime: number }
-    > = {}
-    const processedUserDates: Record<string, Set<string>> = {}
-
-    for (const record of records) {
-        const userId = record.user_id || record.character_id
-        const userName = record.users?.name || record.characters?.name
-        const points = record.punctuation
-        const time = record.time
-        const recordInSpain = getSpainDateFromUTC(record.created_at)
-
-        if (!userId || !userName) return []
-
-        // Initialize user entry if it doesn't exist
-        if (!userPoints[userId]) {
-            userPoints[userId] = {
-                id: userId,
-                name: userName,
-                total: 0,
-                totalTime: 0,
-            }
-            processedUserDates[userId] = new Set()
-        }
-
-        const spainDateString = recordInSpain.toISOString().split('T')[0]
-
-        // Only count this record if we haven't seen this Spain date for this user yet
-        if (!processedUserDates[userId].has(spainDateString)) {
-            userPoints[userId].total += points
-            userPoints[userId].totalTime += time
-            processedUserDates[userId].add(spainDateString)
-        }
-    }
-
-    // Sort based on timetrial mode
-    const ranking = Object.values(userPoints).sort((a, b) => {
-        if (timetrial) {
-            // In timetrial mode: sort by time first, then by points for tie-breaking
-            if (a.totalTime !== b.totalTime) {
-                return a.totalTime - b.totalTime
-            }
-            return b.total - a.total
-        } else {
-            // Normal mode: sort by points first, then by time for tie-breaking
-            if (b.total !== a.total) {
-                return b.total - a.total
-            }
-            return a.totalTime - b.totalTime
-        }
-    })
-
-    // Remove totalTime from the final result to match RankingEntry interface
-    return ranking
 }
