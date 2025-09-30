@@ -48,7 +48,7 @@ export function setupCronjobs(bot: Bot, lang: lang) {
         'Send characters actions at 12 or 13 of every day',
         '0 11 * * *',
         () => {
-            sendCharactersActions(bot, lang)
+            // sendCharactersActions(bot, lang)
         }
     )
 }
