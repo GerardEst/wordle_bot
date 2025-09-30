@@ -4,6 +4,7 @@ import { lang, PlayerFromGlobal, Result, SBGameRecord } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { supalog } from './log.ts'
 import { dayOfMonth } from '../lib/timezones.ts'
+import { ALLOWED_NONPLAYED_DAYS_IN_TIMETRIAL } from '../conf.ts'
 
 export async function getChatPunctuations(
     chatId: number,
@@ -119,7 +120,12 @@ export async function getTopPlayersGlobal(
             .from('user_game_totals_by_lang')
             .select('user_id, user_name, games_count, total_points, avg_time')
             // en timetrial, volem eliminar tots els que no han jugat totes les partides (amb una mica de marge)
-            .gt('games_count', timetrial ? dayOfMonth() - 3 : 0)
+            .gt(
+                'games_count',
+                timetrial
+                    ? dayOfMonth() - ALLOWED_NONPLAYED_DAYS_IN_TIMETRIAL - 1
+                    : 0
+            )
             // i en general, que hagin jugat alguna partida
             .gt('avg_time', 0)
             .eq('lang', lang)

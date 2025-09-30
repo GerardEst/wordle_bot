@@ -1,5 +1,7 @@
 type AllowedEmojiReaction = '💩' | '😭' | '😐' | '😎' | '🤯' | '🏆' | '🤨'
 
+export const ALLOWED_NONPLAYED_DAYS_IN_TIMETRIAL = 5
+
 export const LEAGUE_NAMES: any = {
     cat: {
         1: 'Lliga Polar',
