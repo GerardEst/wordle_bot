@@ -1,4 +1,4 @@
-import * as api from './api/games.ts'
+import * as gamesApi from './api/games.ts'
 import * as awardsApi from './api/awards.ts'
 import { sendCharactersActions, handleEndOfMonth } from './cronjobs/cronjobs.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
@@ -27,7 +27,11 @@ if (import.meta.main) {
 
         const sendRanking = async (chatId: number) => {
             console.log(`Sending ranking of chat: ${chatId}`)
-            const records = await api.getTopPlayersGlobal('cat', false, chatId)
+            const records = await gamesApi.getClassification(
+                'cat',
+                false,
+                chatId
+            )
 
             const message = buildRankingMessageFrom(records, 'cat')
 
@@ -44,7 +48,11 @@ if (import.meta.main) {
 
         const sendTimetrial = async (chatId: number) => {
             console.log(`Sending timetrial of chat: ${chatId}`)
-            const records = await api.getTopPlayersGlobal('cat', true, chatId)
+            const records = await gamesApi.getClassification(
+                'cat',
+                true,
+                chatId
+            )
 
             const message = buildTimetrialRankingMessageFrom(records, 'cat')
 
@@ -138,7 +146,7 @@ if (import.meta.main) {
     }
 
     if (command === 'send-top') {
-        const topPlayers = await api.getTopPlayersGlobal('cat', false)
+        const topPlayers = await gamesApi.getClassification('cat', false)
         const message = buildTopMessage(topPlayers, 'cat')
         await bot.api.sendMessage(DEV_CHAT_ID, message.text, {
             parse_mode: message.parse_mode,

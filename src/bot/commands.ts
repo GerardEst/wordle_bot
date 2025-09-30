@@ -1,5 +1,5 @@
 import { Bot, Context, Keyboard } from 'https://deno.land/x/grammy/mod.ts'
-import * as api from '../api/games.ts'
+import * as gamesApi from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
 import * as awardsApi from '../api/awards.ts'
 import {
@@ -15,8 +15,6 @@ import { EMOJI_REACTIONS } from '../conf.ts'
 import { getAllCharacters, getChatCharacters } from '../api/characters.ts'
 import { lang } from '../interfaces.ts'
 import { t } from '../translations.ts'
-
-const DEV_USER_ID = parseInt(Deno.env.get('DEV_USER_ID')!)
 
 export function setupCommands(bot: Bot, bot_lang: lang) {
     bot.command(t('classification', bot_lang), (ctx: Context) =>
@@ -50,7 +48,6 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     // Welcome message when bot is added to a group
     bot.on('my_chat_member', (ctx: Context) => {
         handleChatMemberUpdate(ctx, bot_lang)
-        //setChatPlayButton(ctx, bot_lang)
     })
 
     bot.on('message', (ctx: Context) => {
@@ -90,7 +87,7 @@ function checkLang(message: string) {
 async function sendClasification(ctx: Context, lang: lang) {
     if (!ctx.chat) return
 
-    const records = await api.getTopPlayersGlobal(lang, false, ctx.chat.id)
+    const records = await gamesApi.getClassification(lang, false, ctx.chat.id)
     const message = buildRankingMessageFrom(records, lang)
 
     ctx.reply(message.text, { parse_mode: message.parse_mode })
@@ -99,7 +96,7 @@ async function sendClasification(ctx: Context, lang: lang) {
 async function sendTimetrialClassification(ctx: Context, lang: lang) {
     if (!ctx.chat) return
 
-    const records = await api.getTopPlayersGlobal(lang, true, ctx.chat.id)
+    const records = await gamesApi.getClassification(lang, true, ctx.chat.id)
     const message = buildTimetrialRankingMessageFrom(records, lang)
 
     ctx.reply(message.text, { parse_mode: message.parse_mode })
@@ -130,7 +127,10 @@ function showTrophiesOptions(ctx: Context, lang: lang) {
 async function sendTop(ctx: Context, lang: lang, mode = 'normal') {
     if (!ctx.chat) return
 
-    const topPlayers = await api.getTopPlayersGlobal(lang, mode === 'timetrial')
+    const topPlayers = await gamesApi.getClassification(
+        lang,
+        mode === 'timetrial'
+    )
     const message = buildTopMessage(topPlayers, lang, mode)
 
     ctx.reply(message.text, { parse_mode: 'Markdown' })
@@ -233,10 +233,8 @@ async function reactToGame(ctx: Context, lang: lang) {
     const points = getPoints(ctx.message.text)
     const time = getTime(ctx.message.text)
 
-    // TODO - Innecessaria, pot ser una call mmmmolt més simple
-    const userTodayGames = await api.getChatPunctuations(
+    const userTodayGames = await gamesApi.getUserTodaysGameForChat(
         ctx.message.chat.id,
-        'day',
         lang,
         ctx.message.from.id
     )
@@ -259,7 +257,7 @@ async function reactToGame(ctx: Context, lang: lang) {
     if (isGameToday) return
 
     // Save player game
-    await api.createRecord({
+    await gamesApi.createRecord({
         chatId: ctx.message.chat.id,
         userId: ctx.message.from.id,
         userName: `${ctx.message.from.first_name} ${

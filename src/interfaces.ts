@@ -31,26 +31,21 @@ export interface SBWord {
     average_tries: number
 }
 
+export interface SBPlayerTotals {
+    user_id: number
+    user_name: string
+    games_count: number
+    total_points: number
+    avg_time: number
+}
+
 // APP INTERFACES
 
-export interface RankingEntry {
-    id: number
-    name: string
-    total: number
-    totalTime: number
-}
-
-export interface Result {
-    id: number
-    name: string
-    total: number
-    totalTime: number
-}
-
 export interface Player {
+    id: number
     name: string
     total: number
-    totalTime: number
+    avgTime: number
 }
 
 export interface Award {
@@ -66,12 +61,4 @@ export interface Award {
 export interface FormattedMessage {
     text: string
     parse_mode: 'HTML' | 'Markdown' | 'MarkdownV2'
-}
-
-export interface PlayerFromGlobal {
-    user_id: number
-    user_name: string
-    games_count: number
-    total_points: number
-    avg_time: number
 }

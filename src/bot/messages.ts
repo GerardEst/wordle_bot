@@ -12,11 +12,11 @@ import {
     LEAGUE_BYE_MESSAGE,
     LEAGUE_BYE_MESSAGE_ENDING,
 } from '../conf.ts'
-import { FormattedMessage, Award, Result, Player, lang } from '../interfaces.ts'
+import { FormattedMessage, Award, Player, lang } from '../interfaces.ts'
 import { t } from '../translations.ts'
 
 export function buildRankingMessageFrom(
-    records: Result[],
+    records: Player[],
     lang: lang
 ): FormattedMessage {
     if (!records || records.length === 0) {
@@ -57,7 +57,7 @@ export function buildRankingMessageFrom(
 }
 
 export function buildTimetrialRankingMessageFrom(
-    records: Result[],
+    records: Player[],
     lang: lang
 ): FormattedMessage {
     if (!records || records.length === 0) {
@@ -76,7 +76,7 @@ export function buildTimetrialRankingMessageFrom(
 
     records.forEach((user, index) => {
         // From seconds to HH:MM:SS
-        const totalSeconds = user.totalTime
+        const totalSeconds = user.avgTime
         const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0')
         const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
             2,
@@ -230,8 +230,8 @@ export function buildCurrentAwardsMessage(lang: lang): FormattedMessage {
 }
 
 export function buildNewAwardsMessage(
-    results: Result[],
-    timetrialResults: Result[],
+    results: Player[],
+    timetrialResults: Player[],
     lang: lang
 ): FormattedMessage {
     let message = `*${LEAGUE_EMOJI[lang][getCurrentMonth()]} ${t(
@@ -265,7 +265,7 @@ export function buildNewAwardsMessage(
 
         message += `*${award?.emoji} ${award?.name}*\n`
         message += `${timetrialResults[i].name} (${getFormatTime(
-            timetrialResults[i].totalTime
+            timetrialResults[i].avgTime
         )})\n\n`
     }
 
@@ -316,9 +316,7 @@ export function buildTopMessage(
         topPlayers.forEach((player, index) => {
             const medal = medals[index] || ''
             message += `${medal} ${player.name} (${
-                mode === 'normal'
-                    ? player.total
-                    : getFormatTime(player.totalTime)
+                mode === 'normal' ? player.total : getFormatTime(player.avgTime)
             }${mode === 'normal' ? ' punts' : ''})\n`
         })
     }

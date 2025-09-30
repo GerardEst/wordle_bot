@@ -1,51 +1,37 @@
 import { supabase } from '../lib/supabase.ts'
 import { getDateRangeForPeriod } from '../lib/timezones.ts'
-import { lang, PlayerFromGlobal, Result, SBGameRecord } from '../interfaces.ts'
+import { lang, Player, SBPlayerTotals, SBGameRecord } from '../interfaces.ts'
 import { createPlayerIfNotExist } from './players.ts'
 import { supalog } from './log.ts'
 import { dayOfMonth } from '../lib/timezones.ts'
 import { ALLOWED_NONPLAYED_DAYS_IN_TIMETRIAL } from '../conf.ts'
 
-export async function getChatPunctuations(
+export async function getUserTodaysGameForChat(
     chatId: number,
-    period: 'all' | 'month' | 'day',
     lang: lang,
-    userId?: number
+    userId: number
 ): Promise<SBGameRecord[]> {
-    const dateRange = getDateRangeForPeriod(period)
+    const dateRange = getDateRangeForPeriod('day')
 
     try {
-        const { data, error } = userId
-            ? await supabase
-                  .from('games_chats')
-                  .select(
-                      'user_id, users(name), character_id, characters(name), punctuation, time, created_at'
-                  )
-                  .eq('chat_id', chatId)
-                  .eq('user_id', userId)
-                  .eq('lang', lang)
-                  .gte('created_at', dateRange.from)
-                  .lte('created_at', dateRange.to)
-                  .order('punctuation', { ascending: false })
-                  .order('time', { ascending: true })
-            : await supabase
-                  .from('games_chats')
-                  .select(
-                      'user_id, users(name), character_id, characters(name), punctuation, time, created_at'
-                  )
-                  .eq('chat_id', chatId)
-                  .eq('lang', lang)
-                  .gte('created_at', dateRange.from)
-                  .lte('created_at', dateRange.to)
-                  .order('punctuation', { ascending: false })
-                  .order('time', { ascending: true })
+        const { data, error } = await supabase
+            .from('games_chats')
+            .select('user_id')
+            .eq('chat_id', chatId)
+            .eq('user_id', userId)
+            .eq('lang', lang)
+            .gte('created_at', dateRange.from)
+            .lte('created_at', dateRange.to)
 
         if (error) throw error
 
         // SUPABASE BUG #01 - Selecting foreign keys expect an array of objects, but it is really returning a simple object
         return data as unknown as SBGameRecord[]
     } catch (error) {
-        console.error('Error getting chat punctuations', error)
+        console.error(
+            'Error getting user todays games for specific chat',
+            error
+        )
         return []
     }
 }
@@ -110,11 +96,15 @@ export async function getChats(lang: lang): Promise<number[]> {
     }
 }
 
-export async function getTopPlayersGlobal(
-    lang: lang,
+// Retorna tots els usuaris ordenats a mode de classificació
+// Filtrat per idioma i, opcionalment, per chat
+// Si filtrem per chat ens torna tot el que hi ha, si no només els 10 primers (top global)
+// Passant timetrial demanem que s'ordeni per temps o per punts
+export async function getClassification(
+    lang: lang = 'cat',
     timetrial: boolean,
     chatId?: number
-): Promise<Result[]> {
+): Promise<Player[]> {
     try {
         let query = supabase
             .from('user_game_totals_by_lang')
@@ -130,7 +120,6 @@ export async function getTopPlayersGlobal(
             .gt('avg_time', 0)
             .eq('lang', lang)
             .contains('chats_ids', [chatId])
-            .limit(10)
 
         if (timetrial) {
             // Timetrial prioritises the smallest average time
@@ -146,16 +135,20 @@ export async function getTopPlayersGlobal(
             query = query.contains('chats_ids', [chatId])
         }
 
+        if (!chatId) {
+            query = query.limit(10)
+        }
+
         const { data, error } = await query
 
         if (error) throw error
 
-        return data.map((player: PlayerFromGlobal) => {
+        return data.map((player: SBPlayerTotals) => {
             return {
                 id: player.user_id,
                 name: player.user_name,
                 total: player.total_points,
-                totalTime: player.avg_time,
+                avgTime: player.avg_time,
             }
         })
     } catch (error) {

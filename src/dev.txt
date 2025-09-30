@@ -1,3 +1,3 @@
-// TODO - Tots els totalTime s'haurien de dir avgTime per claredat
-// TODO - Estan passant coses rares amb prettier, ara posa molts tabs. Deixar-ho com m'agradi
-// i correr un prettier global. Deu passar perquè estava al mac i es llegeix diferent o algo així.
+- Estan passant coses rares amb prettier, ara posa molts tabs. Deixar-ho com m'agradi
+i correr un prettier global. Deu passar perquè estava al mac i es llegeix diferent o algo així.
+- Fer neteja de vistes al back, reanomenar correctament algunes 

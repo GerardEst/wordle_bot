@@ -1,4 +1,4 @@
-import * as api from '../api/games.ts'
+import * as gamesApi from '../api/games.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import {
     buildFinalAdviseMessage,
@@ -13,7 +13,7 @@ import {
     getFormatTime,
 } from '../bot/utils.ts'
 import { giveAwardTo } from '../api/awards.ts'
-import { lang, Result } from '../interfaces.ts'
+import { lang, Player } from '../interfaces.ts'
 
 export function setupCronjobs(bot: Bot, lang: lang) {
     Deno.cron(
@@ -59,7 +59,7 @@ async function sendEndAdviseToChats(bot: Bot, lang: lang) {
     // TODO - testejar en local amb cli-tools per veure perquè peta
     console.log(message)
 
-    const chats = await api.getChats(lang)
+    const chats = await gamesApi.getChats(lang)
 
     console.log(chats)
 
@@ -71,11 +71,15 @@ async function sendEndAdviseToChats(bot: Bot, lang: lang) {
 }
 
 export async function handleEndOfMonth(bot: Bot, lang: lang, chatId?: number) {
-    const chats = chatId ? [chatId] : await api.getChats(lang)
+    const chats = chatId ? [chatId] : await gamesApi.getChats(lang)
 
     for (const chat of chats) {
-        const results = await api.getTopPlayersGlobal(lang, false, chat)
-        const timetrialResults = await api.getTopPlayersGlobal(lang, true, chat)
+        const results = await gamesApi.getClassification(lang, false, chat)
+        const timetrialResults = await gamesApi.getClassification(
+            lang,
+            true,
+            chat
+        )
 
         await saveAwardsToDb(chat, results, timetrialResults, lang)
         await sendResultsToChats(bot, chat, results, timetrialResults, lang)
@@ -84,8 +88,8 @@ export async function handleEndOfMonth(bot: Bot, lang: lang, chatId?: number) {
 
 async function saveAwardsToDb(
     chat: number,
-    results: Result[],
-    timetrialResults: Result[],
+    results: Player[],
+    timetrialResults: Player[],
     lang: lang
 ) {
     const top3PlayerIds = new Set<number>()
@@ -131,8 +135,8 @@ async function saveAwardsToDb(
 async function sendResultsToChats(
     bot: Bot,
     chat: number,
-    results: Result[],
-    timetrialResults: Result[],
+    results: Player[],
+    timetrialResults: Player[],
     lang: lang
 ) {
     const message = buildNewAwardsMessage(results, timetrialResults, lang)
@@ -147,7 +151,7 @@ export async function sendCharactersActions(
     lang: lang,
     chatId?: number
 ) {
-    const chats = chatId ? [chatId] : await api.getChats(lang)
+    const chats = chatId ? [chatId] : await gamesApi.getChats(lang)
 
     for (const chat of chats) {
         const characters = await getChatCharacters(chat)
@@ -156,7 +160,7 @@ export async function sendCharactersActions(
             const points = getPointsForHability(character.hability)
             const time = getTimeForHability(character.hability)
 
-            await api.createRecord({
+            await gamesApi.createRecord({
                 chatId: chat,
                 characterId: character.id,
                 points,
