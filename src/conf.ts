@@ -100,7 +100,7 @@ export const LEAGUE_BYE_MESSAGE: any = {
         6: '🍈',
         7: '💨',
         8: "Heu arribat al final d'aquesta lliga, la lliga de la calor, de les vacances i de les festes majors. Han estat 31 dies de lluita intensa, ho sé, i aquí us porto la recompensa: Premis! I per la Lliga Major, premis de Festa Major!",
-        9: '💛',
+        9: '(Catedral de Girona, una veu greu anuncia el final de la Lliga de Catalunya. Solemnes, tots els presents canten) - Catalunya triomfant, tornarà a ser rica i plena, endarrera aquesta gent que del Mooot no sap cap lletra.\n\nCatalans i catalanes, ja teniu els vostres premis aquí!',
         10: '🌰',
         11: '🪰',
         12: '🐫🐫🐫',
@@ -145,7 +145,7 @@ export const LEAGUE_BYE_MESSAGE_ENDING: any = {
         6: '🍈',
         7: '💨',
         8: "Ja debeu saber que demà comença el Setembre, l'escola, la rutina... el que no sabieu és que també comença la llegendaria Lliga de Catalunya, amb premis com el Segador d'or o la Gralla de bronze. Que segueixi la festa!",
-        9: '💛',
+        9: 'Disfruteu dels trofeus! Feu una festa catalana, convideu als tions, als gegants de tots els pobles i a les tres bessones, balleu sardanes, pujeu uns a sobre els altres... Però seny! Demà comença la Lliga Castanyera. No abaixem la guardia, segadors.',
         10: '🌰',
         11: '🪰',
         12: '🐫🐫🐫',
@@ -337,6 +337,42 @@ export const AWARDS = {
         },
         {
             id: 99,
+            name: 'Una barretina',
+            emoji: '🔺',
+        },
+        // Lliga Castanyera
+        {
+            id: 100,
+            name: " d'or",
+            emoji: '🥇🌾',
+        },
+        {
+            id: 101,
+            name: ' de plata',
+            emoji: '🥈👫🏻',
+        },
+        {
+            id: 102,
+            name: ' de bronze',
+            emoji: '🥉💩',
+        },
+        {
+            id: 105,
+            name: " d'or",
+            emoji: '🥇🖐🏼',
+        },
+        {
+            id: 106,
+            name: ' de plata',
+            emoji: '🥈🤝🏼',
+        },
+        {
+            id: 107,
+            name: ' de bronze',
+            emoji: '🥉🪈',
+        },
+        {
+            id: 109,
             name: 'Una barretina',
             emoji: '🔺',
         },

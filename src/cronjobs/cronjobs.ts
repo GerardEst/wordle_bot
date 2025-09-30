@@ -32,8 +32,8 @@ export function setupCronjobs(bot: Bot, lang: lang) {
     )
 
     Deno.cron(
-        'End league at 22 or 23 of every end of month',
-        '0 21 28-31 * *',
+        'End league at 21 or 22 of every end of month',
+        '0 20 28-31 * *',
         () => {
             const now = new Date()
             const isLastDay =
@@ -55,7 +55,13 @@ export function setupCronjobs(bot: Bot, lang: lang) {
 
 async function sendEndAdviseToChats(bot: Bot, lang: lang) {
     const message = buildFinalAdviseMessage(lang)
+
+    // TODO - testejar en local amb cli-tools per veure perquè peta
+    console.log(message)
+
     const chats = await api.getChats(lang)
+
+    console.log(chats)
 
     for (const chat of chats) {
         await bot.api.sendMessage(chat, message.text, {

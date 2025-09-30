@@ -118,10 +118,6 @@ export async function getTopPlayersGlobal(
         let query = supabase
             .from('user_game_totals_by_lang')
             .select('user_id, user_name, games_count, total_points, avg_time')
-            // si volem ordre per temps, ascending serà true, si volem per punts ha de ser descending (fals)
-            .order(timetrial ? 'avg_time' : 'total_points', {
-                ascending: timetrial,
-            })
             // en timetrial, volem eliminar tots els que no han jugat totes les partides (amb una mica de marge)
             .gt('games_count', timetrial ? dayOfMonth() - 3 : 0)
             // i en general, que hagin jugat alguna partida
@@ -129,6 +125,16 @@ export async function getTopPlayersGlobal(
             .eq('lang', lang)
             .contains('chats_ids', [chatId])
             .limit(10)
+
+        if (timetrial) {
+            // Timetrial prioritises the smallest average time
+            query = query.order('avg_time', { ascending: true })
+        } else {
+            // Ranking uses points first and average time as a tiebreaker
+            query = query
+                .order('total_points', { ascending: false })
+                .order('avg_time', { ascending: true })
+        }
 
         if (chatId) {
             query = query.contains('chats_ids', [chatId])
