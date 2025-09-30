@@ -141,7 +141,7 @@ export function buildPunctuationTableMessage(lang: lang): FormattedMessage {
 export function buildFinalAdviseMessage(lang: lang): FormattedMessage {
     return {
         text: `${t('finalAdviseTitleA', lang)}${
-            isSummerTime() ? '23:00' : '22:00'
+            isSummerTime() ? '22:00' : '21:00'
         }${t('finalAdviseTitleB', lang)}*${
             LEAGUE_NAMES[lang][getCurrentMonth()]
         }*\n${t('finalAdviseTitleC', lang)}`,
