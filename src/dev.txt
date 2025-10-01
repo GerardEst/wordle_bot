@@ -1,3 +1,6 @@
 - Estan passant coses rares amb prettier, ara posa molts tabs. Deixar-ho com m'agradi
 i correr un prettier global. Deu passar perquè estava al mac i es llegeix diferent o algo així.
 - Fer neteja de vistes al back, reanomenar correctament algunes 
+- Si ningú nota res o no hi ha queixes, eliminar completament els personatges. Més endavant prefereixo fer que cada
+mes tingui un personatge especial que jugui regular, així cada més és diferent i convida a seguir jugant. Com un petit
+repte diferent a cada lliga.

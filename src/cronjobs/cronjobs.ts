@@ -53,15 +53,13 @@ export function setupCronjobs(bot: Bot, lang: lang) {
     )
 }
 
-async function sendEndAdviseToChats(bot: Bot, lang: lang) {
+export async function sendEndAdviseToChats(
+    bot: Bot,
+    lang: lang,
+    chatId?: number
+) {
+    const chats = chatId ? [chatId] : await gamesApi.getChats(lang)
     const message = buildFinalAdviseMessage(lang)
-
-    // TODO - testejar en local amb cli-tools per veure perquè peta
-    console.log(message)
-
-    const chats = await gamesApi.getChats(lang)
-
-    console.log(chats)
 
     for (const chat of chats) {
         await bot.api.sendMessage(chat, message.text, {

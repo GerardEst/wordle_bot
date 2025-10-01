@@ -160,14 +160,14 @@ const translations: Translations = {
         en: 'Points will be awarded when sending results to the chat, and the comment will be reacted to with the corresponding emoji',
     },
     finalAdviseTitleA: {
-        es: '🐣 *Anuncio importante*\n\nHoy a las ',
-        cat: '🐣 *Anunci important*\n\nAvui a les ',
-        en: '🐣 *Important announcement*\n\nToday at ',
+        es: '⚠️ *Anuncio importante*\n\nHoy a las ',
+        cat: '⚠️ *Anunci important*\n\nAvui a les ',
+        en: '⚠️ *Important announcement*\n\nToday at ',
     },
     finalAdviseTitleB: {
-        es: ' termina la *',
-        cat: ' acaba la *',
-        en: ' ends the *',
+        es: ' termina la ',
+        cat: ' acaba la ',
+        en: ' ends the ',
     },
     finalAdviseTitleC: {
         es: "Enviad vuestros resultados de hoy _antes de esta hora_!'",

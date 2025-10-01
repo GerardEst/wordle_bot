@@ -1,6 +1,10 @@
 import * as gamesApi from './api/games.ts'
 import * as awardsApi from './api/awards.ts'
-import { sendCharactersActions, handleEndOfMonth } from './cronjobs/cronjobs.ts'
+import {
+    sendCharactersActions,
+    handleEndOfMonth,
+    sendEndAdviseToChats,
+} from './cronjobs/cronjobs.ts'
 import { Bot } from 'https://deno.land/x/grammy/mod.ts'
 import {
     buildFinalAdviseMessage,
@@ -170,6 +174,12 @@ if (import.meta.main) {
         }
 
         await simulateEndOfMonth()
+    }
+
+    if (command === 'send-end-advise') {
+        console.log(`Sending end advise to dev chat: ${DEV_CHAT_ID}`)
+
+        await sendEndAdviseToChats(bot, 'cat', DEV_CHAT_ID)
     }
 
     if (command === 'send-characters-actions') {

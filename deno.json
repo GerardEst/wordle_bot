@@ -16,6 +16,7 @@
         "dev:simulate-end-of-month": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts simulate-end-of-month",
         "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards",
         "dev:send-top": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-top",
+        "dev:send-end-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-end-advise",
         "prod-cron:send-characters-actions-prod": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions-prod",
         "prettier": "deno run --allow-read --allow-write https://deno.land/x/deno_prettier@2.6.0/cli.ts --write '**/*.{ts,tsx,js,json,md}'"
     },
