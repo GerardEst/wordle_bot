@@ -60,17 +60,6 @@ on els hagis guanyat.
 
 <br>
 
-### 🥸 Extres famosos
-
-Es poden afegir personatges famosos que jugaran autònomament cada dia i faran
-més o menys puntuació depenent de la seva habilitat - Jacint Verdaguer té una
-habilitat de 8/10 i serà molt difícil de guanyar, mentre que en Rovelló quedarà
-sempre cap a baix de la classificació perquè al cap i a la fi és un gos.
-
-> Es poden afegir els personatges amb la comanda /extres
-
-<br>
-
 ### Top mundial
 
 En qualsevol moment es pot consultar el _top 3_ de la lliga actual entre tots
@@ -92,7 +81,6 @@ visual de que la partida s'ha registrat correctament
 
 - `/classificacio` - Mostra la classificació de la lliga actual
 - `/llegenda` - Mostra la taula de punts
-- `/extres` - Opcions per afegir personatges a la partida
 - `/premis` - Consulta els trofeus virtuals guanyats i els que estan en joc
 - `/top` - Mostra el top 5 de jugadors de totes les lligues
 - `/instruccions` - Mostra tota la info i funcionalitats del bot
