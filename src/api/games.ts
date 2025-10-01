@@ -40,7 +40,6 @@ export async function createRecord({
   chatId,
   userId,
   userName,
-  characterId,
   points,
   time,
   lang,
@@ -48,7 +47,6 @@ export async function createRecord({
   chatId: number;
   userId?: number;
   userName?: string;
-  characterId?: number;
   points: number;
   time: number;
   lang: lang;
@@ -67,8 +65,7 @@ export async function createRecord({
     const { error } = await supabase.from("games_chats").insert([
       {
         chat_id: chatId,
-        user_id: userId || null,
-        character_id: characterId || null,
+        user_id: userId,
         punctuation: points,
         time,
         lang: lang,

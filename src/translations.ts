@@ -33,8 +33,6 @@ const translations: Translations = {
   },
 
   // Secondary commands
-  add: { es: "Añadir a ", cat: "Afegir a ", en: "Add " },
-  remove: { es: "Eliminar a ", cat: "Eliminar a ", en: "Remove " },
   showcase: {
     es: "Vitrina virtual",
     cat: "Vitrina virtual",
@@ -61,31 +59,6 @@ const translations: Translations = {
     es: "Selecciona una opción",
     cat: "Selecciona una opció:",
     en: "Select an option",
-  },
-  noCharacters: {
-    es: "No hay personajes en la liga",
-    cat: "No hi ha personatges a la lliga.",
-    en: "No characters in the league",
-  },
-  whichCharaterToDelete: {
-    es: "Que personaje quieres eliminar",
-    cat: "Quin personatge vols eliminar?",
-    en: "Which character do you want to remove?",
-  },
-  charHasBeenAdded: {
-    es: "se ha añadido a la partida!",
-    cat: "s'ha afegit a la partida!",
-    en: "has been added to the game!",
-  },
-  charHasBeenRemoved: {
-    es: "se ha eliminado de la partida!",
-    cat: "s'ha tret de la partida!",
-    en: "has been removed from the game!",
-  },
-  cantRemoveChar: {
-    es: "Algo no ha ido bien, no se ha podido eliminar al personaje.",
-    cat: "Alguna cosa no ha anat bé, no s'ha pogut eliminar el personatge.",
-    en: "Something went wrong, could not remove the character.",
   },
   noGamesInChat: {
     es: "Aún no hay puntuaciones en este chat",

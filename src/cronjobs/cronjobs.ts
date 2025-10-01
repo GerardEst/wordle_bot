@@ -1,16 +1,11 @@
 import * as gamesApi from "../api/games.ts";
 import { Bot } from "grammy";
 import {
-  buildCharactersActionsMessage,
   buildFinalAdviseMessage,
   buildNewAwardsMessage,
 } from "../bot/messages.ts";
-import { getChatCharacters } from "../api/characters.ts";
 import {
   getCurrentMonth,
-  getFormatTime,
-  getPointsForHability,
-  getTimeForHability,
 } from "../bot/utils.ts";
 import { giveAwardTo } from "../api/awards.ts";
 import { lang, Player } from "../interfaces.ts";
@@ -81,12 +76,10 @@ async function saveAwardsToDb(
   lang: lang,
 ) {
   const top3PlayerIds = new Set<number>();
-  const MAXIMUM_CHARACTER_ID = 100;
 
   // Award top 3 positions
   for (let i = 0; i < 3; i++) {
-    // If the id is from a npc (id>MAXIMUM_CHARACTER_ID), skip the trophy. NPCs don't win trophies.
-    if (results[i] && results[i].id > MAXIMUM_CHARACTER_ID) {
+    if (results[i] && results[i].id) {
       await giveAwardTo(
         chat,
         results[i].id,
@@ -98,7 +91,7 @@ async function saveAwardsToDb(
 
     if (
       timetrialResults[i] &&
-      timetrialResults[i].id > MAXIMUM_CHARACTER_ID
+      timetrialResults[i].id
     ) {
       await giveAwardTo(
         chat,
@@ -114,7 +107,7 @@ async function saveAwardsToDb(
   const consolationTrophyId = parseInt(`${getCurrentMonth()}9`);
 
   for (const player of results) {
-    if (!top3PlayerIds.has(player.id) && player.id > MAXIMUM_CHARACTER_ID) {
+    if (!top3PlayerIds.has(player.id) && player.id) {
       await giveAwardTo(chat, player.id, consolationTrophyId, lang);
     }
   }

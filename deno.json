@@ -15,7 +15,7 @@
     "dev:simulate-end-of-month": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts simulate-end-of-month",
     "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards",
     "dev:send-top": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-top",
-    "dev:send-end-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-end-advise",
+    "dev:send-end-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-end-advise"
   },
   "imports": {
     "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.5.1",

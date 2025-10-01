@@ -1,6 +1,5 @@
 import { Bot, Context, Keyboard } from "grammy";
 import * as gamesApi from "../api/games.ts";
-import * as charactersApi from "../api/characters.ts";
 import * as awardsApi from "../api/awards.ts";
 import {
   buildAwardsMessage,
@@ -12,7 +11,6 @@ import {
 } from "./messages.ts";
 import { getPoints, getTime } from "./utils.ts";
 import { EMOJI_REACTIONS } from "../conf.ts";
-import { getAllCharacters, getChatCharacters } from "../api/characters.ts";
 import { lang } from "../interfaces.ts";
 import { t } from "../translations.ts";
 
@@ -57,10 +55,6 @@ async function reactToMessage(ctx: Context, lang: lang) {
 
   if (isFromLang && isFromLang === lang) {
     await reactToGame(ctx, isFromLang);
-  } else if (ctx.message.text.includes(t("add", lang))) {
-    sendAddCharacter(ctx, lang);
-  } else if (ctx.message.text.includes(t("remove", lang))) {
-    sendRemoveCharacter(ctx, lang);
   } else if (ctx.message.text === t("showcase", lang)) {
     sendShowcase(ctx, lang);
   } else if (ctx.message.text === t("monthTrophies", lang)) {
@@ -129,75 +123,6 @@ async function sendTop(ctx: Context, lang: lang, mode = "normal") {
   const message = buildTopMessage(topPlayers, lang, mode);
 
   ctx.reply(message.text, { parse_mode: "Markdown" });
-}
-
-async function sendAddCharacterOptions(ctx: Context, lang: lang) {
-  if (!ctx.chat) return;
-
-  const allCharacters = await getAllCharacters(lang);
-
-  const keyboard = new Keyboard();
-  for (const character of allCharacters) {
-    keyboard.text(t("add", lang) + character.name);
-    keyboard.row();
-  }
-  keyboard.text(t("closeOptions", lang));
-  keyboard.resized();
-  keyboard.oneTime();
-
-  ctx.reply(t("selectOption", lang), { reply_markup: keyboard });
-}
-
-async function sendRemoveCharacterOptions(ctx: Context, lang: lang) {
-  if (!ctx.chat) return;
-
-  const chatCharacters = await getChatCharacters(ctx.chat.id);
-
-  if (chatCharacters.length === 0) {
-    ctx.reply(t("noCharacters", lang));
-    return;
-  }
-
-  const keyboard = new Keyboard();
-  for (const character of chatCharacters) {
-    keyboard.text(t("remove", lang) + character.name);
-    keyboard.row();
-  }
-  keyboard.text(t("closeOptions", lang));
-  keyboard.resized();
-  keyboard.oneTime();
-
-  ctx.reply(t("whichCharaterToDelete", lang), { reply_markup: keyboard });
-}
-
-async function sendAddCharacter(ctx: Context, lang: lang) {
-  const message = ctx.message;
-  if (!message || !message.text) return;
-
-  const characterName = message.text.split(t("add", lang))[1];
-  await charactersApi.addCharacterToChat(ctx.message.chat.id, characterName);
-
-  ctx.reply(`${characterName} ${t("charHasBeenAdded", lang)}`, {
-    reply_markup: { remove_keyboard: true },
-  });
-}
-
-async function sendRemoveCharacter(ctx: Context, lang: lang) {
-  const message = ctx.message;
-  if (!message || !message.text) return;
-
-  const characterName = message.text.split(t("remove", lang))[1];
-  const deletedChar = await charactersApi.removeCharacterFromChat(
-    ctx.message.chat.id,
-    characterName,
-  );
-  if (deletedChar) {
-    ctx.reply(`${characterName} ${t("charHasBeenRemoved", lang)}`, {
-      reply_markup: { remove_keyboard: true },
-    });
-  } else {
-    ctx.reply(t("cantRemoveChar", lang));
-  }
 }
 
 async function sendShowcase(ctx: Context, lang: lang) {

@@ -17,8 +17,8 @@ export function processAwards(data: SBAward[], lang: lang): Award[] {
       return {
         id: trophy.id,
         chatId: record.chat_id,
-        userId: record.users?.id || record.characters.id,
-        userName: record.users?.name || record.characters.name,
+        userId: record.users.id,
+        userName: record.users.name,
         name: trophy.name,
         emoji: trophy.emoji,
         date: record.created_at,

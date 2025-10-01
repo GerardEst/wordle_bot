@@ -300,17 +300,6 @@ export function buildNewAwardsMessage(
   };
 }
 
-export function buildCharactersActionsMessage(
-  name: string,
-  points: number,
-  time: string,
-): FormattedMessage {
-  return {
-    text: `*${name}*\n🎯 ${7 - points}/6\n⏳ ${time}`,
-    parse_mode: "Markdown",
-  };
-}
-
 export function buildTopMessage(
   topPlayers: Player[],
   lang: lang,

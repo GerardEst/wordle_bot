@@ -3,25 +3,16 @@ export type lang = "cat" | "es" | "en";
 // SUPABASE INTERFACES
 
 export interface SBGameRecord {
-  user_id?: number;
-  users?: { name: string }; // SUPABASE BUG #01 - supabase types expect users: { name: string }[], but supabase is returning: { name: string }
-  character_id?: number;
-  characters?: { name: string };
+  user_id: number;
+  users: { name: string }; // SUPABASE BUG #01 - supabase types expect users: { name: string }[], but supabase is returning: { name: string }
   punctuation: number;
   time: number;
   created_at: string;
 }
 
-export interface SBCharacter {
-  id: number;
-  name: string;
-  hability: number;
-}
-
 export interface SBAward {
   trophy_id: number;
   users: { id: number; name: string };
-  characters: { id: number; name: string };
   chat_id: number;
   created_at: string;
 }
