@@ -41,14 +41,6 @@ export function setupCronjobs(bot: Bot, lang: lang) {
       if (isLastDay) handleEndOfMonth(bot, lang);
     },
   );
-
-  Deno.cron(
-    "Send characters actions at 12 or 13 of every day",
-    "0 11 * * *",
-    () => {
-      // sendCharactersActions(bot, lang)
-    },
-  );
 }
 
 export async function sendEndAdviseToChats(
@@ -140,41 +132,4 @@ async function sendResultsToChats(
   await bot.api.sendMessage(chat, message.text, {
     parse_mode: message.parse_mode,
   });
-}
-
-export async function sendCharactersActions(
-  bot: Bot,
-  lang: lang,
-  chatId?: number,
-) {
-  const chats = chatId ? [chatId] : await gamesApi.getChats(lang);
-
-  for (const chat of chats) {
-    const characters = await getChatCharacters(chat);
-
-    for (const character of characters) {
-      const points = getPointsForHability(character.hability);
-      const time = getTimeForHability(character.hability);
-
-      await gamesApi.createRecord({
-        chatId: chat,
-        characterId: character.id,
-        points,
-        time,
-        lang,
-      });
-
-      const formattedTime = getFormatTime(time);
-      const message = buildCharactersActionsMessage(
-        character.name,
-        points,
-        formattedTime,
-      );
-
-      await bot.api.sendMessage(chat, message.text, {
-        parse_mode: message.parse_mode,
-        disable_notification: true,
-      });
-    }
-  }
 }

@@ -9,7 +9,6 @@
     "dev:send-contrarrellotge": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-contrarrellotge",
     "dev:send-llegenda": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-llegenda",
     "dev:send-final-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-final-advise",
-    "dev:send-characters-actions": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions",
     "dev:give-award": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts give-award",
     "dev:create-game-record": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts create-game-record",
     "dev:check-group-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts check-group-awards",
@@ -17,8 +16,6 @@
     "dev:send-current-awards": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-current-awards",
     "dev:send-top": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-top",
     "dev:send-end-advise": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-end-advise",
-    "prod-cron:send-characters-actions-prod": "deno run --env --allow-net --allow-env --allow-read --allow-import src/cli-tools.ts send-characters-actions-prod",
-    "prettier": "deno run --allow-read --allow-write https://deno.land/x/deno_prettier@2.6.0/cli.ts --write '**/*.{ts,tsx,js,json,md}'"
   },
   "imports": {
     "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.5.1",

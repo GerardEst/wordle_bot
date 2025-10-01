@@ -2,7 +2,6 @@ import * as gamesApi from "./api/games.ts";
 import * as awardsApi from "./api/awards.ts";
 import {
   handleEndOfMonth,
-  sendCharactersActions,
   sendEndAdviseToChats,
 } from "./cronjobs/cronjobs.ts";
 import { Bot } from "grammy";
@@ -179,26 +178,6 @@ if (import.meta.main) {
     console.log(`Sending end advise to dev chat: ${DEV_CHAT_ID}`);
 
     await sendEndAdviseToChats(bot, "cat", DEV_CHAT_ID);
-  }
-
-  if (command === "send-characters-actions") {
-    console.log(`Sending characters actions to dev chat: ${DEV_CHAT_ID}`);
-
-    await sendCharactersActions(bot, "cat", DEV_CHAT_ID);
-  }
-
-  if (command === "send-characters-actions-prod") {
-    const toChatId = parseInt(args[1]);
-
-    if (toChatId) {
-      await sendCharactersActions(bot, "cat", toChatId);
-    } else {
-      console.log(`CAUTION: Sending characters actions to all chats`);
-
-      //let continue = prompt('Are you sure?')
-
-      await sendCharactersActions(bot, "cat");
-    }
   }
 }
 
