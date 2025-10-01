@@ -1,4 +1,4 @@
-import { Bot } from 'https://deno.land/x/grammy/mod.ts'
+import { Bot } from 'grammy'
 
 const bot_cat = new Bot(Deno.env.get('TELEGRAM_TOKEN_CAT')!)
 const bot_es = new Bot(Deno.env.get('TELEGRAM_TOKEN_ES')!)

@@ -5,7 +5,7 @@ import {
     handleEndOfMonth,
     sendEndAdviseToChats,
 } from './cronjobs/cronjobs.ts'
-import { Bot } from 'https://deno.land/x/grammy/mod.ts'
+import { Bot } from 'grammy'
 import {
     buildFinalAdviseMessage,
     buildPunctuationTableMessage,

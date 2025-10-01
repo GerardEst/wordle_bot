@@ -1,5 +1,5 @@
 import * as gamesApi from '../api/games.ts'
-import { Bot } from 'https://deno.land/x/grammy/mod.ts'
+import { Bot } from 'grammy'
 import {
     buildFinalAdviseMessage,
     buildCharactersActionsMessage,

@@ -1,4 +1,4 @@
-import { Bot, webhookCallback } from 'https://deno.land/x/grammy/mod.ts'
+import { Bot, webhookCallback } from 'grammy'
 import { supalog } from '../api/log.ts'
 
 const dev = Deno.env.get('ENV') === 'dev'

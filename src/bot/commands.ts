@@ -1,4 +1,4 @@
-import { Bot, Context, Keyboard } from 'https://deno.land/x/grammy/mod.ts'
+import { Bot, Context, Keyboard } from 'grammy'
 import * as gamesApi from '../api/games.ts'
 import * as charactersApi from '../api/characters.ts'
 import * as awardsApi from '../api/awards.ts'
@@ -260,9 +260,8 @@ async function reactToGame(ctx: Context, lang: lang) {
     await gamesApi.createRecord({
         chatId: ctx.message.chat.id,
         userId: ctx.message.from.id,
-        userName: `${ctx.message.from.first_name} ${
-            ctx.message.from.last_name || ''
-        }`.trim(),
+        userName: `${ctx.message.from.first_name} ${ctx.message.from.last_name || ''
+            }`.trim(),
         points,
         time,
         lang,
