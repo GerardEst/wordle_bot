@@ -27,7 +27,7 @@ export const LEAGUE_NAMES: any = {
     7: "",
     8: "Liga Mayor",
     9: "Liga Escolar",
-    10: "",
+    10: "Liga Otoñal",
     11: "",
     12: "Liga de Navidad",
   },
@@ -41,7 +41,7 @@ export const LEAGUE_NAMES: any = {
     7: "",
     8: "Desert League",
     9: "Students League",
-    10: "",
+    10: "Halloween League",
     11: "",
     12: "Christmas League",
   },
@@ -72,7 +72,7 @@ export const LEAGUE_EMOJI: any = {
     7: "",
     8: "💃🏻",
     9: "🚸",
-    10: "",
+    10: "🌰",
     11: "",
     12: "🐫🐫🐫",
   },
@@ -86,7 +86,7 @@ export const LEAGUE_EMOJI: any = {
     7: "",
     8: "🐫",
     9: "🚸",
-    10: "",
+    10: "🎃",
     11: "",
     12: "🎅🏽",
   },
@@ -345,38 +345,38 @@ export const AWARDS = {
     // Lliga Castanyera
     {
       id: 100,
-      name: " d'or",
-      emoji: "🥇🌾",
+      name: "Castanyera d'or",
+      emoji: "🥇👵🏼",
     },
     {
       id: 101,
-      name: " de plata",
-      emoji: "🥈👫🏻",
+      name: "Panellet de plata",
+      emoji: "🥈🥜",
     },
     {
       id: 102,
-      name: " de bronze",
-      emoji: "🥉💩",
+      name: "Moniato de bronze",
+      emoji: "🥉🍠",
     },
     {
       id: 105,
-      name: " d'or",
-      emoji: "🥇🖐🏼",
+      name: "Rovelló d'or",
+      emoji: "🥇🍄‍🟫",
     },
     {
       id: 106,
-      name: " de plata",
-      emoji: "🥈🤝🏼",
+      name: "Pinetell de plata",
+      emoji: "🥈🍄‍🟫",
     },
     {
       id: 107,
-      name: " de bronze",
-      emoji: "🥉🪈",
+      name: "Camagroc de bronze",
+      emoji: "🥉🍄‍🟫",
     },
     {
       id: 109,
-      name: "Una barretina",
-      emoji: "🔺",
+      name: "Una fulla seca",
+      emoji: "🍁",
     },
   ],
   es: [
@@ -452,6 +452,42 @@ export const AWARDS = {
       name: "",
       emoji: "",
     },
+    // Liga Otoñal
+    {
+      id: 100,
+      name: "Castaña de oro",
+      emoji: "🥇🌰",
+    },
+    {
+      id: 101,
+      name: "Boniato de plata",
+      emoji: "🥈🍠",
+    },
+    {
+      id: 102,
+      name: "Calabaza de bronze",
+      emoji: "🥉🎃",
+    },
+    {
+      id: 105,
+      name: "Caqui maduro",
+      emoji: "🥇",
+    },
+    {
+      id: 106,
+      name: "Seta del bosque",
+      emoji: "🥈",
+    },
+    {
+      id: 107,
+      name: "Membrillo",
+      emoji: "🥉",
+    },
+    {
+      id: 109,
+      name: "Una hoja seca",
+      emoji: "🍁",
+    },
   ],
   en: [
     // Desert League
@@ -525,6 +561,42 @@ export const AWARDS = {
       id: 99,
       name: "",
       emoji: "",
+    },
+    // Halloween League
+    {
+      id: 100,
+      name: "Gold pumpkin",
+      emoji: "🥇🎃",
+    },
+    {
+      id: 101,
+      name: "Silver ghost",
+      emoji: "🥈👻",
+    },
+    {
+      id: 102,
+      name: "Bronze mushroom",
+      emoji: "🥉🍄",
+    },
+    {
+      id: 105,
+      name: "",
+      emoji: "🥇",
+    },
+    {
+      id: 106,
+      name: "",
+      emoji: "🥈",
+    },
+    {
+      id: 107,
+      name: "",
+      emoji: "🥉",
+    },
+    {
+      id: 109,
+      name: "A candy",
+      emoji: "🍭",
     },
   ],
 };
