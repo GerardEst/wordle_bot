@@ -1,4 +1,5 @@
-- Hi ha algo raro amb els tops. Hi ha gent que ja ha jugat més cops del compte. Casi segur que és un tema de canvi horari merdós.
-També hi ha gent amb mijanes de temps ridícules perquè deu dividir per més dies del compte.
 - S'ha d'acabar de fer neteja dels characters a supabase, però he de refer les vistes per dependencies d'unes amb altres.
 Aprofitar per anomenar-les diferent (recordar cridarles correctament des del codi)
+
+Faré lo de posar el nom de la lliga al costat del top, per això necessito una taula amb ids i noms, sobretot. El nom es penjarà quan es faci 
+una partida, si ja existeix i és el mateix res, si és diferent s'actualitza.

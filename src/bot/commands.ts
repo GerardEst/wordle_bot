@@ -1,6 +1,7 @@
 import { Bot, Context, Keyboard } from "grammy";
 import * as gamesApi from "../api/games.ts";
 import * as awardsApi from "../api/awards.ts";
+import * as chatsApi from "../api/chats.ts";
 import {
   buildAwardsMessage,
   buildCurrentAwardsMessage,
@@ -150,17 +151,15 @@ function sendMonthTrophies(ctx: Context, lang: lang) {
 async function reactToGame(ctx: Context, lang: lang) {
   if (!ctx.message || !ctx.message.text) return;
 
-  const points = getPoints(ctx.message.text);
-  const time = getTime(ctx.message.text);
-
   const userTodayGames = await gamesApi.getUserTodaysGameForChat(
     ctx.message.chat.id,
     lang,
     ctx.message.from.id,
   );
-
   const isGameToday = userTodayGames.length > 0;
 
+  const points = getPoints(ctx.message.text);
+  const time = getTime(ctx.message.text);
   try {
     await (isGameToday ? ctx.react("🌚") : ctx.react(EMOJI_REACTIONS[points]));
   } catch (error: unknown) {
@@ -174,17 +173,21 @@ async function reactToGame(ctx: Context, lang: lang) {
   // We don't save the game if user already have a game today
   if (isGameToday) return;
 
+
   // Save player game
   await gamesApi.createRecord({
     chatId: ctx.message.chat.id,
     userId: ctx.message.from.id,
-    userName: `${ctx.message.from.first_name} ${
-      ctx.message.from.last_name || ""
-    }`.trim(),
+    userName: `${ctx.message.from.first_name} ${ctx.message.from.last_name || ""
+      }`.trim(),
     points,
     time,
     lang,
   });
+
+  // Save or update chat name
+  console.log(ctx.message.chat.title)
+  await chatsApi.updateChartName(ctx.message.chat.id, ctx.message.chat.title!)
 }
 
 function sendInstructions(ctx: Context, lang: lang) {
