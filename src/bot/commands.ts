@@ -170,9 +170,12 @@ async function reactToGame(ctx: Context, lang: lang) {
     }
   }
 
+  // Save or update chat name
+  console.log(ctx.message.chat.title)
+  await chatsApi.updateChartName(ctx.message.chat.id, ctx.message.chat.title!)
+
   // We don't save the game if user already have a game today
   if (isGameToday) return;
-
 
   // Save player game
   await gamesApi.createRecord({
@@ -185,9 +188,7 @@ async function reactToGame(ctx: Context, lang: lang) {
     lang,
   });
 
-  // Save or update chat name
-  console.log(ctx.message.chat.title)
-  await chatsApi.updateChartName(ctx.message.chat.id, ctx.message.chat.title!)
+
 }
 
 function sendInstructions(ctx: Context, lang: lang) {

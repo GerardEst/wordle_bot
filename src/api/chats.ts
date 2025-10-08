@@ -17,6 +17,7 @@ export async function updateChartName(chatId: number, newName: string) {
         console.log(data)
     } catch (error) {
         console.error(error)
+        supalog.debug(JSON.stringify(error))
     }
 }
 
