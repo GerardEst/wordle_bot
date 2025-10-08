@@ -6,7 +6,7 @@ export async function updateChartName(chatId: number, newName: string) {
     try {
         const { data, error } = await supabase
             .from('chats')
-            .upsert({ name: newName })
+            .upsert({ id: chatId, name: newName })
             .eq('id', chatId)
             .select()
 
