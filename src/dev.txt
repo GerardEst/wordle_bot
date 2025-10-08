@@ -3,3 +3,8 @@ Aprofitar per anomenar-les diferent (recordar cridarles correctament des del cod
 
 Faré lo de posar el nom de la lliga al costat del top, per això necessito una taula amb ids i noms, sobretot. El nom es penjarà quan es faci 
 una partida, si ja existeix i és el mateix res, si és diferent s'actualitza.
+Ja s'està pujant el nom del xat cada vegada que es crea una partida (així s'actualitza tant aviat
+com sigui possible, a costa d'una call extra per partida)
+També està actualitzada la vista final d'on agafo tot per fer les classificacions, ja agafen l'id i el nom
+del grup de l'usuari que tingui més jugadors. No sé com de car ha de ser fer això, però de moment no m'importa.
+Demà, quan vegi si funciona i si tots els jugadors van tinguent nom, miro de posar el nom a la classificació
