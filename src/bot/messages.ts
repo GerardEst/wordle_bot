@@ -30,14 +30,12 @@ export function buildRankingMessageFrom(
     }* - ${t("classificationTitle", lang)} \n\n`;
 
   records.forEach((user, index) => {
-    let rank = `${index + 1}`.padEnd(4);
+    let rank = `${index + 1}`
     if (index === 0) rank = "🥇";
-    else if (index === 1) rank = "🥈";
-    else if (index === 2) rank = "🥉";
-    else rank = ` ${index + 1} `;
-    const namePadded = `${user.name}`.padEnd(15);
+    if (index === 1) rank = "🥈";
+    if (index === 2) rank = "🥉";
 
-    answer += `${rank} ${namePadded} ${user.total}\n`;
+    answer += `${rank} ${user.name} - ${user.total}\n`;
   });
 
   answer += `\n${t("daisRemainingA", lang)}${getDaysRemainingInMonth()}${t(
