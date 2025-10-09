@@ -28,6 +28,7 @@ export interface SBPlayerTotals {
   games_count: number;
   total_points: number;
   avg_time: number;
+  main_chat_name: string;
 }
 
 // APP INTERFACES
@@ -37,6 +38,7 @@ export interface Player {
   name: string;
   total: number;
   avgTime: number;
+  chatName: string;
 }
 
 export interface Award {

@@ -8,3 +8,6 @@ com sigui possible, a costa d'una call extra per partida)
 També està actualitzada la vista final d'on agafo tot per fer les classificacions, ja agafen l'id i el nom
 del grup de l'usuari que tingui més jugadors. No sé com de car ha de ser fer això, però de moment no m'importa.
 Demà, quan vegi si funciona i si tots els jugadors van tinguent nom, miro de posar el nom a la classificació
+
+Es van guardant bé tots els noms dels xats. Ja em puc permetre posar la lliga a la classificació. Realment ja ho tinc
+tot apunt 

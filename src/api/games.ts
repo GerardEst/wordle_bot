@@ -105,7 +105,7 @@ export async function getClassification(
   try {
     let query = supabase
       .from("user_game_totals_by_lang")
-      .select("user_id, user_name, games_count, total_points, avg_time")
+      .select("user_id, user_name, games_count, total_points, avg_time, main_chat_name")
       // en timetrial, volem eliminar tots els que no han jugat totes les partides (amb una mica de marge)
       .gt(
         "games_count",
@@ -130,6 +130,7 @@ export async function getClassification(
       query = query.contains("chats_ids", [chatId]);
     }
 
+    // Si no passem un xat és que volem la global, i la global es limita a 10 resultats
     if (!chatId) {
       query = query.limit(10);
     }
@@ -144,6 +145,7 @@ export async function getClassification(
         name: player.user_name,
         total: player.total_points,
         avgTime: player.avg_time,
+        chatName: player.main_chat_name
       };
     });
   } catch (error) {
