@@ -28,9 +28,6 @@ export function buildRankingMessageFrom(
 
   let answer = `${LEAGUE_EMOJI[lang][getCurrentMonth()]} *${LEAGUE_NAMES[lang][getCurrentMonth()]
     }* - ${t("classificationTitle", lang)} \n\n`;
-  answer += "```\n";
-  answer += `Pos  ${t("name", lang)}            ${t("points", lang)}\n`;
-  answer += "—————————————————————————\n";
 
   records.forEach((user, index) => {
     let rank = `${index + 1}`.padEnd(4);
@@ -43,7 +40,6 @@ export function buildRankingMessageFrom(
     answer += `${rank} ${namePadded} ${user.total}\n`;
   });
 
-  answer += "```"; // End monospace block
   answer += `\n${t("daisRemainingA", lang)}${getDaysRemainingInMonth()}${t(
     "daisRemainingB",
     lang,
@@ -69,20 +65,8 @@ export function buildTimetrialRankingMessageFrom(
 
   let answer = `${LEAGUE_EMOJI[lang][getCurrentMonth()]} *${LEAGUE_NAMES[lang][getCurrentMonth()]
     }* - ${t("timetrialClassificationTitle", lang)} actual \n\n`;
-  answer += "```\n";
-  answer += `Pos  ${t("name", lang)}            ${t("time", lang)}\n`;
-  answer += "—————————————————————————\n";
 
   records.forEach((user, index) => {
-    // From seconds to HH:MM:SS
-    const totalSeconds = user.avgTime;
-    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
-      2,
-      "0",
-    );
-    const seconds = String(totalSeconds % 60).padStart(2, "0");
-
     let rank = `${index + 1}`.padEnd(4);
     if (index === 0) rank = "🥇";
     else if (index === 1) rank = "🥈";
@@ -90,10 +74,9 @@ export function buildTimetrialRankingMessageFrom(
     else rank = ` ${index + 1} `;
     const namePadded = `${user.name}`.padEnd(15);
 
-    answer += `${rank} ${namePadded} ${hours}:${minutes}:${seconds}\n`;
+    answer += `${rank} ${namePadded} ${getFormatTime(user.avgTime)}\n`;
   });
 
-  answer += "```"; // End monospace block
   answer += `\n${t("daisRemainingA", lang)}${getDaysRemainingInMonth()}${t(
     "daisRemainingB",
     lang,
