@@ -65,14 +65,12 @@ export function buildTimetrialRankingMessageFrom(
     }* - ${t("timetrialClassificationTitle", lang)} actual \n\n`;
 
   records.forEach((user, index) => {
-    let rank = `${index + 1}`.padEnd(4);
+    let rank = `${index + 1}`
     if (index === 0) rank = "🥇";
-    else if (index === 1) rank = "🥈";
-    else if (index === 2) rank = "🥉";
-    else rank = ` ${index + 1} `;
-    const namePadded = `${user.name}`.padEnd(15);
+    if (index === 1) rank = "🥈";
+    if (index === 2) rank = "🥉";
 
-    answer += `${rank} ${namePadded} ${getFormatTime(user.avgTime)}\n`;
+    answer += `${rank} ${user.name} - ${getFormatTime(user.avgTime)}\n`;
   });
 
   answer += `\n${t("daisRemainingA", lang)}${getDaysRemainingInMonth()}${t(
