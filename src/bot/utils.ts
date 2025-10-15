@@ -48,15 +48,22 @@ export function getPoints(message: string) {
 }
 
 export function getTime(message: string) {
-  // Message format is "mooot 123\n🎯3/6\n⏳00:00:00\n"
+  // Message format is "mooot 123\n🎯3/6\n⏳hh:mm:ss (or mm:ss) \n"
   const time = message.split("\n")[2]?.replace("⏳", "").trim();
 
   console.log("time: " + time);
 
   if (!time || time.trim() === "") return 0;
 
-  const [hours, minutes, seconds] = time.split(":").map(Number);
-  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+  const parts = time.split(":").map(Number);
+
+  if (parts.some((value) => Number.isNaN(value))) return 0;
+
+  const totalSeconds = parts.length === 3
+    ? parts[0] * 3600 + parts[1] * 60 + parts[2]
+    : parts.length === 2
+    ? parts[0] * 60 + parts[1]
+    : parts[0];
 
   return totalSeconds;
 }
