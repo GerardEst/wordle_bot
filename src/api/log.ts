@@ -10,7 +10,7 @@ async function logToDatabase(
 ): Promise<void> {
   try {
     const { error } = await supabase
-      .from("bot_logs")
+      .from("analytics.bot_logs")
       .insert({ title: message, data: data, lang: bot_lang, type: level });
 
     if (error) {
