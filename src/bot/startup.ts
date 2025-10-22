@@ -1,51 +1,17 @@
 import { Bot, webhookCallback } from "grammy";
 import { supalog } from "../api/log.ts";
+import { cors } from "../network-utils.ts";
 
 const dev = Deno.env.get("ENV") === "dev";
 
-function isAllowedOrigin(origin: string | null): boolean {
-  if (!origin) return false;
-  // Allow prod domain
-  if (origin === "https://mooot.cat") return true;
-  // Allow Vercel preview deployments
-  if (origin.endsWith(".vercel.app")) return true;
-  // Allow local development
-  if (origin.startsWith("http://localhost")) return true;
-  return false;
-}
-
-function cors(response: Response, req?: Request): Response {
-  const headers = new Headers(response.headers);
-  const requestOrigin = req?.headers.get("origin") ?? null;
-
-  // If the origin is allowed, echo it back; otherwise fall back to prod domain
-  const allowOrigin = isAllowedOrigin(requestOrigin)
-    ? (requestOrigin as string)
-    : "https://mooot.cat";
-
-  headers.set("Access-Control-Allow-Origin", allowOrigin);
-  headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  headers.set("Access-Control-Max-Age", "86400");
-  headers.append("Vary", "Origin");
-
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers,
-  });
-}
-
 async function handlePrepareShare(req: Request, bot: Bot) {
-  console.log("handling preparation of share");
   try {
     const body = await req.json();
 
-    console.log("got the body", body);
+    console.log("shareMessage: Received the body", body);
 
-    // Validate required parameters
     if (!body.message || !body.user_id) {
-      console.log("Missing parameters");
+      console.error("Missing parameters");
       return cors(
         new Response(
           JSON.stringify({
@@ -60,8 +26,8 @@ async function handlePrepareShare(req: Request, bot: Bot) {
       );
     }
 
-    console.log("try to prepare message");
-    // Call Telegram's savePreparedInlineMessage method
+    console.log("shareMessage: Preparing the message");
+
     const result = await bot.api.savePreparedInlineMessage(
       body.user_id,
       {
@@ -91,7 +57,7 @@ async function handlePrepareShare(req: Request, bot: Bot) {
       },
     );
 
-    console.log("got the message", result);
+    console.log("shareMessage: Message ready", result);
 
     return cors(
       new Response(JSON.stringify(result), {
@@ -101,8 +67,7 @@ async function handlePrepareShare(req: Request, bot: Bot) {
       req,
     );
   } catch (error) {
-    console.error("Error in handlePrepareShare:", error);
-    supalog.error("Error in handlePrepareShare:", error);
+    supalog.error("Error in handlePrepareShare: ", error);
     return cors(
       new Response(
         JSON.stringify({ error: "Failed to prepare inline message" }),
@@ -131,15 +96,11 @@ export function startUp(token: string) {
       try {
         const url = new URL(req.url);
 
-        // Handle /prepare-share endpoint
         if (url.pathname === "/prepare-share") {
-          console.log("somebody wants to share", req.method);
           if (req.method === "OPTIONS") {
-            // Handle preflight request
             return cors(new Response(null, { status: 204 }), req);
           }
           if (req.method === "POST") {
-            console.log("its a post");
             return await handlePrepareShare(req, bot);
           }
         }
@@ -149,9 +110,8 @@ export function startUp(token: string) {
           return await handleUpdate(req);
         }
 
-        // For non-webhook requests, we return a simple message
         return new Response(
-          "Motbot is tracking your rankings! Enjoy the games ✅",
+          "Afegeix mooot_cat_bot a un grup de Telegram i competeix contra els teus amics",
           { status: 200 },
         );
       } catch (err) {
