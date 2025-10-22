@@ -4,9 +4,7 @@ import {
   buildFinalAdviseMessage,
   buildNewAwardsMessage,
 } from "../bot/messages.ts";
-import {
-  getCurrentMonth,
-} from "../bot/utils.ts";
+import { getCurrentMonth } from "../bot/utils.ts";
 import { giveAwardTo } from "../api/awards.ts";
 import { lang, Player } from "../interfaces.ts";
 

@@ -26,11 +26,12 @@ export function buildRankingMessageFrom(
     };
   }
 
-  let answer = `${LEAGUE_EMOJI[lang][getCurrentMonth()]} *${LEAGUE_NAMES[lang][getCurrentMonth()]
-    }* - ${t("classificationTitle", lang)} \n\n`;
+  let answer = `${LEAGUE_EMOJI[lang][getCurrentMonth()]} *${
+    LEAGUE_NAMES[lang][getCurrentMonth()]
+  }* - ${t("classificationTitle", lang)} \n\n`;
 
   records.forEach((user, index) => {
-    let rank = `${index + 1}`
+    let rank = `${index + 1}`;
     if (index === 0) rank = "🥇";
     if (index === 1) rank = "🥈";
     if (index === 2) rank = "🥉";
@@ -38,11 +39,12 @@ export function buildRankingMessageFrom(
     answer += `${rank} ${user.name} - ${user.total}\n`;
   });
 
-  answer += `\n${t("daisRemainingA", lang)}${getDaysRemainingInMonth()}${t(
-    "daisRemainingB",
-    lang,
-  )
-    }\n\n`;
+  answer += `\n${t("daisRemainingA", lang)}${getDaysRemainingInMonth()}${
+    t(
+      "daisRemainingB",
+      lang,
+    )
+  }\n\n`;
 
   return {
     text: answer,
@@ -61,11 +63,12 @@ export function buildTimetrialRankingMessageFrom(
     };
   }
 
-  let answer = `${LEAGUE_EMOJI[lang][getCurrentMonth()]} *${LEAGUE_NAMES[lang][getCurrentMonth()]
-    }* - ${t("timetrialClassificationTitle", lang)} actual \n\n`;
+  let answer = `${LEAGUE_EMOJI[lang][getCurrentMonth()]} *${
+    LEAGUE_NAMES[lang][getCurrentMonth()]
+  }* - ${t("timetrialClassificationTitle", lang)} actual \n\n`;
 
   records.forEach((user, index) => {
-    let rank = `${index + 1}`
+    let rank = `${index + 1}`;
     if (index === 0) rank = "🥇";
     if (index === 1) rank = "🥈";
     if (index === 2) rank = "🥉";
@@ -73,11 +76,12 @@ export function buildTimetrialRankingMessageFrom(
     answer += `${rank} ${user.name} - ${getFormatTime(user.avgTime)}\n`;
   });
 
-  answer += `\n${t("daisRemainingA", lang)}${getDaysRemainingInMonth()}${t(
-    "daisRemainingB",
-    lang,
-  )
-    }\n\n`;
+  answer += `\n${t("daisRemainingA", lang)}${getDaysRemainingInMonth()}${
+    t(
+      "daisRemainingB",
+      lang,
+    )
+  }\n\n`;
 
   return {
     text: answer,
@@ -87,19 +91,25 @@ export function buildTimetrialRankingMessageFrom(
 
 export function buildPunctuationTableMessage(lang: lang): FormattedMessage {
   let message = `${t("legendTitle", lang)}\n\n`;
-  message += `1/6 - *6 ${t("pointsLowercase", lang)}* - ${EMOJI_REACTIONS[6]
-    }\n`;
-  message += `2/6 - *5 ${t("pointsLowercase", lang)}* - ${EMOJI_REACTIONS[5]
-    }\n`;
-  message += `3/6 - *4 ${t("pointsLowercase", lang)}* - ${EMOJI_REACTIONS[4]
-    }\n`;
-  message += `4/6 - *3 ${t("pointsLowercase", lang)}* - ${EMOJI_REACTIONS[3]
-    }\n`;
-  message += `5/6 - *2 ${t("pointsLowercase", lang)}* - ${EMOJI_REACTIONS[2]
-    }\n`;
+  message += `1/6 - *6 ${t("pointsLowercase", lang)}* - ${
+    EMOJI_REACTIONS[6]
+  }\n`;
+  message += `2/6 - *5 ${t("pointsLowercase", lang)}* - ${
+    EMOJI_REACTIONS[5]
+  }\n`;
+  message += `3/6 - *4 ${t("pointsLowercase", lang)}* - ${
+    EMOJI_REACTIONS[4]
+  }\n`;
+  message += `4/6 - *3 ${t("pointsLowercase", lang)}* - ${
+    EMOJI_REACTIONS[3]
+  }\n`;
+  message += `5/6 - *2 ${t("pointsLowercase", lang)}* - ${
+    EMOJI_REACTIONS[2]
+  }\n`;
   message += `6/6 - *1 ${t("pointLowercase", lang)}* - ${EMOJI_REACTIONS[1]}\n`;
-  message += `X/6 - *0 ${t("pointsLowercase", lang)}* - ${EMOJI_REACTIONS[0]
-    }\n`;
+  message += `X/6 - *0 ${t("pointsLowercase", lang)}* - ${
+    EMOJI_REACTIONS[0]
+  }\n`;
   message += "\n";
   message += t("legendExplain", lang);
 
@@ -111,9 +121,11 @@ export function buildPunctuationTableMessage(lang: lang): FormattedMessage {
 
 export function buildFinalAdviseMessage(lang: lang): FormattedMessage {
   return {
-    text: `${t("finalAdviseTitleA", lang)}${isSummerTime() ? "22:00" : "21:00"
-      }${t("finalAdviseTitleB", lang)}*${LEAGUE_NAMES[lang][getCurrentMonth()]
-      }*\n${t("finalAdviseTitleC", lang)}`,
+    text: `${t("finalAdviseTitleA", lang)}${
+      isSummerTime() ? "22:00" : "21:00"
+    }${t("finalAdviseTitleB", lang)}*${
+      LEAGUE_NAMES[lang][getCurrentMonth()]
+    }*\n${t("finalAdviseTitleC", lang)}`,
     parse_mode: "Markdown",
   };
 }
@@ -124,11 +136,12 @@ export function buildAwardsMessage(
 ): FormattedMessage {
   if (!awards || awards.length === 0) {
     return {
-      text: `${t("showcaseTitle", lang)}\n\n${t(
-        "showcaseNoTrophie",
-        lang,
-      )
-        }`,
+      text: `${t("showcaseTitle", lang)}\n\n${
+        t(
+          "showcaseNoTrophie",
+          lang,
+        )
+      }`,
       parse_mode: "Markdown",
     };
   }
@@ -168,22 +181,29 @@ export function buildCurrentAwardsMessage(lang: lang): FormattedMessage {
       (award) => award.id === parseInt(`${getCurrentMonth()}${position}`),
     );
 
-  let message = `_${t("monthTrophiesTitle", lang)}${LEAGUE_NAMES[lang][getCurrentMonth()]
-    }_\n\n`;
+  let message = `_${t("monthTrophiesTitle", lang)}${
+    LEAGUE_NAMES[lang][getCurrentMonth()]
+  }_\n\n`;
   message += `*${t("normalLeague", lang)}*\n`;
-  message += `${getAwardByPosition(0)?.emoji} ${getAwardByPosition(0)?.name
-    } \n`;
-  message += `${getAwardByPosition(1)?.emoji} ${getAwardByPosition(1)?.name
-    } \n`;
-  message += `${getAwardByPosition(2)?.emoji} ${getAwardByPosition(2)?.name
-    } \n`;
+  message += `${getAwardByPosition(0)?.emoji} ${
+    getAwardByPosition(0)?.name
+  } \n`;
+  message += `${getAwardByPosition(1)?.emoji} ${
+    getAwardByPosition(1)?.name
+  } \n`;
+  message += `${getAwardByPosition(2)?.emoji} ${
+    getAwardByPosition(2)?.name
+  } \n`;
   message += `\n*${t("timetrialLeague", lang)}*\n`;
-  message += `${getAwardByPosition(5)?.emoji} ${getAwardByPosition(5)?.name
-    } \n`;
-  message += `${getAwardByPosition(6)?.emoji} ${getAwardByPosition(6)?.name
-    } \n`;
-  message += `${getAwardByPosition(7)?.emoji} ${getAwardByPosition(7)?.name
-    } \n`;
+  message += `${getAwardByPosition(5)?.emoji} ${
+    getAwardByPosition(5)?.name
+  } \n`;
+  message += `${getAwardByPosition(6)?.emoji} ${
+    getAwardByPosition(6)?.name
+  } \n`;
+  message += `${getAwardByPosition(7)?.emoji} ${
+    getAwardByPosition(7)?.name
+  } \n`;
   message += `\n${t("consolationTrophieMessage", lang)}\n\n`;
 
   return {
@@ -197,11 +217,12 @@ export function buildNewAwardsMessage(
   timetrialResults: Player[],
   lang: lang,
 ): FormattedMessage {
-  let message = `*${LEAGUE_EMOJI[lang][getCurrentMonth()]} ${t(
-    "endOfLeagueMessageA",
-    lang,
-  )
-    } ${LEAGUE_NAMES[lang][getCurrentMonth()]}*\n\n`;
+  let message = `*${LEAGUE_EMOJI[lang][getCurrentMonth()]} ${
+    t(
+      "endOfLeagueMessageA",
+      lang,
+    )
+  } ${LEAGUE_NAMES[lang][getCurrentMonth()]}*\n\n`;
 
   message += `_${LEAGUE_BYE_MESSAGE[lang][getCurrentMonth()]}_\n\n`;
 
@@ -212,11 +233,12 @@ export function buildNewAwardsMessage(
     );
 
     message += `*${award?.emoji} ${award?.name}*\n`;
-    message += `${results[i].name} (${results[i].total} ${t(
-      "endOfLeagueMessageC",
-      lang,
-    )
-      }) \n\n`;
+    message += `${results[i].name} (${results[i].total} ${
+      t(
+        "endOfLeagueMessageC",
+        lang,
+      )
+    }) \n\n`;
   }
 
   message += "\n";
@@ -229,10 +251,11 @@ export function buildNewAwardsMessage(
     );
 
     message += `*${award?.emoji} ${award?.name}*\n`;
-    message += `${timetrialResults[i].name} (${getFormatTime(
-      timetrialResults[i].avgTime,
-    )
-      })\n\n`;
+    message += `${timetrialResults[i].name} (${
+      getFormatTime(
+        timetrialResults[i].avgTime,
+      )
+    })\n\n`;
   }
 
   message += "\n";
@@ -241,11 +264,12 @@ export function buildNewAwardsMessage(
     (award) => award.id === parseInt(`${getCurrentMonth()}9`),
   );
 
-  message += `${t(
-    "endOfLeagueMessageF",
-    lang,
-  )
-    } ${award?.name.toLowerCase()} ${award?.emoji}!\n\n\n`;
+  message += `${
+    t(
+      "endOfLeagueMessageF",
+      lang,
+    )
+  } ${award?.name.toLowerCase()} ${award?.emoji}!\n\n\n`;
   message += `_${LEAGUE_BYE_MESSAGE_ENDING[lang][getCurrentMonth()]}_\n\n`;
   message += `${t("endOfLeagueMessageH", lang)}`;
 
@@ -260,11 +284,12 @@ export function buildTopMessage(
   lang: lang,
   mode = "normal",
 ): FormattedMessage {
-  let message = `${t(
-    mode === "normal" ? "topTitle" : "topTimetrialTitle",
-    lang,
-  )
-    }\n\n`;
+  let message = `${
+    t(
+      mode === "normal" ? "topTitle" : "topTimetrialTitle",
+      lang,
+    )
+  }\n\n`;
 
   if (topPlayers.length === 0) {
     message = t("topNoPlayers", lang);
@@ -272,8 +297,9 @@ export function buildTopMessage(
     const medals = ["🥇", "🥈", "🥉"];
     topPlayers.forEach((player, index) => {
       const medal = medals[index] || "";
-      message += `${medal} ${player.name} _(${player.chatName})_ - ${mode === "normal" ? player.total : getFormatTime(player.avgTime)
-        }\n`;
+      message += `${medal} ${player.name} _(${player.chatName})_ - ${
+        mode === "normal" ? player.total : getFormatTime(player.avgTime)
+      }\n`;
     });
   }
 

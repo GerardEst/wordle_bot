@@ -1,8 +1,17 @@
 import { supabase } from "../lib/supabase.ts";
 
-type LogLevel = "debug" | "info" | "warn" | "error";
+type LogLevel = "debug" | "info" | "warn" | "feature" | "error";
+type LoggableFeatures =
+  | "command_classification"
+  | "command_timetrial"
+  | "command_legend"
+  | "command_monthTrophies"
+  | "command_showcase"
+  | "command_top"
+  | "command_toptimetrial"
+  | "command_instructions";
 
-const sb_analytics = supabase.schema('analytics');
+const sb_analytics = supabase.schema("analytics");
 
 async function logToDatabase(
   level: LogLevel,
@@ -34,6 +43,9 @@ export const supalog = {
 
   warn: (message: string, data?: any, bot_lang?: string) =>
     logToDatabase("warn", message, data, bot_lang),
+
+  feature: (feature: LoggableFeatures, data?: any, bot_lang?: string) =>
+    logToDatabase("feature", feature, data, bot_lang),
 
   error: (message: string, data?: any, bot_lang?: string) =>
     logToDatabase("error", message, data, bot_lang),

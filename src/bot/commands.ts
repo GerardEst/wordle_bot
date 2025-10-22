@@ -14,33 +14,43 @@ import { getPoints, getTime } from "./utils.ts";
 import { EMOJI_REACTIONS } from "../conf.ts";
 import { lang } from "../interfaces.ts";
 import { t } from "../translations.ts";
+import { supalog } from "../api/log.ts";
 
 export function setupCommands(bot: Bot, bot_lang: lang) {
   bot.command(
     t("classification", bot_lang),
-    (ctx: Context) => sendClasification(ctx, bot_lang),
+    (ctx: Context) => {
+      supalog.feature("command_classification", ctx, bot_lang);
+      sendClasification(ctx, bot_lang);
+    },
   );
   bot.command(t("timetrial", bot_lang), (ctx: Context) => {
+    supalog.feature("command_timetrial", ctx, bot_lang);
     sendTimetrialClassification(ctx, bot_lang);
   });
   bot.command(t("legend", bot_lang), (ctx: Context) => {
+    supalog.feature("command_legend", ctx, bot_lang);
     sendLegend(ctx, bot_lang);
   });
   bot.command(t("trophies", bot_lang), (ctx: Context) => {
     showTrophiesOptions(ctx, bot_lang);
   });
   bot.command("top", (ctx: Context) => {
+    supalog.feature("command_top", ctx, bot_lang);
     sendTop(ctx, bot_lang);
   });
   bot.command(t("toptimetrial", bot_lang), (ctx: Context) => {
+    supalog.feature("command_toptimetrial", ctx, bot_lang);
     sendTop(ctx, bot_lang, "timetrial");
   });
   bot.command(t("instructions", bot_lang), (ctx: Context) => {
+    supalog.feature("command_instructions", ctx, bot_lang);
     sendInstructions(ctx, bot_lang);
   });
 
   // Welcome message when bot is added to a group
   bot.on("my_chat_member", (ctx: Context) => {
+    supalog.info("Bot added to a group", ctx, bot_lang);
     handleChatMemberUpdate(ctx, bot_lang);
   });
 
@@ -57,8 +67,10 @@ async function reactToMessage(ctx: Context, lang: lang) {
   if (isFromLang && isFromLang === lang) {
     await reactToGame(ctx, isFromLang);
   } else if (ctx.message.text === t("showcase", lang)) {
+    supalog.feature("command_showcase", ctx, lang);
     sendShowcase(ctx, lang);
   } else if (ctx.message.text === t("monthTrophies", lang)) {
+    supalog.feature("command_monthTrophies", ctx, lang);
     sendMonthTrophies(ctx, lang);
   } else if (ctx.message.text === t("closeOptions", lang)) {
     await ctx.reply(t("optionsClosed", lang), {
@@ -171,8 +183,8 @@ async function reactToGame(ctx: Context, lang: lang) {
   }
 
   // Save or update chat name
-  console.log(ctx.message.chat.title)
-  await chatsApi.updateChartName(ctx.message.chat.id, ctx.message.chat.title!)
+  console.log(ctx.message.chat.title);
+  await chatsApi.updateChartName(ctx.message.chat.id, ctx.message.chat.title!);
 
   // We don't save the game if user already have a game today
   if (isGameToday) return;
@@ -181,14 +193,13 @@ async function reactToGame(ctx: Context, lang: lang) {
   await gamesApi.createRecord({
     chatId: ctx.message.chat.id,
     userId: ctx.message.from.id,
-    userName: `${ctx.message.from.first_name} ${ctx.message.from.last_name || ""
-      }`.trim(),
+    userName: `${ctx.message.from.first_name} ${
+      ctx.message.from.last_name || ""
+    }`.trim(),
     points,
     time,
     lang,
   });
-
-
 }
 
 function sendInstructions(ctx: Context, lang: lang) {

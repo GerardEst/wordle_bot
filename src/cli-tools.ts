@@ -1,9 +1,6 @@
 import * as gamesApi from "./api/games.ts";
 import * as awardsApi from "./api/awards.ts";
-import {
-  handleEndOfMonth,
-  sendEndAdviseToChats,
-} from "./cronjobs/cronjobs.ts";
+import { handleEndOfMonth, sendEndAdviseToChats } from "./cronjobs/cronjobs.ts";
 import { Bot } from "grammy";
 import {
   buildAwardsMessage,

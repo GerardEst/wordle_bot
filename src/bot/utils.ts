@@ -125,12 +125,16 @@ export function getTimeForHability(hability: number) {
   return baseTime + extraSeconds;
 }
 
-export function getFormatTime(seconds: number, includeHours: boolean = false): string {
+export function getFormatTime(
+  seconds: number,
+  includeHours: boolean = false,
+): string {
   // Input is in seconds, output should be string like '00:12:24' or '12:24' if includeHours is false
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const remainingSeconds = seconds % 60;
 
-  return `${includeHours ? `${hours.toString().padStart(2, "0")}:` : ""}${minutes.toString().padStart(2, "0")
-    }:${remainingSeconds.toString().padStart(2, "0")}`;
+  return `${includeHours ? `${hours.toString().padStart(2, "0")}:` : ""}${
+    minutes.toString().padStart(2, "0")
+  }:${remainingSeconds.toString().padStart(2, "0")}`;
 }

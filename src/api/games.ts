@@ -105,7 +105,9 @@ export async function getClassification(
   try {
     let query = supabase
       .from("user_game_totals_by_lang")
-      .select("user_id, user_name, games_count, total_points, avg_time, main_chat_name")
+      .select(
+        "user_id, user_name, games_count, total_points, avg_time, main_chat_name",
+      )
       // en timetrial, volem eliminar tots els que no han jugat totes les partides (amb una mica de marge)
       .gt(
         "games_count",
@@ -145,7 +147,7 @@ export async function getClassification(
         name: player.user_name,
         total: player.total_points,
         avgTime: player.avg_time,
-        chatName: player.main_chat_name
+        chatName: player.main_chat_name,
       };
     });
   } catch (error) {
