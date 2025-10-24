@@ -31,7 +31,7 @@ async function logToDatabase(
       .insert({ type: level, title: message, user_id: userId, chat_id: chatId, lang: bot_lang, data });
 
     if (error) {
-      console.error("Failed to log to database:", error);
+      console.error("Failed to log to database:", error, userId, chatId);
       return;
     }
   } catch (err) {
