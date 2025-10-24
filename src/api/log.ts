@@ -1,4 +1,8 @@
 import { supabase } from "../lib/supabase.ts";
+import type { Context } from "grammy"
+
+// TODO - Seria millor definir a un lloc global el ctx i el lang, coses úniques
+// per l'arrancada, i així no estar-ho passant per tot arreu
 
 type LogLevel = "debug" | "info" | "warn" | "feature" | "error";
 type LoggableFeatures =
@@ -16,37 +20,38 @@ const sb_analytics = supabase.schema("analytics");
 async function logToDatabase(
   level: LogLevel,
   message: string,
-  data?: any,
+  userId?: number,
+  chatId?: number,
   bot_lang?: string,
+  data?: Object
 ): Promise<void> {
   try {
     const { error } = await sb_analytics
       .from("bot_logs")
-      .insert({ title: message, data: data, lang: bot_lang, type: level });
+      .insert({ type: level, title: message, user_id: userId, chat_id: chatId, lang: bot_lang, data });
 
     if (error) {
       console.error("Failed to log to database:", error);
       return;
     }
-    console.log({ message, data });
   } catch (err) {
     console.error("Error logging to database:", err);
   }
 }
 
 export const supalog = {
-  debug: (message: string, data?: any, bot_lang?: string) =>
-    logToDatabase("debug", message, data, bot_lang),
+  debug: (message: string, ctx?: Context, bot_lang?: string, data?: Object) =>
+    logToDatabase("debug", message, ctx?.update.message?.chat.id, ctx?.update.message?.from.id, bot_lang, data),
 
-  info: (message: string, data?: any, bot_lang?: string) =>
-    logToDatabase("info", message, data, bot_lang),
+  info: (message: string, ctx?: Context, bot_lang?: string, data?: Object) =>
+    logToDatabase("info", message, ctx?.update.message?.chat.id, ctx?.update.message?.from.id, bot_lang, data),
 
-  warn: (message: string, data?: any, bot_lang?: string) =>
-    logToDatabase("warn", message, data, bot_lang),
+  warn: (message: string, ctx?: Context, bot_lang?: string, data?: Object) =>
+    logToDatabase("warn", message, ctx?.update.message?.chat.id, ctx?.update.message?.from.id, bot_lang, data),
 
-  feature: (feature: LoggableFeatures, data?: any, bot_lang?: string) =>
-    logToDatabase("feature", feature, data, bot_lang),
+  feature: (feature: LoggableFeatures, ctx?: Context, bot_lang?: string, data?: Object) =>
+    logToDatabase("feature", feature, ctx?.update.message?.chat.id, ctx?.update.message?.from.id, bot_lang, data),
 
-  error: (message: string, data?: any, bot_lang?: string) =>
-    logToDatabase("error", message, data, bot_lang),
+  error: (message: string, ctx?: Context, bot_lang?: string, data?: Object) =>
+    logToDatabase("error", message, ctx?.update.message?.chat.id, ctx?.update.message?.from.id, bot_lang, data),
 };

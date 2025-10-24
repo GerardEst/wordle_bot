@@ -66,8 +66,8 @@ async function handlePrepareShare(req: Request, bot: Bot) {
       }),
       req,
     );
-  } catch (error) {
-    supalog.error("Error in handlePrepareShare: ", error);
+  } catch (error: any) {
+    supalog.error("Error in handlePrepareShare", undefined, undefined, error);
     return cors(
       new Response(
         JSON.stringify({ error: "Failed to prepare inline message" }),

@@ -184,18 +184,23 @@ async function reactToGame(ctx: Context, lang: lang) {
 
   // Save or update chat name
   console.log(ctx.message.chat.title);
-  await chatsApi.updateChartName(ctx.message.chat.id, ctx.message.chat.title!);
+  await chatsApi.updateChartName(ctx.message.chat.id, ctx.message.chat.title!, ctx);
 
   // We don't save the game if user already have a game today
   if (isGameToday) return;
+
+  supalog.info(
+    `+${points}-${time}s`,
+    ctx,
+    lang,
+  );
 
   // Save player game
   await gamesApi.createRecord({
     chatId: ctx.message.chat.id,
     userId: ctx.message.from.id,
-    userName: `${ctx.message.from.first_name} ${
-      ctx.message.from.last_name || ""
-    }`.trim(),
+    userName: `${ctx.message.from.first_name} ${ctx.message.from.last_name || ""
+      }`.trim(),
     points,
     time,
     lang,

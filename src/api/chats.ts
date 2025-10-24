@@ -1,8 +1,8 @@
+import type { Context } from "grammy"
 import { supabase } from "../lib/supabase.ts";
 import { supalog } from "./log.ts";
 
-export async function updateChartName(chatId: number, newName: string) {
-  console.log(`Updating chat name ${chatId}`);
+export async function updateChartName(chatId: number, newName: string, ctx: Context) {
   try {
     const { error } = await supabase
       .from("chats")
@@ -11,8 +11,7 @@ export async function updateChartName(chatId: number, newName: string) {
       .select();
 
     if (error) throw error;
-  } catch (error) {
-    console.error(error);
-    supalog.error(JSON.stringify(error));
+  } catch (error: any) {
+    supalog.error("", ctx, undefined, error);
   }
 }

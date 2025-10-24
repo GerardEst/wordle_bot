@@ -2,7 +2,6 @@ import { supabase } from "../lib/supabase.ts";
 import { getDateRangeForPeriod } from "../lib/timezones.ts";
 import { lang, Player, SBGameRecord, SBPlayerTotals } from "../interfaces.ts";
 import { createPlayerIfNotExist } from "./players.ts";
-import { supalog } from "./log.ts";
 import { dayOfMonth } from "../lib/timezones.ts";
 import { ALLOWED_NONPLAYED_DAYS_IN_TIMETRIAL } from "../conf.ts";
 
@@ -51,14 +50,6 @@ export async function createRecord({
   time: number;
   lang: lang;
 }) {
-  if (userId) {
-    supalog.info(
-      "User sent a game",
-      `Player ${userId}, ${userName} played on chat ${chatId} for +${points} points in ${time} seconds with ${lang} bot`,
-      lang,
-    );
-  }
-
   if (userId && userName) await createPlayerIfNotExist(userId, userName);
 
   try {
