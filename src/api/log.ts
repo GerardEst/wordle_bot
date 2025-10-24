@@ -20,8 +20,8 @@ const sb_analytics = supabase.schema("analytics");
 async function logToDatabase(
   level: LogLevel,
   message: string,
-  userId?: number,
   chatId?: number,
+  userId?: number,
   bot_lang?: string,
   data?: Object
 ): Promise<void> {
