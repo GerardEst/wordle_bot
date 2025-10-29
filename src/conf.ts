@@ -5,7 +5,7 @@ export const ALLOWED_NONPLAYED_DAYS_IN_TIMETRIAL = 5;
 export const LEAGUE_NAMES: any = {
   cat: {
     1: "Lliga Polar",
-    2: "Minilliga",
+    2: "Lligueta",
     3: "Lliga Floral",
     4: "Lliga del Drac",
     5: "Lliga del Raig",
@@ -14,7 +14,7 @@ export const LEAGUE_NAMES: any = {
     8: "Lliga Major",
     9: "Lliga de Catalunya",
     10: "Lliga Castanyera",
-    11: "Lliga de la Mosca",
+    11: "Lliga Artesanal",
     12: "Lliga de Nadal",
   },
   es: {
@@ -59,7 +59,7 @@ export const LEAGUE_EMOJI: any = {
     8: "💃🏻",
     9: "💛",
     10: "🌰",
-    11: "🪰",
+    11: "🍯",
     12: "🐫🐫🐫",
   },
   es: {
@@ -103,7 +103,7 @@ export const LEAGUE_BYE_MESSAGE: any = {
     7: "💨",
     8: "Heu arribat al final d'aquesta lliga, la lliga de la calor, de les vacances i de les festes majors. Han estat 31 dies de lluita intensa, ho sé, i aquí us porto la recompensa: Premis! I per la Lliga Major, premis de Festa Major!",
     9: "(Catedral de Girona, una veu greu anuncia el final de la Lliga de Catalunya. Solemnes, tots els presents canten) - Catalunya triomfant, tornarà a ser rica i plena, endarrera aquesta gent que del Mooot no sap cap lletra.\n\nCatalans i catalanes, ja teniu els vostres premis aquí!",
-    10: "🌰",
+    10: "Castanyeres i boletáires de tot el país, veniu, acosteu-vos a la foguera, que comença a fer fred i us heu de repartir els premis d'aquesta lliga que avui acaba.",
     11: "🪰",
     12: "🐫🐫🐫",
   },
@@ -148,7 +148,7 @@ export const LEAGUE_BYE_MESSAGE_ENDING: any = {
     7: "💨",
     8: "Ja debeu saber que demà comença el Setembre, l'escola, la rutina... el que no sabieu és que també comença la llegendaria Lliga de Catalunya, amb premis com el Segador d'or o la Gralla de bronze. Que segueixi la festa!",
     9: "Disfruteu dels trofeus! Feu una festa catalana, convideu als tions, als gegants de tots els pobles i a les tres bessones, balleu sardanes, pujeu uns a sobre els altres... Però seny! Demà comença la Lliga Castanyera. No abaixem la guardia, segadors.",
-    10: "🌰",
+    10: "Que bé eh, ja ens podriem quedar a la vora del foc torrant castanyes una estona més, repartint premis a tort i a dret... però no! Al Novembre hi ha una pila de fires per tot arreu. Sortiu de casa, compreu secallones, coses garrapinyades i antiguitats extranyes! Demà comença la Lliga Artesanal.",
     11: "🪰",
     12: "🐫🐫🐫",
   },
@@ -345,8 +345,8 @@ export const AWARDS = {
     // Lliga Castanyera
     {
       id: 100,
-      name: "Castanyera d'or",
-      emoji: "🥇👵🏼",
+      name: "Castanya d'or",
+      emoji: "🥇🌰",
     },
     {
       id: 101,
@@ -377,6 +377,42 @@ export const AWARDS = {
       id: 109,
       name: "Una fulla seca",
       emoji: "🍁",
+    },
+    // Lliga Artesanal
+    {
+      id: 110,
+      name: "Embotits artesanals",
+      emoji: "🥇🥩",
+    },
+    {
+      id: 111,
+      name: "Pot de mel artesanal",
+      emoji: "🥈🍯",
+    },
+    {
+      id: 112,
+      name: "Formatge artesanal",
+      emoji: "🥉🧀",
+    },
+    {
+      id: 115,
+      name: "Armadura medieval",
+      emoji: "🥇⚔️",
+    },
+    {
+      id: 116,
+      name: "Pastilla de sabó artesanal",
+      emoji: "🥈🧼",
+    },
+    {
+      id: 117,
+      name: "Terrissa de ceràmica",
+      emoji: "🥉🏺",
+    },
+    {
+      id: 119,
+      name: "Una secallona",
+      emoji: "🥨",
     },
   ],
   es: [
