@@ -30,6 +30,17 @@ export function processAwards(data: SBAward[], lang: lang): Award[] {
     .filter((award): award is Award => award !== null);
 }
 
+function orderByKind(data: SBAward[]) {
+  // Ordena per or, plata o bronze, és a dir últim dígit 1, 2 o 3
+  const sortedByLastDigit = [...data].sort((a, b) => {
+    const aLastDigit = Number(a.trophy_id) % 10;
+    const bLastDigit = Number(b.trophy_id) % 10;
+    return aLastDigit - bLastDigit;
+  });
+
+  return sortedByLastDigit
+}
+
 export async function getAwardsOf(
   chatId: number,
   lang: lang,
@@ -37,21 +48,22 @@ export async function getAwardsOf(
 ): Promise<Award[] | null> {
   console.log(`Getting awards of group ${chatId}`);
   try {
-    const { data, error } = userId
-      ? await supabase
-        .from("trophies_chats")
-        .select("trophy_id, users(id, name), chat_id, created_at")
-        .eq("user_id", userId)
-        .eq("chat_id", chatId)
-      : await supabase
-        .from("trophies_chats")
-        .select("trophy_id, users(id, name), chat_id, created_at")
-        .eq("chat_id", chatId);
+    let query = supabase
+      .from("trophies_chats")
+      .select("trophy_id, users(id, name), chat_id, created_at")
+      .eq("chat_id", chatId)
+      .not("trophy_id", "like", "%9"); // excluim premis de consolació (per norma acaben amb 9)
+
+    if (userId) {
+      query = query.eq("user_id", userId);
+    }
+
+    const { data, error } = await query;
 
     if (error) throw error;
 
     // SUPABASE BUG #01
-    return processAwards(data as unknown as SBAward[], lang);
+    return processAwards(orderByKind(data as unknown as SBAward[]), lang);
   } catch (error) {
     console.error(error);
     return null;

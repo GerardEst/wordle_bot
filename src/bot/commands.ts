@@ -127,15 +127,6 @@ async function sendShowcase(ctx: Context, lang: lang) {
   });
 }
 
-function sendMonthTrophies(ctx: Context, lang: lang) {
-  const message = buildCurrentAwardsMessage(lang);
-
-  ctx.reply(message.text, {
-    parse_mode: message.parse_mode,
-    reply_markup: { remove_keyboard: true },
-  });
-}
-
 async function reactToGame(ctx: Context, lang: lang) {
   if (!ctx.message || !ctx.message.text) return;
 

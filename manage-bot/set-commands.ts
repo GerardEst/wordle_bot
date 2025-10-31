@@ -19,7 +19,7 @@ const commands_cat = [
   },
   {
     command: "/premis",
-    description: "Obre les opcions de premis",
+    description: "Mostra tots els premis del grup",
   },
   {
     command: "/top",
@@ -50,7 +50,7 @@ const commands_es = [
   },
   {
     command: "/premios",
-    description: "Abre las opciones de premios",
+    description: "Muestra todos los premios del grupo",
   },
   {
     command: "/top",
@@ -81,7 +81,7 @@ const commands_en = [
   },
   {
     command: "/trophies",
-    description: "Open trophies options",
+    description: "See all the trophies of the group",
   },
   {
     command: "/top",
