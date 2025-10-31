@@ -31,14 +31,24 @@ export function processAwards(data: SBAward[], lang: lang): Award[] {
 }
 
 function orderByKind(data: SBAward[]) {
-  // Ordena per or, plata o bronze, és a dir últim dígit 1, 2 o 3
-  const sortedByLastDigit = [...data].sort((a, b) => {
-    const aLastDigit = Number(a.trophy_id) % 10;
-    const bLastDigit = Number(b.trophy_id) % 10;
-    return aLastDigit - bLastDigit;
-  });
+  return [...data]
+    .filter((award) => Number(award.trophy_id) % 10 !== 9)
+    .sort((a, b) => {
+      const aLastDigit = Number(a.trophy_id) % 10;
+      const bLastDigit = Number(b.trophy_id) % 10;
+      const aPriority = aLastDigit <= 2 ? 0 : 1;
+      const bPriority = bLastDigit <= 2 ? 0 : 1;
 
-  return sortedByLastDigit
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;
+      }
+
+      if (aLastDigit !== bLastDigit) {
+        return aLastDigit - bLastDigit;
+      }
+
+      return Number(a.trophy_id) - Number(b.trophy_id);
+    });
 }
 
 export async function getAwardsOf(
