@@ -123,7 +123,6 @@ async function sendShowcase(ctx: Context, lang: lang) {
 
   ctx.reply(replyMessage.text, {
     parse_mode: replyMessage.parse_mode,
-    reply_markup: { remove_keyboard: true },
   });
 }
 

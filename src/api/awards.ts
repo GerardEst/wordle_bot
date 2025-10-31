@@ -52,7 +52,7 @@ export async function getAwardsOf(
       .from("trophies_chats")
       .select("trophy_id, users(id, name), chat_id, created_at")
       .eq("chat_id", chatId)
-      .not("trophy_id", "like", "%9"); // excluim premis de consolació (per norma acaben amb 9)
+    //.not("trophy_id", "like", "%9"); // excluim premis de consolació (per norma acaben amb 9)
 
     if (userId) {
       query = query.eq("user_id", userId);
