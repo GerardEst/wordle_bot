@@ -55,11 +55,6 @@ const translations: Translations = {
     cat: "Opcions tancades",
     en: "Options closed",
   },
-  selectOption: {
-    es: "Selecciona una opción",
-    cat: "Selecciona una opció:",
-    en: "Select an option",
-  },
   noGamesInChat: {
     es: "Aún no hay puntuaciones en este chat",
     cat: "Encara no hi ha puntuacions en aquest xat",
@@ -186,9 +181,9 @@ const translations: Translations = {
     en: "Everyone else gets the consolation prize,",
   },
   endOfLeagueMessageH: {
-    es: "_Podéis ver los premios conseguidos enviando /premios_",
-    cat: "_Podeu veure els premis que teniu enviant /premis_",
-    en: "_You can see your trophies by sending /trophies_",
+    es: "_Podéis ver los premios conseguidos enviando /premios , o abriendo el menú de la aplicación y abriendo los trofeos ✨_",
+    cat: "_Podeu veure els premis que teniu enviant /premis , o anat al menú de l'aplicació i obrint els trofeus ✨_",
+    en: "_You can see your trophies by sending /trophies , or going to the menu of the app and opening the trophies ✨_",
   },
   topTitle: {
     es: "⭐️ *Top 10 mundial*",

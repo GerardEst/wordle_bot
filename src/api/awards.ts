@@ -2,6 +2,9 @@ import { AWARDS } from "../conf.ts";
 import { Award, lang, SBAward } from "../interfaces.ts";
 import { supabase } from "../lib/supabase.ts";
 
+// TODO - Implementar un dia que pugui fer comprovacions bé
+// const onDev = Deno.env.get('ENV') === 'dev'
+
 export function processAwards(data: SBAward[], lang: lang): Award[] {
   return data
     .map((record: SBAward) => {
@@ -61,6 +64,9 @@ export async function giveAwardTo(
   trophyId: number,
   lang: lang,
 ) {
+  // TODO - Relacionat amb el de dalt
+  // if (onDev) return
+
   console.log(`Giving award ${trophyId} to ${userId} in chat ${chatId}`);
 
   const { error } = await supabase.from("trophies_chats").insert([

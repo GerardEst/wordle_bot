@@ -33,7 +33,8 @@ export function setupCommands(bot: Bot, bot_lang: lang) {
     sendLegend(ctx, bot_lang);
   });
   bot.command(t("trophies", bot_lang), (ctx: Context) => {
-    showTrophiesOptions(ctx, bot_lang);
+    supalog.feature("command_showcase", ctx, bot_lang);
+    sendShowcase(ctx, bot_lang);
   });
   bot.command("top", (ctx: Context) => {
     supalog.feature("command_top", ctx, bot_lang);
@@ -66,16 +67,6 @@ async function reactToMessage(ctx: Context, lang: lang) {
 
   if (isFromLang && isFromLang === lang) {
     await reactToGame(ctx, isFromLang);
-  } else if (ctx.message.text === t("showcase", lang)) {
-    supalog.feature("command_showcase", ctx, lang);
-    sendShowcase(ctx, lang);
-  } else if (ctx.message.text === t("monthTrophies", lang)) {
-    supalog.feature("command_monthTrophies", ctx, lang);
-    sendMonthTrophies(ctx, lang);
-  } else if (ctx.message.text === t("closeOptions", lang)) {
-    await ctx.reply(t("optionsClosed", lang), {
-      reply_markup: { remove_keyboard: true },
-    });
   }
 }
 
@@ -109,21 +100,6 @@ function sendLegend(ctx: Context, lang: lang) {
 
   const message = buildPunctuationTableMessage(lang);
   ctx.reply(message.text, { parse_mode: message.parse_mode });
-}
-
-function showTrophiesOptions(ctx: Context, lang: lang) {
-  if (!ctx.chat) return;
-
-  const keyboard = new Keyboard();
-  keyboard.text(t("showcase", lang));
-  keyboard.row();
-  keyboard.text(t("monthTrophies", lang));
-  keyboard.row();
-  keyboard.text(t("closeOptions", lang));
-  keyboard.resized();
-  keyboard.oneTime();
-
-  ctx.reply(t("selectOption", lang), { reply_markup: keyboard });
 }
 
 async function sendTop(ctx: Context, lang: lang, mode = "normal") {
