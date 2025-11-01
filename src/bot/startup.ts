@@ -1,6 +1,7 @@
 import { Bot, webhookCallback } from "grammy";
 import { supalog } from "../api/log.ts";
 import { cors } from "../network-utils.ts";
+import { getUserAwardsCount } from "../api/awards.ts";
 
 const dev = Deno.env.get("ENV") === "dev";
 
@@ -28,6 +29,10 @@ async function handlePrepareShare(req: Request, bot: Bot) {
 
     console.log("shareMessage: Preparing the message");
 
+    // Completem el missatge amb els trofeus
+    const userAwards = await getUserAwardsCount(body.user_id)
+    const awardsSectionMessage = `🥇${userAwards?.gold_trophies || 0} 🥈${userAwards?.silver_trophies || 0} 🥉${userAwards?.bronze_trophies || 0}`
+
     const result = await bot.api.savePreparedInlineMessage(
       body.user_id,
       {
@@ -35,7 +40,7 @@ async function handlePrepareShare(req: Request, bot: Bot) {
         id: Date.now().toString(),
         title: `Mooot`,
         input_message_content: {
-          message_text: body.message,
+          message_text: `${awardsSectionMessage}\n\n${body.message}`,
           parse_mode: "HTML",
         },
         reply_markup: {

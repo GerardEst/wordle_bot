@@ -55,6 +55,23 @@ function orderByKind(data: SBAward[]) {
   return [...medals, ...others];
 }
 
+export async function getUserAwardsCount(userId: number) {
+  // Agafem la qüantitat d'ors, plates i bronzes d'un usuari
+  try {
+    const { data: user_chat_trophies, error } = await supabase
+      .from('user_chat_trophies')
+      .select('gold_trophies, silver_trophies, bronze_trophies')
+      .eq('user_id', userId)
+
+    if (error) throw error
+
+    return user_chat_trophies[0]
+  } catch (error) {
+    console.error(error)
+    return
+  }
+}
+
 export async function getAwardsOf(
   chatId: number,
   lang: lang,
