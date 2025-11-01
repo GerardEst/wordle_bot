@@ -31,24 +31,28 @@ export function processAwards(data: SBAward[], lang: lang): Award[] {
 }
 
 function orderByKind(data: SBAward[]) {
-  return [...data]
-    .filter((award) => Number(award.trophy_id) % 10 !== 9)
-    .sort((a, b) => {
-      const aLastDigit = Number(a.trophy_id) % 10;
-      const bLastDigit = Number(b.trophy_id) % 10;
-      const aPriority = aLastDigit <= 2 ? 0 : 1;
-      const bPriority = bLastDigit <= 2 ? 0 : 1;
+  const getLastDigit = (award: SBAward) => award.trophy_id % 10;
+  const comparator = (a: SBAward, b: SBAward) => {
+    const lastDigitDiff = getLastDigit(a) - getLastDigit(b);
+    if (lastDigitDiff !== 0) return lastDigitDiff;
+    return a.trophy_id - b.trophy_id;
+  };
 
-      if (aPriority !== bPriority) {
-        return aPriority - bPriority;
-      }
+  const medals = [...data]
+    .filter((award) => {
+      const lastDigit = getLastDigit(award);
+      return lastDigit >= 0 && lastDigit <= 2;
+    })
+    .sort(comparator);
 
-      if (aLastDigit !== bLastDigit) {
-        return aLastDigit - bLastDigit;
-      }
+  const others = [...data]
+    .filter((award) => {
+      const lastDigit = getLastDigit(award);
+      return lastDigit < 0 || lastDigit > 2;
+    })
+    .sort(comparator);
 
-      return Number(a.trophy_id) - Number(b.trophy_id);
-    });
+  return [...medals, ...others];
 }
 
 export async function getAwardsOf(
